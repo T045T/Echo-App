@@ -5,47 +5,59 @@ using System.Linq;
 
 namespace Echo.Helpers
 {
-    public class LongListCollection<T, TKey> : ObservableCollection<LongListItem<T, TKey>>
-        where T : IComparable<T>
+    public class LongListCollection<T> : ObservableCollection<LongListItem<T>>
     {
         public LongListCollection()
         {
         }
 
-        public LongListCollection(IEnumerable<T> items, Func<T, TKey> keySelector)
+        private readonly string alphabet = "#abcdefghijklmnopqrstuvwxyz";
+        private Func<T, string> keySelector;
+        private Func<T, string> orderFunction;
+        private Dictionary<string, LongListItem<T>> groups;
+
+        public LongListCollection(IEnumerable<T> items, Func<T, string> keySelector, Func<T, string> orderFunction)
         {
+            this.keySelector = keySelector;
+            this.orderFunction = orderFunction;
             if (items == null)
                 throw new ArgumentException("items");
 
-            var groups = new Dictionary<TKey, LongListItem<T, TKey>>();
+            groups = new Dictionary<string, LongListItem<T>>();
 
-            foreach (var item in items.OrderBy(x => x))
+            foreach (char c in alphabet)
+                groups.Add(c.ToString(), new LongListItem<T>(c.ToString()));
+
+            foreach (var item in items)
             {
                 var key = keySelector(item);
 
                 if (groups.ContainsKey(key) == false)
-                    groups.Add(key, new LongListItem<T, TKey>(key));
+                    groups.Add(key, new LongListItem<T>(key));
 
                 groups[key].Add(item);
             }
 
             foreach (var value in groups.Values)
+            {
+                value.OrderBy(orderFunction);
                 this.Add(value);
+            }
         }
     }
 
-    public class LongListItem<T, TKey> : ObservableCollection<T>
+    public class LongListItem<T> : ObservableCollection<T>
     {
         public LongListItem()
         {
         }
 
-        public LongListItem(TKey key)
+        public LongListItem(string Title)
         {
-            this.Key = key;
+            this.Title = Title;
         }
 
-        public TKey Key
+        public string Title
         {
             get;
             set;

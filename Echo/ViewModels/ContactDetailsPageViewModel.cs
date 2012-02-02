@@ -16,7 +16,7 @@ namespace Echo.ViewModels
 {
     public class ContactDetailsPageViewModel : Screen, INavigationTarget
     {
-        private UserDataContext udc;
+        private UDCListModel udc;
         private INavigationService navService;
         public bool ClearBackStack { get; set; }
         public bool Reload { get; set; }
@@ -56,9 +56,9 @@ namespace Echo.ViewModels
             }
         }
 
-        public ContactDetailsPageViewModel(INavigationService navService)
+        public ContactDetailsPageViewModel(INavigationService navService, UDCListModel udc)
         {
-            this.udc = new UserDataContext();
+            this.udc = udc;
             this.navService = navService;
         }
 
@@ -70,12 +70,9 @@ namespace Echo.ViewModels
                 navService.RemoveBackEntry();
                 navService.RemoveBackEntry();
             }
-            var userquery = from user in udc.UserTable where user.UserID.Equals(TargetUserID) select user;
-            if (userquery.Any()) {
-                User = userquery.First();
-            } else {
+            User = udc.GetUser(TargetUserID);
+            if (User == null)
                 return;
-            }
             var logList = User.CallLogs.OrderBy((log) => log.StartTime);
             if (logList.Any() && logList.First().Entries.Any()) {
                 LastCallLogEntry = logList.First().Entries.First();
@@ -84,12 +81,20 @@ namespace Echo.ViewModels
             {
                 LastCallLogEntry = new CallLogEntry("You have no recent calls with " + User.FirstLast + ".", DateTime.Now, "[none]");
                 var log = new CallLogModel(User.UserID, DateTime.Now);
-                udc.CallLogTable.InsertOnSubmit(log);
-                udc.SubmitChanges();
-                log.addEntry("And now we're testing the wrapping abilities... god, I hope this works...");
+
+                log.addEntry("Echo park synth fixie, accusamus anim gentrify occaecat photo booth.");
                 User.CallLogs.Add(log);
+                //udc.CallLogTable.InsertOnSubmit(log);
                 udc.SubmitChanges();
+                //log.addEntry("And now we're testing the wrapping abilities... god, I hope this works...");
+                //User.CallLogs.Add(log);
+                //udc.SubmitChanges();
             }
+        }
+
+        protected override void OnViewAttached(object view, object context)
+        {
+            base.OnViewAttached(view, context);
         }
 
         public void EditUser()
