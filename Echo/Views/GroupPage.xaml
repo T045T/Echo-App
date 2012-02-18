@@ -51,7 +51,8 @@
         <ListBox Grid.Row="1" x:Name="Items">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Margin="12, 12, 0, 0">
+                    <Grid Margin="12, 12, 0, 0"
+                          toolkit:TiltEffect.IsTiltEnabled="True" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -65,10 +66,13 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
 
-                        <Image Source="{Binding UserImagePath, Mode=OneWay}"
+                        <Border Width="108" Height="108" Background="Gray">
+                            <Image Source="{Binding UserImageSource, Mode=OneWay}"
                                    Height="108"
                                    Width="108"
                                    Grid.Column="0"/>
+                        </Border>
+                        
                         <StackPanel Orientation="Vertical"
                                         Grid.Column="1">
                             <TextBlock x:Name="FirstLast"
