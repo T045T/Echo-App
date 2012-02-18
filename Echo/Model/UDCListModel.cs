@@ -14,12 +14,22 @@ using Echo.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.IO.IsolatedStorage;
 
 namespace Echo.Model
 {
     public class UDCListModel : INotifyPropertyChanged
     {
         private UserDataContext udc;
+        public UserDataContext DataContext
+        {
+            get { return udc; }
+            set
+            {
+                udc = value;
+                RaisePropertyChangedEvent("DataContext");
+            }
+        }
 
         public UDCListModel()
         {
@@ -129,6 +139,7 @@ namespace Echo.Model
 
         public void LoadListsFromDatabase()
         {
+            udc.SubmitChanges();
             var UsersFromDbByFirst = new List<TitleGroup<UserModel>>(from UserModel u in udc.UserTable
                                                                      group u by u.FirstName.Substring(0, 1).ToLower() into foo
                                                                      orderby foo.Key
@@ -232,12 +243,19 @@ namespace Echo.Model
 
         #region User Methods
 
-        public UserModel GetUser(string UserID)
+        public UserModel GetUser(int? UserID)
         {
-            var user = from u in udc.UserTable where u.UserID.Equals(UserID) select u;
-            if (user.Any())
+            if (UserID != null)
             {
-                return user.First();
+                var user = from u in udc.UserTable where u.ID == UserID select u;
+                if (user.Any())
+                {
+                    return user.First();
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {
@@ -246,7 +264,7 @@ namespace Echo.Model
         }
         public void addToGroup(UserModel u, GroupModel g)
         {
-            GroupMapModel junctionModel = new GroupMapModel(g.GroupName, u.UserID);
+            GroupMapModel junctionModel = new GroupMapModel(g.GroupName, u.ID);
             //JunctionTable.InsertOnSubmit(junctionModel);
 
             g.addJunction(junctionModel);
@@ -295,6 +313,17 @@ namespace Echo.Model
                     var entries = from CallLogEntry en in udc.EntryTable where en.CallLogID.Equals(e.CallLogID) select en;
                     udc.EntryTable.DeleteAllOnSubmit(entries);
                 }
+
+                if (User.HasImage)
+                {
+                    using (IsolatedStorageFile myIsolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
+                    {
+                        if (myIsolatedStorage.FileExists(User.UserImagePath))
+                        {
+                            myIsolatedStorage.DeleteFile(User.UserImagePath);
+                        }
+                    }
+                }
                 udc.CallLogTable.DeleteAllOnSubmit(logs);
                 udc.SubmitChanges();
                 udc.JunctionTable.DeleteAllOnSubmit(junctions);
@@ -306,6 +335,9 @@ namespace Echo.Model
 
         public bool addUser(UserModel User)
         {
+            if ((from u in udc.UserTable where u.UserID.Equals(User.UserID) select u).Any())
+                return false;
+
             udc.UserTable.InsertOnSubmit(User);
             try { udc.SubmitChanges(); }
             catch (Exception dbe) { return false; }
@@ -339,39 +371,65 @@ namespace Echo.Model
         }
 
 
-        public UserModel changeUserID(UserModel m, string NewUserID)
+        public bool changeUserID(UserModel m, string NewUserID)
         {
-            if (!NewUserID.Equals(m.UserID))
+            if ((from u in udc.UserTable where u.UserID.Equals(NewUserID) select u).Any())
+                return false;
+            m.UserID = NewUserID;
+            try
             {
-                UserModel newUser = new UserModel(NewUserID, m.FirstName, m.LastName, m.UserImagePath);
-                if (addUser(newUser))
-                {
-                    var junctions = from GroupMapModel gmm in udc.JunctionTable where gmm.UserID.Equals(m.UserID) select gmm;
-                    var logs = from CallLogModel clm in udc.CallLogTable where clm.CalleeID.Equals(m.UserID) select clm;
-                    foreach (GroupMapModel gmm in junctions)
-                    {
-                        gmm.UserID = NewUserID;
-                    }
-                    udc.SubmitChanges();
-                    foreach (CallLogModel clm in logs)
-                    {
-                        clm.CalleeID = NewUserID;
-                    }
-                    udc.SubmitChanges();
-                    udc.UserTable.DeleteOnSubmit(m);
-                    udc.SubmitChanges();
-                    return newUser;
-                }
-                else
-                {
-                    return m;
-                }
+                udc.SubmitChanges();
             }
-            else
-            {
-                return m;
-            }
+            catch (Exception e) { return false; }
+
+            return true;
+            //if (!NewUserID.Equals(m.UserID))
+            //{
+            //    UserModel newUser = new UserModel(NewUserID, m.FirstName, m.LastName, m.UserImagePath);
+            //    if (addUser(newUser))
+            //    {
+            //        var junctions = from GroupMapModel gmm in udc.JunctionTable where gmm.UserID.Equals(m.UserID) select gmm;
+            //        var logs = from CallLogModel clm in udc.CallLogTable where clm.CalleeID.Equals(m.UserID) select clm;
+            //        List<GroupMapModel> newGmm = new List<GroupMapModel>();
+            //        List<CallLogModel> newClm = new List<CallLogModel>();
+            //        foreach (GroupMapModel gmm in junctions)
+            //        {
+            //            //newGmm.Add(new GroupMapModel(gmm.GroupName, newUser.UserID));
+            //            gmm.UserID = newUser.ID;
+            //        }
+            //        udc.SubmitChanges();
+            //        foreach (CallLogModel clm in logs)
+            //        {
+            //            //var tmp = new CallLogModel(newUser.UserID, clm.StartTime);
+            //            //newClm.Add(new CallLogModel(newUser.UserID, clm.StartTime));
+            //            clm.CalleeID = newUser.ID;
+            //        }
+            //        udc.SubmitChanges();
+            //        this.removeUser(m);
+            //        try
+            //        {
+            //            udc.SubmitChanges();
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            bool foo = false;
+            //        }
+            //        return newUser;
+            //    }
+            //    else
+            //    {
+            //        return m;
+            //    }
+            //}
+            //else
+            //{
+            //    return m;
+            //}
         }
+
+        //public bool SubmitUserChanges(UserModel User)
+        //{
+        //}
         #endregion User Methods
 
         private string findInitial(string input)

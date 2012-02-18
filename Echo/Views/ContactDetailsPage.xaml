@@ -9,7 +9,7 @@
 	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
     xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
     xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
 	x:Class="Echo.Views.ContactDetailsPage"
 	SupportedOrientations="Portrait" Orientation="Portrait"
 	shell:SystemTray.IsVisible="True">
@@ -80,8 +80,10 @@
             <controls:PivotItem Header="Info" Foreground="{StaticResource PhoneForegroundBrush}">
                 <ListBox BorderThickness="12,0,0,0">
                     <StackPanel Orientation="Horizontal" Width="444">
-                        <Image Width="180" Source="{Binding User.UserImagePath}" Height="180"/>
-                        <StackPanel x:Name="LastCallLogEntry"  Width="264" Height="180" VerticalAlignment="Top">
+                        <Border Width="180" Height="180" Background="Gray">
+                            <Image Width="180" Source="{Binding User.UserImageSource}" Height="180"/>
+                        </Border>
+                        <StackPanel x:Name="LastCallLog"  Width="264" Height="180" VerticalAlignment="Top">
                             <TextBlock TextWrapping="Wrap" 
                                        Text="Last Call:" 
                                        Style="{StaticResource PhoneTextTitle3Style}"

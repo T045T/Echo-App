@@ -21,7 +21,7 @@ namespace Echo.ViewModels
         public bool ClearBackStack { get; set; }
         public bool Reload { get; set; }
 
-        public string TargetUserID { get; set; }
+        public int TargetUserID { get; set; }
 
         private UserModel _User;
         public UserModel User
@@ -73,6 +73,8 @@ namespace Echo.ViewModels
             User = udc.GetUser(TargetUserID);
             if (User == null)
                 return;
+            else
+                NotifyOfPropertyChange("User");
             var logList = User.CallLogs.OrderBy((log) => log.StartTime);
             if (logList.Any() && logList.First().Entries.Any()) {
                 LastCallLogEntry = logList.First().Entries.First();
@@ -80,7 +82,7 @@ namespace Echo.ViewModels
             else
             {
                 LastCallLogEntry = new CallLogEntry("You have no recent calls with " + User.FirstLast + ".", DateTime.Now, "[none]");
-                var log = new CallLogModel(User.UserID, DateTime.Now);
+                var log = new CallLogModel(User.ID, DateTime.Now);
 
                 log.addEntry("Echo park synth fixie, accusamus anim gentrify occaecat photo booth.");
                 User.CallLogs.Add(log);
@@ -100,7 +102,7 @@ namespace Echo.ViewModels
         public void EditUser()
         {
             navService.UriFor<ContactEditPageViewModel>()
-                .WithParam(x => x.TargetUserID, this.User.UserID)
+                .WithParam(x => x.TargetUserID, this.User.ID)
                 .WithParam(x => x.CreateUser, false)
                 .Navigate();
         }
