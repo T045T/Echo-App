@@ -9,6 +9,7 @@
 	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
     xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
     xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+    xmlns:helpers="clr-namespace:Echo.Helpers"
 	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
 	x:Class="Echo.Views.ContactDetailsPage"
 	SupportedOrientations="Portrait" Orientation="Portrait"
@@ -23,6 +24,8 @@
     </phone:PhoneApplicationPage.ApplicationBar>
 
     <phone:PhoneApplicationPage.Resources>
+        <helpers:ShortTimeConverter x:Name="timeConv" />
+        
         <DataTemplate x:Key="ItemTemplate">
             <StackPanel>
                 <TextBlock Text="{Binding CallDate}"/>
@@ -31,7 +34,7 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="HistoryTemplate">
-            <Grid>
+            <Grid Margin="0, 0, 0, 12">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
@@ -78,33 +81,55 @@
         <controls:Pivot  Title="{Binding User.FirstLast}" Foreground="{StaticResource PhoneForegroundBrush}">
             <!--Pivot-Element 1-->
             <controls:PivotItem Header="Info" Foreground="{StaticResource PhoneForegroundBrush}">
-                <ListBox BorderThickness="12,0,0,0">
-                    <StackPanel Orientation="Horizontal" Width="444">
-                        <Border Width="180" Height="180" Background="Gray">
-                            <Image Width="180" Source="{Binding User.UserImageSource}" Height="180"/>
-                        </Border>
-                        <StackPanel x:Name="LastCallLog"  Width="264" Height="180" VerticalAlignment="Top">
+                <ListBox>
+                    <ListBoxItem>
+                        <Grid Height="204"
+                              Margin="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Border Width="180" Height="180" Background="Gray"
+                                Grid.Column="0"
+                                Grid.Row="0"
+                                Grid.RowSpan="3">
+                                <Image Width="180" Source="{Binding User.UserImageSource}" Height="180"/>
+                            </Border>
                             <TextBlock TextWrapping="Wrap" 
                                        Text="Last Call:" 
-                                       Style="{StaticResource PhoneTextTitle3Style}"
-                                       Foreground="{StaticResource PhoneAccentBrush}"/>
+                                       Style="{StaticResource PhoneTextLargeStyle}"
+                                       Foreground="{StaticResource PhoneAccentBrush}"
+                                       Grid.Column="1"
+                                       Grid.Row="0"/>
                             <TextBlock TextWrapping="Wrap"
-                                       Height="112"
                                        Text="{Binding Path=LastCallLogEntry.Content, Mode=OneWay}" 
-                                       Style="{StaticResource PhoneTextNormalStyle}"/>
+                                       Style="{StaticResource PhoneTextNormalStyle}"
+                                       Grid.Column="1"
+                                       Grid.Row="1"/>
                             <TextBlock TextWrapping="Wrap" 
-                                       Text="15 minutes ago"
-                                       Style="{StaticResource PhoneTextSubtleStyle}"/>
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Width="444" Margin="0,5,0,10">
+                                       Text="{Binding Path=LastCallLogEntry.Timestamp, Mode=OneWay, Converter={StaticResource timeConv}}"
+                                       Style="{StaticResource PhoneTextSubtleStyle}"
+                                       VerticalAlignment="Bottom"
+                                       Grid.Column="1"
+                                       Grid.Row="2"/>
+                        </Grid>
+                    </ListBoxItem>
+                    <StackPanel>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Tap">
-                                <ec:NavigateToPageAction TargetPage="/ActiveCallPage.xaml"/>
+                                <cal:ActionMessage MethodName="StartCall" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <TextBlock TextWrapping="Wrap" Text="call using echo" FontSize="34.667"/>
-                        <TextBlock TextWrapping="Wrap" Text="{Binding Path=User.UserID, Mode=OneWay}" Foreground="{StaticResource PhoneAccentBrush}" FontSize="21.333"/>
+                        <TextBlock TextWrapping="Wrap" Text="call using echo" Style="{StaticResource PhoneTextLargeStyle}"/>
+                        <TextBlock TextWrapping="Wrap" 
+                                   Text="{Binding Path=User.UserID, Mode=OneWay}" 
+                                   Foreground="{StaticResource PhoneAccentBrush}" 
+                                   Style="{StaticResource PhoneTextNormalStyle}"/>
                     </StackPanel>
                     <!--
 					<StackPanel Width="444" Margin="0,5,0,10">

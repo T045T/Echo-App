@@ -306,8 +306,8 @@ namespace Echo.Model
                         lettergroup.Remove(User);
                     }
                 }
-                var junctions = from GroupMapModel gmm in udc.JunctionTable where gmm.UserID.Equals(User.UserID) select gmm;
-                var logs = from CallLogModel clm in udc.CallLogTable where clm.CalleeID.Equals(User.UserID) select clm;
+                var junctions = from GroupMapModel gmm in udc.JunctionTable where gmm.UserID.Equals(User.ID) select gmm;
+                var logs = from CallLogModel clm in udc.CallLogTable where clm.CalleeID.Equals(User.ID) select clm;
                 foreach (CallLogModel e in logs)
                 {
                     var entries = from CallLogEntry en in udc.EntryTable where en.CallLogID.Equals(e.CallLogID) select en;
@@ -444,6 +444,14 @@ namespace Echo.Model
             {
                 return "#";
             }
+        }
+
+        public void deleteCallLogs()
+        {
+            udc.CallLogTable.DeleteAllOnSubmit(udc.CallLogTable);
+            udc.EntryTable.DeleteAllOnSubmit(udc.EntryTable);
+            udc.SubmitChanges();
+            LoadListsFromDatabase();
         }
 
         #region INotifyPropertyChanged Members

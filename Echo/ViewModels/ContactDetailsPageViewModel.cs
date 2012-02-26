@@ -18,6 +18,8 @@ namespace Echo.ViewModels
     {
         private UDCListModel udc;
         private INavigationService navService;
+
+        #region Properties
         public bool ClearBackStack { get; set; }
         public bool Reload { get; set; }
 
@@ -39,6 +41,18 @@ namespace Echo.ViewModels
                 }
             }
         }
+
+        private CallLogModel _LastCallLog;
+        public CallLogModel LastCallLog
+        {
+            get { return _LastCallLog; }
+            set
+            {
+                _LastCallLog = value;
+                NotifyOfPropertyChange("LastCallLog");
+            }
+        }
+
         private CallLogEntry _LastCallLogEntry;
         public CallLogEntry LastCallLogEntry
         {
@@ -55,12 +69,14 @@ namespace Echo.ViewModels
                 }
             }
         }
+        #endregion Properties
 
         public ContactDetailsPageViewModel(INavigationService navService, UDCListModel udc)
         {
             this.udc = udc;
             this.navService = navService;
         }
+
 
         protected override void OnActivate()
         {
@@ -75,17 +91,18 @@ namespace Echo.ViewModels
                 return;
             else
                 NotifyOfPropertyChange("User");
-            var logList = User.CallLogs.OrderBy((log) => log.StartTime);
+            var logList = User.CallLogs.OrderByDescending((log) => log.StartTime);
             if (logList.Any() && logList.First().Entries.Any()) {
+                LastCallLog = logList.First();
                 LastCallLogEntry = logList.First().Entries.First();
             }
             else
             {
                 LastCallLogEntry = new CallLogEntry("You have no recent calls with " + User.FirstLast + ".", DateTime.Now, "[none]");
-                var log = new CallLogModel(User.ID, DateTime.Now);
+                LastCallLog = new CallLogModel(User.ID, DateTime.Now);
 
-                log.addEntry("Echo park synth fixie, accusamus anim gentrify occaecat photo booth.");
-                User.CallLogs.Add(log);
+                LastCallLog.addEntry("Echo park synth fixie, accusamus anim gentrify occaecat photo booth.");
+                User.CallLogs.Add(LastCallLog);
                 //udc.CallLogTable.InsertOnSubmit(log);
                 udc.SubmitChanges();
                 //log.addEntry("And now we're testing the wrapping abilities... god, I hope this works...");
@@ -97,6 +114,14 @@ namespace Echo.ViewModels
         protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
+        }
+
+        public void StartCall()
+        {
+            navService.UriFor<ActiveCallPageViewModel>()
+                .WithParam(x => x.isIncoming, false)
+                .WithParam(x => x.calleeID, this.TargetUserID)
+                .Navigate();
         }
 
         public void EditUser()
