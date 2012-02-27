@@ -19,16 +19,17 @@ using System.Collections.Generic;
 
 namespace Echo.Logic
 {
-    public class CountingBackgroundWorkerHandler
+    public class EchoClientLogic
     {
-        private BackgroundWorker myWorker = new BackgroundWorker();
+        private BackgroundWorker myWorker;
         private UDCListModel udc;
         private INavigationService navService;
         private IWindowManager winMan;
         private int CalleeID;
 
-        public CountingBackgroundWorkerHandler(INavigationService navService, IWindowManager winMan, UDCListModel udc)
+        public EchoClientLogic(INavigationService navService, IWindowManager winMan, UDCListModel udc)
         {
+            myWorker = new BackgroundWorker();
             this.navService = navService;
             this.winMan = winMan;
             this.udc = udc;
@@ -36,7 +37,6 @@ namespace Echo.Logic
             myWorker.WorkerReportsProgress = true;
             myWorker.ProgressChanged += new ProgressChangedEventHandler(myWorker_ProgressChanged);
             myWorker.DoWork += new DoWorkEventHandler(myWorker_DoWork);
-
         }
 
         void myWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
