@@ -25,7 +25,7 @@
 
     <phone:PhoneApplicationPage.Resources>
         <helpers:ShortTimeConverter x:Name="timeConv" />
-        
+
         <DataTemplate x:Key="ItemTemplate">
             <StackPanel>
                 <TextBlock Text="{Binding CallDate}"/>
@@ -111,9 +111,12 @@
                                        Style="{StaticResource PhoneTextNormalStyle}"
                                        Grid.Column="1"
                                        Grid.Row="1"/>
+                            
+                            
                             <TextBlock TextWrapping="Wrap" 
                                        Text="{Binding Path=LastCallLogEntry.Timestamp, Mode=OneWay, Converter={StaticResource timeConv}}"
                                        Style="{StaticResource PhoneTextSubtleStyle}"
+                                       Margin="12"
                                        VerticalAlignment="Bottom"
                                        Grid.Column="1"
                                        Grid.Row="2"/>
