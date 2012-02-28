@@ -35,6 +35,13 @@
         </DataTemplate>
         <DataTemplate x:Key="HistoryTemplate">
             <Grid Margin="0, 0, 0, 12">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Tap">
+                        <cal:ActionMessage MethodName="LogTapped">
+                            <cal:Parameter Value="$dataContext" />
+                        </cal:ActionMessage>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
@@ -47,10 +54,7 @@
                 <Image Height="62" Width="62" 
                        Source="incoming.png" 
                        Grid.Column="0"/>
-
-                <!--<Border Background="Aqua" Grid.Column="2" Grid.Row="0" />
-
-                <Border Background="PapayaWhip" Grid.Column="0" Grid.Row="0" />-->
+                
                 <Border Background="{StaticResource PhoneAccentBrush}" Grid.Column="1" Grid.Row="0" />
                 <StackPanel Orientation="Vertical"
                             Grid.Column="2">

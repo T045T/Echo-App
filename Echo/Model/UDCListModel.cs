@@ -159,7 +159,7 @@ namespace Echo.Model
                 g.OrderBy((u, v) => u.LastName.CompareTo(v.LastName));
 
             GroupList = new ObservableCollection<GroupModel>(udc.GroupTable.ToList().OrderBy(x => x.GroupName));
-            AllLogsList = new ObservableCollection<CallLogModel>(udc.CallLogTable.ToList().OrderBy(c => c.StartTime));
+            AllLogsList = new ObservableCollection<CallLogModel>(udc.CallLogTable.ToList().OrderByDescending(c => c.StartTime));
             LoadedLists = true;
 
         }

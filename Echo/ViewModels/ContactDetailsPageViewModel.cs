@@ -132,6 +132,15 @@ namespace Echo.ViewModels
                 .Navigate();
         }
 
+        public void LogTapped(object dataContext)
+        {
+            var Log = dataContext as CallLogModel;
+            navService.UriFor<CallLogPageViewModel>()
+                .WithParam(x => x.CallLogID, Log.CallLogID)
+                .WithParam(x => x.ComingFromContact, true)
+                .Navigate();
+        }
+
         public override void CanClose(Action<bool> callback)
         {
                 udc.SubmitChanges();

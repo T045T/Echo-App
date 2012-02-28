@@ -127,6 +127,7 @@ namespace Echo.ViewModels
                 PreviousCallLog = previousLogs.First();
             }
             CurrentCallLog = new CallLogModel(Callee.ID);
+            CallStart = CurrentCallLog.StartTime;
 
             CurrentCallLog.addEntry("Helvetica salvia keytar, tattooed lo-fi eiusmod freegan DIY bespoke sed pop-up mlkshk small batch four loko brunch.");
             Callee.CallLogs.Add(CurrentCallLog);

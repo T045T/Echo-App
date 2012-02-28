@@ -13,8 +13,8 @@
 	Orientation="Portrait"
 	shell:SystemTray.IsVisible="True">
     <phone:PhoneApplicationPage.Resources>
-        <cal:BooleanToVisibilityConverter x:Name="boolConv" />
-        <helpers:ShortTimeConverter x:Name="timeConv" />
+        <cal:BooleanToVisibilityConverter x:Key="boolConv" />
+        <helpers:ShortTimeConverter x:Key="timeConv" />
 
         <DataTemplate x:Key="BubbleCallList">
             <Grid Margin="12, 0, 12, 12">
@@ -264,7 +264,7 @@
             <StackPanel>
                 <ItemsControl ItemTemplate="{StaticResource BubbleCallList}"
                                       ItemsSource="{Binding Path=PreviousCallLog.Entries, Mode=OneWay}"
-                                      Opacity="0.8" />
+                                      Opacity="0.6" />
                 <ItemsControl ItemTemplate="{StaticResource BubbleCallList}" 
                                       ItemsSource="{Binding Path=CurrentCallLog.Entries, Mode=OneWay}" >
                     <ListBoxItem>

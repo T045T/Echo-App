@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -23,11 +24,56 @@
         <!--TitlePanel enthält den Namen der Anwendung und den Seitentitel-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="MEINE ANWENDUNG" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="Seitenname" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="PageTitle" Text="G.711 Test" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - zusätzliche Inhalte hier platzieren-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <RadioButton Grid.Column="0"
+                         Grid.Row="0"
+                         x:Name="ULAW"
+                         Content="μ-Law"
+                         GroupName="LAW" />
+            <RadioButton Grid.Column="1"
+                         Grid.Row="0"
+                         x:Name="ALAW"
+                         Content="a-Law"
+                         GroupName="LAW" />
+            <Button x:Name="StartSending" 
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Content="Start"/>
+            <Button x:Name="StopSending" 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Content="Stop"/>
+            <TextBlock Text="Input Byte:"
+                       Style="{StaticResource PhoneTextLargeStyle}"
+                       Grid.Column="0"
+                       Grid.Row="2"/>
+            <TextBlock Text="G.711 Byte:"
+                       Style="{StaticResource PhoneTextLargeStyle}"
+                       Grid.Column="1"
+                       Grid.Row="2"/>
+            <ListBox x:Name="InputBytes"
+                     Margin="12"
+                     Grid.Column="0"
+                     Grid.Row="3" />
+            <ListBox x:Name="G711Bytes"
+                     Margin="12"
+                     Grid.Column="1"
+                     Grid.Row="3" />
+        </Grid>
     </Grid>
  
     <!--Beispielcode für die Verwendung von ApplicationBar-->
