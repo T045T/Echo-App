@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-using TestApp.echo;
+using NetworkTestApp_Moritz.Logic;
 
 namespace NetworkTestApp_Moritz
 {
@@ -24,6 +24,7 @@ namespace NetworkTestApp_Moritz
 
         private void PageTitle_Tap(object sender, GestureEventArgs e)
         {
+            Crypt.init();
             var testcon = new Connection();
         }
     }

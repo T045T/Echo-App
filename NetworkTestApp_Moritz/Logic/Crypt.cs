@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Security.Cryptography;
 
-namespace TestApp
+namespace NetworkTestApp_Moritz
 {
     public static class Crypt
     {
@@ -32,6 +32,7 @@ namespace TestApp
 
         private static void generateKeys()
         {
+            serverProvider = new RSACryptoServiceProvider();
             clientProvider = new RSACryptoServiceProvider(1024);
             saveKeys();
         }
@@ -46,6 +47,11 @@ namespace TestApp
             return clientProvider.ToXmlString(false);
         }
 
+        public static void setServerPublicKey(String xmlKey)
+        {
+            serverProvider.FromXmlString(xmlKey);
+        }
+
         public static byte[] encrypt(byte[] data)
         {
             return serverProvider.Encrypt(data, false);
@@ -58,12 +64,13 @@ namespace TestApp
 
         public static byte[] sign(byte[] data)
         {
-            return serverProvider.SignData(data, "SHA1");
+            
+            return clientProvider.SignData(data, new SHA1Managed());
         }
 
         public static bool verify(byte[] data, byte[] signature)
         {
-            return clientProvider.VerifyData(data, "SHA1", signature);
+            return serverProvider.VerifyData(data, new SHA1Managed(), signature);
         }
     }
 }

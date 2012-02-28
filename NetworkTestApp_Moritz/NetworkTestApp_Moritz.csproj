@@ -61,6 +61,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logic\ClientHeader.cs" />
+    <Compile Include="Logic\Connection.cs" />
+    <Compile Include="Logic\Crypt.cs" />
+    <Compile Include="Logic\ErrorCodes.cs" />
+    <Compile Include="Logic\ServerHeader.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
