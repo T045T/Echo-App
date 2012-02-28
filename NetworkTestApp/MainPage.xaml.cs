@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using TestApp.echo;
 
 namespace NetworkTestApp
 {
@@ -19,6 +20,11 @@ namespace NetworkTestApp
         public MainPage()
         {
             InitializeComponent();
+        }
+
+        private void PageTitle_Tap(object sender, GestureEventArgs e)
+        {
+            var testcon = new Connection();
         }
     }
 }
