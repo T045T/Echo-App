@@ -27,7 +27,9 @@
         </StackPanel>
 
         <!--ContentPanel - zusätzliche Inhalte hier platzieren-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Button Grid.Column="0" Content="Ok" Width="100" Click="Button_Click" />
+        </Grid>
     </Grid>
  
     <!--Beispielcode für die Verwendung von ApplicationBar-->

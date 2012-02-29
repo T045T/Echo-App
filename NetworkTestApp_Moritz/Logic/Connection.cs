@@ -197,15 +197,20 @@ namespace NetworkTestApp_Moritz.Logic
         {
             String userdata = "1467440;sipgate.de;DDAFTG;5060";
             byte[] data = Encoding.UTF8.GetBytes(userdata);
+            byte[] netData = encryptNetData(data);
+            sendData(ClientHeader.USERDATA, netData, e);
+        }
+
+        private static byte[] encryptNetData(byte[] data)
+        {
             byte[] signature = Crypt.sign(data);
             data = Crypt.encrypt(data);
             data = Encoding.UTF8.GetBytes(System.Convert.ToBase64String(data));
             signature = Encoding.UTF8.GetBytes(System.Convert.ToBase64String(signature));
-            byte[] netData = mergeArrays(data, signature);
-            sendData(ClientHeader.USERDATA, netData, e);
+            return mergeArrays(data, signature);
         }
 
-        private byte[] mergeArrays(byte[] first, byte[] second)
+        private static byte[] mergeArrays(byte[] first, byte[] second)
         {
             byte[] array = new byte[first.Length + second.Length];
             System.Array.Copy(first, array, first.Length);
@@ -307,6 +312,9 @@ namespace NetworkTestApp_Moritz.Logic
 
         public void call(String uri)
         {
+            byte[] data = Encoding.UTF8.GetBytes(uri);
+            byte[] netData = encryptNetData(data);
+            sendData(ClientHeader.INITIATECALL, netData, sendArgs);
         }
 
         public void reconnect()

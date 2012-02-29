@@ -29,5 +29,10 @@ namespace NetworkTestApp_Moritz
         {
             this.testcon.logout();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.testcon.call("sip:2557904@sipgate.de");
+        }
     }
 }
