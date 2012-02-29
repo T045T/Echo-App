@@ -63,7 +63,14 @@ namespace Echo.ViewModels
 
             InputBytes = new ObservableCollection<ByteHolder>();
             G711Bytes = new ObservableCollection<ByteHolder>();
+            StartTimer();
+            
 
+            microphone.BufferReady += new EventHandler<EventArgs>(microphone_BufferReady);
+        }
+
+        public void StartTimer()
+        {
             // Timer to simulate the XNA Game Studio game loop (Microphone is from XNA Game Studio)
             DispatcherTimer dt = new DispatcherTimer();
             dt.Interval = TimeSpan.FromMilliseconds(50);
@@ -76,14 +83,11 @@ namespace Echo.ViewModels
                 catch { }
             };
             dt.Start();
-
-            microphone.BufferReady += new EventHandler<EventArgs>(microphone_BufferReady);
         }
 
-        protected override void OnViewAttached(object view, object context)
-        {
-            base.OnViewAttached(view, context);
-        }
+        public void ConnectSocket() {
+
+
 
         void microphone_BufferReady(object sender, EventArgs e)
         {
@@ -100,6 +104,7 @@ namespace Echo.ViewModels
             DateTime tmp = DateTime.Now;
             byte[] tmpBytes = ALawEncoder.ALawEncode(buffer);
             TimeSpan time = DateTime.Now - tmp;
+            
 
             InputBytes.Add(new ByteHolder(buffer));
             //NotifyOfPropertyChange("InputBytes");
