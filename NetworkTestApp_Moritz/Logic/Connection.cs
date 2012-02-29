@@ -133,15 +133,23 @@ namespace NetworkTestApp_Moritz.Logic
                         {
                             case ServerHeader.KEY:
                                 keyReceived(e.Buffer, e);
+                                info.LastOperation = -1;
                                 break;
                             case ServerHeader.TOKEN:
                                 tokenReceived(e.Buffer, e);
+                                info.LastOperation = -1;
                                 break;
                             case ServerHeader.INCOMINGCALL:
+
+                                info.LastOperation = -1;
                                 break;
                             case ServerHeader.REGISTERSUCCESS:
+
+                                info.LastOperation = -1;
                                 break;
                             case ServerHeader.ERROR:
+
+                                info.LastOperation = -1;
                                 break;                            
                         }
                     }
