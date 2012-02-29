@@ -17,15 +17,22 @@ namespace NetworkTestApp_Moritz
     public partial class MainPage : PhoneApplicationPage
     {
         // Konstruktor
+        private Connection testcon;
         public MainPage()
         {
             InitializeComponent();
+            Crypt.init();
+            testcon = new Connection();
         }
 
         private void PageTitle_Tap(object sender, GestureEventArgs e)
         {
-            Crypt.init();
-            var testcon = new Connection();
+            this.testcon.logout();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.testcon.call("sip:2557904@sipgate.de");
         }
     }
 }

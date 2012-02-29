@@ -16,6 +16,6 @@ namespace NetworkTestApp_Moritz.Logic
         public const int CORRUPTEDDATA = 5;
 	    public const int LOGINFAILED = 10;
 	    public const int CALLFAILED = 15;
-	    public const int SERVERERROR = 5;
+	    public const int SERVERERROR = 20;
     }
 }

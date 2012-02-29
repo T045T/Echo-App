@@ -13,7 +13,7 @@ namespace NetworkTestApp_Moritz.Logic
 {
     public abstract class ServerHeader
     {
-        public const int KEY = 6;
+        public const int KEY = 5;
 	    public const int TOKEN = 10;
 	    public const int INCOMINGCALL = 15;
 	    public const int REGISTERSUCCESS = 20;
@@ -21,5 +21,6 @@ namespace NetworkTestApp_Moritz.Logic
 	    public const int REMOTEHANGUP = 30;
 	    public const int RINGING = 35;
 	    public const int CALLEEPICKUP = 40;
+        public const int ANALYSING = 45;
     }
 }
