@@ -21,5 +21,6 @@ namespace NetworkTestApp_Moritz.Logic
 	    public const int REMOTEHANGUP = 30;
 	    public const int RINGING = 35;
 	    public const int CALLEEPICKUP = 40;
+        public const int ANALYSING = 45;
     }
 }

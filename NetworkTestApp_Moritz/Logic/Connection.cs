@@ -73,7 +73,7 @@ namespace NetworkTestApp_Moritz.Logic
                     this.listen(e);
                     break;
                 case SocketAsyncOperation.Receive:
-                    if (e.Buffer.Length == 1) //interpret header
+                    if (e.Buffer.Length == 1 && info.LastOperation != ServerHeader.ERROR) //interpret header
                     {
                         int header = e.Buffer[0];
                         switch (header)
@@ -97,7 +97,7 @@ namespace NetworkTestApp_Moritz.Logic
                                 break;
                             case ServerHeader.ERROR:
                                 info.LastOperation = ServerHeader.ERROR;
-                                receiveData(344, e);
+                                receiveData(1, e);
                                 break;
                             case ServerHeader.REMOTEHANGUP:
                                 info.LastOperation = ServerHeader.REMOTEHANGUP;
@@ -110,6 +110,10 @@ namespace NetworkTestApp_Moritz.Logic
                             case ServerHeader.CALLEEPICKUP:
                                 info.LastOperation = ServerHeader.CALLEEPICKUP;
                                 this.calleePickup();
+                                break;
+                            case ServerHeader.ANALYSING:
+                                info.LastOperation = ServerHeader.ANALYSING;
+                                this.analyzing();
                                 break;
                             default:
                                 info.LastOperation = -1;
@@ -273,6 +277,19 @@ namespace NetworkTestApp_Moritz.Logic
 
         private void error(byte[] data, SocketAsyncEventArgs e)
         {
+            int error = data[0];
+            switch (error)
+            {
+                case ErrorCodes.CORRUPTEDDATA:
+                    break;
+                case ErrorCodes.LOGINFAILED:
+                    reconnect();
+                    break;
+                case ErrorCodes.CALLFAILED:
+                    break;
+                case ErrorCodes.SERVERERROR:
+                    break;
+            }
         }
 
         private void remoteHangup()
@@ -284,6 +301,10 @@ namespace NetworkTestApp_Moritz.Logic
         }
 
         private void calleePickup()
+        {
+        }
+
+        private void analyzing()
         {
         }
 
