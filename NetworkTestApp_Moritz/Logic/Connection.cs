@@ -66,7 +66,7 @@ namespace NetworkTestApp_Moritz.Logic
                     //should not happen
                     break;
                 case SocketAsyncOperation.Send:
-                    //
+                    //data sent
                     break;
                 //default:
                     //throw new Exception("Invalid operation completed");
@@ -93,19 +93,20 @@ namespace NetworkTestApp_Moritz.Logic
                                 break;
                             case ServerHeader.TOKEN:
                                 info.LastOperation = ServerHeader.TOKEN;
-                                this.tokenReceived();
+                                receiveData(344, e);
                                 break;
                             case ServerHeader.INCOMINGCALL:
                                 info.LastOperation = ServerHeader.INCOMINGCALL;
-                                this.incomingCall();
+                                
                                 break;
                             case ServerHeader.REGISTERSUCCESS:
                                 info.LastOperation = ServerHeader.REGISTERSUCCESS;
-                                this.registerSuccessful();
+                                //melden
+                                listen(e);
                                 break;
                             case ServerHeader.ERROR:
                                 info.LastOperation = ServerHeader.ERROR;
-                                this.error();
+                                
                                 break;
                             case ServerHeader.REMOTEHANGUP:
                                 info.LastOperation = ServerHeader.REMOTEHANGUP;
@@ -134,6 +135,7 @@ namespace NetworkTestApp_Moritz.Logic
                                 keyReceived(e.Buffer, e);
                                 break;
                             case ServerHeader.TOKEN:
+                                tokenReceived(e.Buffer, e);
                                 break;
                             case ServerHeader.INCOMINGCALL:
                                 break;
@@ -219,19 +221,27 @@ namespace NetworkTestApp_Moritz.Logic
             return array;
         }
 
-        private void tokenReceived()
+        private void tokenReceived(byte[] data, SocketAsyncEventArgs e)
+        {
+            byte[] tmpdata = System.Convert.FromBase64String(Encoding.UTF8.GetString(data, 0, data.Length / 2));
+            byte[] signature = System.Convert.FromBase64String(Encoding.UTF8.GetString(data, data.Length / 2, data.Length / 2));
+            tmpdata = Crypt.decrypt(tmpdata);
+            if (Crypt.verify(tmpdata, signature))
+            {
+                String sessionToken = Encoding.UTF8.GetString(tmpdata, 0, tmpdata.Length);
+                //irgendwo speichern
+            }
+        }
+
+        private void incomingCall(byte[] data, SocketAsyncEventArgs e)
         {
         }
 
-        private void incomingCall()
+        private void registerSuccessful(byte[] data, SocketAsyncEventArgs e)
         {
         }
 
-        private void registerSuccessful()
-        {
-        }
-
-        private void error()
+        private void error(byte[] data, SocketAsyncEventArgs e)
         {
         }
 
