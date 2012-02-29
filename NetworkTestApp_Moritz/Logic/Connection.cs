@@ -17,17 +17,17 @@ namespace NetworkTestApp_Moritz.Logic
     public class Connection
     {
         private Socket socket;
-        IPEndPoint endpoint; //Change to DNSEndpoint
-        SocketAsyncEventArgs sendArgs;
-        SocketAsyncEventArgs receiveArgs;
+        private IPEndPoint endpoint; //Change to DNSEndpoint
+        private SocketAsyncEventArgs sendArgs;
+        private SocketAsyncEventArgs receiveArgs;
 
         public Connection()
         {
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPAddress ip = IPAddress.Parse("192.168.178.25");
             this.endpoint = new IPEndPoint(ip, 9042);
-            SocketAsyncEventArgs sendArgs = new SocketAsyncEventArgs();
-            SocketAsyncEventArgs receiveArgs = new SocketAsyncEventArgs();
+            this.sendArgs = new SocketAsyncEventArgs();
+            this.receiveArgs = new SocketAsyncEventArgs();
             sendArgs.UserToken = new ReceiveInfo(this.socket);
             receiveArgs.UserToken = new ReceiveInfo(this.socket);
             sendArgs.Completed += new EventHandler<SocketAsyncEventArgs>(Send_Completed);
@@ -36,23 +36,6 @@ namespace NetworkTestApp_Moritz.Logic
             receiveArgs.RemoteEndPoint = this.endpoint;
             this.socket.ConnectAsync(sendArgs);
             this.socket.ConnectAsync(receiveArgs);
-        }
-
-        public Socket Socket
-        {
-            get { return this.Socket; }
-        }
-
-        public SocketAsyncEventArgs SendArgs
-        {
-            get { return this.sendArgs; }
-            set { this.sendArgs = value; }
-        }
-
-        public SocketAsyncEventArgs ReceiveArgs
-        {
-            get { return this.receiveArgs; }
-            set { this.receiveArgs = value; }
         }
 
         private void Send_Completed(object sender, SocketAsyncEventArgs e)
@@ -97,7 +80,7 @@ namespace NetworkTestApp_Moritz.Logic
                                 break;
                             case ServerHeader.INCOMINGCALL:
                                 info.LastOperation = ServerHeader.INCOMINGCALL;
-                                
+                                receiveData(344, e);
                                 break;
                             case ServerHeader.REGISTERSUCCESS:
                                 info.LastOperation = ServerHeader.REGISTERSUCCESS;
@@ -138,9 +121,10 @@ namespace NetworkTestApp_Moritz.Logic
                             case ServerHeader.TOKEN:
                                 tokenReceived(e.Buffer, e);
                                 info.LastOperation = -1;
+                                listen(e);
                                 break;
                             case ServerHeader.INCOMINGCALL:
-
+                                incomingCall(e.Buffer, e);
                                 info.LastOperation = -1;
                                 break;
                             case ServerHeader.REGISTERSUCCESS:
@@ -229,20 +213,52 @@ namespace NetworkTestApp_Moritz.Logic
             return array;
         }
 
+        private static String decryptAndVerify(byte[] data)
+        {
+            String message = String.Empty;
+
+            UTF8Encoding utf8 = new UTF8Encoding();
+
+            String datatext = utf8.GetString(data, 0, data.Length / 2);
+            String sigtext = utf8.GetString(data, data.Length / 2, data.Length / 2);
+
+            if (!(String.IsNullOrWhiteSpace(datatext) || String.IsNullOrWhiteSpace(sigtext)))
+            {
+                byte[] tmpdata = System.Convert.FromBase64String(datatext);
+                byte[] signature = System.Convert.FromBase64String(sigtext);
+
+
+                tmpdata = Crypt.decrypt(tmpdata);
+                if (Crypt.verify(tmpdata, signature))
+                {
+                    message = utf8.GetString(tmpdata, 0, tmpdata.Length);
+
+                }
+                else
+                {
+                    //corrupted Data
+                }
+            }
+            else
+            {
+                //String null
+            }
+            return message;
+        }
+
         private void tokenReceived(byte[] data, SocketAsyncEventArgs e)
         {
-            byte[] tmpdata = System.Convert.FromBase64String(Encoding.UTF8.GetString(data, 0, data.Length / 2));
-            byte[] signature = System.Convert.FromBase64String(Encoding.UTF8.GetString(data, data.Length / 2, data.Length / 2));
-            tmpdata = Crypt.decrypt(tmpdata);
-            if (Crypt.verify(tmpdata, signature))
-            {
-                String sessionToken = Encoding.UTF8.GetString(tmpdata, 0, tmpdata.Length);
-                //irgendwo speichern
-            }
+           
+            String sessionToken = decryptAndVerify(data);
+          
         }
 
         private void incomingCall(byte[] data, SocketAsyncEventArgs e)
         {
+            
+            String from = decryptAndVerify(data);
+                //do something
+            
         }
 
         private void registerSuccessful(byte[] data, SocketAsyncEventArgs e)
@@ -262,6 +278,38 @@ namespace NetworkTestApp_Moritz.Logic
         }
 
         private void calleePickup()
+        {
+        }
+
+        public void logout()
+        {
+            byte[] header = new byte[1];
+            header[0] = ClientHeader.LOGOUT;
+            this.sendArgs.SetBuffer(header, 0, header.Length);
+            this.socket.SendAsync(this.sendArgs);
+        }
+
+        public void KeepAlive()
+        {
+        }
+
+        public void pickupCall()
+        {
+        }
+
+        public void recectCall()
+        {
+        }
+
+        public void hangup()
+        {
+        }
+
+        public void call(String uri)
+        {
+        }
+
+        public void reconnect()
         {
         }
     }
