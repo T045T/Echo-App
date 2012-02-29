@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using Microsoft.Xna.Framework;
 using g711audio;
 using System.Collections.ObjectModel;
+using System.Net.Sockets;
 
 namespace Echo.ViewModels
 {
@@ -46,9 +47,38 @@ namespace Echo.ViewModels
                 NotifyOfPropertyChange("G711Bytes");
             }
         }
+
+        private string _IP_Address;
+        public string IP_Address
+        {
+            get { return _IP_Address; }
+            set
+            {
+                if (value != _IP_Address)
+                {
+                    _IP_Address = value;
+                    NotifyOfPropertyChange("IP_Address");
+                }
+            }
+        }
+
+        private int _Port;
+        public int Port
+        {
+            get { return _Port; }
+            set
+            {
+                if (value != _Port)
+                {
+                    _Port = value;
+                    NotifyOfPropertyChange("Port");
+                }
+            }
+        }
         #endregion
         private bool _Sending;
 
+        Socket mySocket;
         Microphone microphone;
         byte[] buffer;
         MemoryStream stream;
@@ -85,7 +115,47 @@ namespace Echo.ViewModels
             dt.Start();
         }
 
-        public void ConnectSocket() {
+        public void ConnectSocket()
+        {
+            mySocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs()
+            {
+                RemoteEndPoint = new IPEndPoint(IPAddress.Parse(IP_Address), Port)
+            };
+            socketEventArg.Completed += OnConnectCompleted;
+        }
+        void OnConnectCompleted(object sender, SocketAsyncEventArgs e)
+        {
+            if (e.SocketError == SocketError.Success)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Connected successfully.");
+                });
+                //Deployment.Current.Dispatcher.BeginInvoke(new Enabledelegate(EnableControl), true);
+
+            }
+            else
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Connection Error: " + e.SocketError.ToString());
+                }); 
+                //Deployment.Current.Dispatcher.BeginInvoke(new Enabledelegate(EnableControl), false);
+            }
+
+        }
+
+        public void SendBytes(byte[] buffer) {
+            if (mySocket != null) {
+                SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs()
+                {
+                    RemoteEndPoint = new IPEndPoint(IPAddress.Parse(IP_Address), Port)
+                };
+                socketEventArg.SetBuffer(buffer, 0, buffer.Length);
+                mySocket.SendAsync(socketEventArg);
+            }
+        }
 
 
 
@@ -95,7 +165,7 @@ namespace Echo.ViewModels
             stream.Write(buffer, 0, buffer.Length);
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                updateView(buffer);
+                SendBytes(buffer);
             });
         }
 
@@ -117,7 +187,7 @@ namespace Echo.ViewModels
             _Sending = true;
             NotifyOfPropertyChange("CanStartSending");
             NotifyOfPropertyChange("CanStopSending");
-            microphone.BufferDuration = TimeSpan.FromMilliseconds(1000);
+            microphone.BufferDuration = TimeSpan.FromMilliseconds(100);
             buffer = new byte[microphone.GetSampleSizeInBytes(microphone.BufferDuration)];
             microphone.Start();
         }

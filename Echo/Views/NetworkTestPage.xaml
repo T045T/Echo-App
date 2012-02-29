@@ -44,7 +44,7 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <RadioButton Grid.Column="0"
                          Grid.Row="0"
@@ -65,7 +65,21 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Content="Stop"/>
-            <TextBlock Text="Input Byte:"
+            
+            <TextBox x:Name="IP_Address"
+                     Grid.Row="2"
+                     Grid.Column="0"
+                     Grid.ColumnSpan="2" />
+            <TextBlock Text="Port"
+                       Style="{StaticResource PhoneTextLargeStyle}"
+                       Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Grid.Row="3" />
+            <TextBox x:Name="Port"
+                     Grid.Column="1"
+                     Grid.Row="3" />
+            <!--<TextBlock Text="Input Byte:"
                        Style="{StaticResource PhoneTextLargeStyle}"
                        Grid.Column="0"
                        Grid.Row="2"/>
@@ -82,7 +96,7 @@
                      Margin="12"
                      Grid.Column="1"
                      Grid.Row="3"
-                     ItemTemplate="{StaticResource ByteHolderTemplate}" />
+                     ItemTemplate="{StaticResource ByteHolderTemplate}" />-->
         </Grid>
     </Grid>
  
