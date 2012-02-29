@@ -40,6 +40,7 @@ namespace NetworkTestApp_Moritz.Logic
 
         private void Send_Completed(object sender, SocketAsyncEventArgs e)
         {
+            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
             switch (e.LastOperation)
             {
                 case SocketAsyncOperation.Connect:
@@ -49,7 +50,14 @@ namespace NetworkTestApp_Moritz.Logic
                     //should not happen
                     break;
                 case SocketAsyncOperation.Send:
-                    //data sent
+                    switch (info.LastOperation)
+                    {
+                        case ClientHeader.RECONNECT:
+                            sendUserData(e);
+                            break;
+                        
+                    }
+                    info.LastOperation = -1;
                     break;
                 //default:
                     //throw new Exception("Invalid operation completed");
@@ -84,12 +92,12 @@ namespace NetworkTestApp_Moritz.Logic
                                 break;
                             case ServerHeader.REGISTERSUCCESS:
                                 info.LastOperation = ServerHeader.REGISTERSUCCESS;
-                                //melden
+                                registerSuccessful();
                                 listen(e);
                                 break;
                             case ServerHeader.ERROR:
                                 info.LastOperation = ServerHeader.ERROR;
-                                
+                                receiveData(344, e);
                                 break;
                             case ServerHeader.REMOTEHANGUP:
                                 info.LastOperation = ServerHeader.REMOTEHANGUP;
@@ -116,26 +124,19 @@ namespace NetworkTestApp_Moritz.Logic
                         {
                             case ServerHeader.KEY:
                                 keyReceived(e.Buffer, e);
-                                info.LastOperation = -1;
                                 break;
                             case ServerHeader.TOKEN:
                                 tokenReceived(e.Buffer, e);
-                                info.LastOperation = -1;
                                 listen(e);
                                 break;
                             case ServerHeader.INCOMINGCALL:
                                 incomingCall(e.Buffer, e);
-                                info.LastOperation = -1;
-                                break;
-                            case ServerHeader.REGISTERSUCCESS:
-
-                                info.LastOperation = -1;
                                 break;
                             case ServerHeader.ERROR:
-
-                                info.LastOperation = -1;
+                                error(e.Buffer, e);
                                 break;                            
                         }
+                        info.LastOperation = -1;
                     }
                     break;
                 case SocketAsyncOperation.Send:
@@ -266,7 +267,7 @@ namespace NetworkTestApp_Moritz.Logic
             
         }
 
-        private void registerSuccessful(byte[] data, SocketAsyncEventArgs e)
+        private void registerSuccessful()
         {
         }
 
@@ -290,35 +291,69 @@ namespace NetworkTestApp_Moritz.Logic
         {
             byte[] header = new byte[1];
             header[0] = ClientHeader.LOGOUT;
+            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
+            info.LastOperation = ClientHeader.LOGOUT;
             this.sendArgs.SetBuffer(header, 0, header.Length);
             this.socket.SendAsync(this.sendArgs);
         }
 
         public void KeepAlive()
         {
+            byte[] header = new byte[1];
+            header[0] = ClientHeader.KEEPALIVE;
+            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
+            info.LastOperation = ClientHeader.KEEPALIVE;
+            this.sendArgs.SetBuffer(header, 0, header.Length);
+            this.socket.SendAsync(sendArgs);
         }
 
         public void pickupCall()
         {
+            byte[] header = new byte[1];
+            header[0] = ClientHeader.PICKUPCALL;
+            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
+            info.LastOperation = ClientHeader.PICKUPCALL;
+            this.sendArgs.SetBuffer(header, 0, header.Length);
+            this.socket.SendAsync(sendArgs);
         }
 
-        public void recectCall()
+        public void rejectCall()
         {
+            byte[] header = new byte[1];
+            header[0] = ClientHeader.REJECTCALL;
+            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
+            info.LastOperation = ClientHeader.REJECTCALL;
+            this.sendArgs.SetBuffer(header, 0, header.Length);
+            this.socket.SendAsync(sendArgs);
         }
 
         public void hangup()
         {
+            byte[] header = new byte[1];
+            header[0] = ClientHeader.HANGUP;
+            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
+            info.LastOperation = ClientHeader.HANGUP;
+            this.sendArgs.SetBuffer(header, 0, header.Length);
+            this.socket.SendAsync(sendArgs);
         }
 
         public void call(String uri)
         {
             byte[] data = Encoding.UTF8.GetBytes(uri);
             byte[] netData = encryptNetData(data);
+            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
+            info.LastOperation = ClientHeader.INITIATECALL;
             sendData(ClientHeader.INITIATECALL, netData, sendArgs);
         }
 
         public void reconnect()
         {
+            byte[] header = new byte[1];
+            header[0] = ClientHeader.RECONNECT;
+            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
+            info.LastOperation = ClientHeader.RECONNECT;
+            this.sendArgs.SetBuffer(header, 0, header.Length);
+            this.socket.SendAsync(sendArgs);
         }
     }
 
