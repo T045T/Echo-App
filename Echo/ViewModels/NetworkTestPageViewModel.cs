@@ -165,20 +165,29 @@ namespace Echo.ViewModels
             stream.Write(buffer, 0, buffer.Length);
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                SendBytes(buffer);
+                SendBytes(ALawEncoder.ALawEncode(buffer));
             });
         }
 
         public void updateView(byte[] buffer)
         {
-            DateTime tmp = DateTime.Now;
-            byte[] tmpBytes = ALawEncoder.ALawEncode(buffer);
-            TimeSpan time = DateTime.Now - tmp;
+            if (ALAW)
+            {
+                byte[] tmpBytes = ALawEncoder.ALawEncode(buffer);
+            }
+            else if (ULAW)
+            {
+                byte[] tmpBytes = MuLawEncoder.MuLawEncode(buffer);
+            }
+            else
+            {
+                return;
+            }
             
 
-            InputBytes.Add(new ByteHolder(buffer));
+            //InputBytes.Add(new ByteHolder(buffer));
             //NotifyOfPropertyChange("InputBytes");
-            G711Bytes.Add(new ByteHolder(ALawEncoder.ALawEncode(buffer)));
+            //G711Bytes.Add(new ByteHolder(ALawEncoder.ALawEncode(buffer)));
             //NotifyOfPropertyChange("G711Bytes");
         }
 
