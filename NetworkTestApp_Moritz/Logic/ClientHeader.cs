@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace NetworkTestApp.Logic
+namespace NetworkTestApp_Moritz.Logic
 {
     public abstract class ClientHeader
     {

@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3455E32E-E2FC-407E-BBCB-C30CABCEFB5C}</ProjectGuid>
+    <ProjectGuid>{AC28C5E8-A6E2-4427-B5FC-183B73BDCF23}</ProjectGuid>
     <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -61,11 +61,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="g711audio\ALawDecoder.cs" />
-    <Compile Include="g711audio\ALawEncoder.cs" />
-    <Compile Include="g711audio\MuLawDecoder.cs" />
-    <Compile Include="g711audio\MuLawEncoder.cs" />
-    <Compile Include="g711audio\Program.cs" />
     <Compile Include="Logic\ClientHeader.cs" />
     <Compile Include="Logic\Connection.cs" />
     <Compile Include="Logic\Crypt.cs" />
