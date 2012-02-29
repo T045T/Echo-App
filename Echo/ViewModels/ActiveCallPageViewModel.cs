@@ -144,9 +144,9 @@ namespace Echo.ViewModels
             CallInProgress = true;
         }
 
-        public bool CanEndCall()
+        public bool CanEndCall
         {
-            return CallInProgress;
+            get { return CallInProgress; }
         }
 
         public void EndCall()

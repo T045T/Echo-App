@@ -11,12 +11,11 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 
-namespace NetworkTestApp
+namespace Echo.Views
 {
-    public partial class MainPage : PhoneApplicationPage
+    public partial class NetworkTestPage : PhoneApplicationPage
     {
-        // Konstruktor
-        public MainPage()
+        public NetworkTestPage()
         {
             InitializeComponent();
         }
