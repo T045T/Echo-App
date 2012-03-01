@@ -12,5 +12,8 @@ namespace Echo.Logic
 	    public const int RINGING = 35;
 	    public const int CALLEEPICKUP = 40;
         public const int ANALYSING = 45;
+        public const int VOICEPORT = 50;
+        public const int TEXT = 55;
+        public const int MORETEXT = 56;
     }
 }
