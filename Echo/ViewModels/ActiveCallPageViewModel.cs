@@ -13,6 +13,7 @@ using Echo.Model;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Collections.Generic;
+using Echo.Logic;
 
 namespace Echo.ViewModels
 {
@@ -20,7 +21,10 @@ namespace Echo.ViewModels
     {
 
         private UDCListModel udc;
+        private Connection con;
+        private SettingsModel setModel;
         private INavigationService navService;
+        private UDPAudioSink UDPSink;
 
         #region Properties
         public int calleeID { get; set; }
@@ -39,6 +43,8 @@ namespace Echo.ViewModels
                 }
             }
         }
+
+        public Connection Con { get { return con; } }
 
         private UserModel _Callee;
         public UserModel Callee
@@ -93,31 +99,22 @@ namespace Echo.ViewModels
             }
         }
 
-        private bool _ServerAnalyzing;
-        public bool ServerAnalyzing
-        {
-            get { return _ServerAnalyzing; }
-            set
-            {
-                if (value != _ServerAnalyzing)
-                {
-                    _ServerAnalyzing = value;
-                    NotifyOfPropertyChange("ServerAnalyzing");
-                }
-            }
-        }
         #endregion
 
-        public ActiveCallPageViewModel(INavigationService navService, UDCListModel udc)
+        public ActiveCallPageViewModel(INavigationService navService, UDCListModel udc, Connection con, SettingsModel setModel)
         {
+            this.setModel = setModel;
             this.udc = udc;
             this.navService = navService;
+            this.con = con;
             CallInProgress = false;
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
+            con.DataReceived += new DataReceivedEventHandler(con_DataReceived);
+            con.AcquiredPort += new AcquiredPortEventHandler(con_AcquiredPort);
             Callee = udc.GetUser(calleeID);
             if (Callee == null) return;
             var previousLogs = from CallLogModel clm in udc.DataContext.CallLogTable where clm.CalleeID == this.calleeID orderby clm.StartTime descending select clm;
@@ -129,19 +126,40 @@ namespace Echo.ViewModels
             CurrentCallLog = new CallLogModel(Callee.ID);
             CallStart = CurrentCallLog.StartTime;
 
-            CurrentCallLog.addEntry("Helvetica salvia keytar, tattooed lo-fi eiusmod freegan DIY bespoke sed pop-up mlkshk small batch four loko brunch.");
+            //CurrentCallLog.addEntry("Helvetica salvia keytar, tattooed lo-fi eiusmod freegan DIY bespoke sed pop-up mlkshk small batch four loko brunch.");
             Callee.CallLogs.Add(CurrentCallLog);
             udc.SubmitChanges();
             if (isIncoming)
             {
                 // Answer call
+                con.pickupCall();
             }
             else
             {
+                con.call(Callee.UserID);
+                con_AcquiredPort(con, 1337);
                 // start call
             }
 
             CallInProgress = true;
+        }
+
+        void con_AcquiredPort(object sender, int e)
+        {
+            if (UDPSink == null)
+            {
+                this.UDPSink = new UDPAudioSink(true);
+            }
+            else
+            {
+                this.UDPSink.StopSending();
+            }
+            this.UDPSink.StartSending(setModel.getValueOrDefault<string>(setModel.EchoServerSettingKeyName, setModel.EchoServerDefault), e);
+        }
+
+        void con_DataReceived(object sender, string e)
+        {
+            CurrentCallLog.addEntry(e);
         }
 
         public bool CanEndCall
@@ -152,16 +170,26 @@ namespace Echo.ViewModels
         public void EndCall()
         {
             // Actually end the call
+            con.hangup();
+            UDPSink.StopSending();
             CallInProgress = false;
             navService.GoBack();
         }
 
         public override void CanClose(Action<bool> callback)
         {
-            udc.SubmitChanges();
-            udc.LoadListsFromDatabase();
-            CallInProgress = false;
-            callback(true);
+            if (!CallInProgress)
+            {
+                udc.SubmitChanges();
+                udc.LoadListsFromDatabase();
+                CallInProgress = false;
+                UDPSink.StopSending();
+                callback(true);
+            }
+            else
+            {
+                callback(false);
+            }
         }
     }
 }

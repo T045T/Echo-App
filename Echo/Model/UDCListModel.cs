@@ -434,11 +434,17 @@ namespace Echo.Model
 
         private string findInitial(string input)
         {
-
-            string initial = input.Substring(0, 1);
-            if (Regex.Match(initial, "[a-zA-Z]").Success)
+            if (input.Length > 0)
             {
-                return initial;
+                string initial = input.Substring(0, 1);
+                if (Regex.Match(initial, "[a-zA-Z]").Success)
+                {
+                    return initial;
+                }
+                else
+                {
+                    return "#";
+                }
             }
             else
             {

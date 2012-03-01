@@ -304,7 +304,7 @@
                     </ListBoxItem>
                 </ItemsControl>
                 <Grid Margin="24"
-                              Visibility="{Binding Path=ServerAnalyzing, Mode=OneWay, Converter={StaticResource boolConv}}">
+                              Visibility="{Binding Path=Con.Analyzing, Mode=OneWay, Converter={StaticResource boolConv}}">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />

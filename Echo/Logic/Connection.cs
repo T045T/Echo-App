@@ -14,7 +14,8 @@ using System.Threading;
 
 namespace Echo.Logic
 {
-    public delegate void DataReceivedEventHandler(object sender, EventArgs e);
+    public delegate void DataReceivedEventHandler(object sender, string e);
+    public delegate void AcquiredPortEventHandler(object sender, int e);
 
     public class Connection : Screen
     {
@@ -22,8 +23,9 @@ namespace Echo.Logic
         private SettingsModel setModel;
         private UDCListModel udc;
 
-        private string sessionToken; 
+        private string sessionToken;
         private Socket socket;
+        public Socket Socket { get { return socket; } }
         private IPEndPoint endpoint; //Change to DNSEndpoint
         private DnsEndPoint dnsEndpoint;
         private SocketAsyncEventArgs sendArgs;
@@ -31,7 +33,7 @@ namespace Echo.Logic
 
         private IPAddress ip;
         private string dns;
-        private int port;
+        private int voicePort;
 
         private BackgroundWorker keepaliveWorker;
 
@@ -48,19 +50,43 @@ namespace Echo.Logic
                 }
             }
         }
+
+        private bool _Analyzing;
+        public bool Analyzing
+        {
+            get { return _Analyzing; }
+            set
+            {
+                if (value != _Analyzing)
+                {
+                    _Analyzing = value;
+                    NotifyOfPropertyChange("Analyzing");
+                }
+            }
+        }
         private bool SendKeepAlive;
         public event DataReceivedEventHandler DataReceived;
+        public event AcquiredPortEventHandler AcquiredPort;
 
-        protected virtual void OnDataReceived(EventArgs e)
+        protected virtual void OnDataReceived(string s)
         {
             if (DataReceived != null)
             {
-                DataReceived(this, e);
+                DataReceived(this, s);
+            }
+        }
+
+        protected virtual void OnAcquiredPort(int i)
+        {
+            if (AcquiredPort != null)
+            {
+                AcquiredPort(this, i);
             }
         }
 
         public Connection(INavigationService navService, SettingsModel setModel, UDCListModel udc)
         {
+            Crypt.init();
             this.navService = navService;
             this.setModel = setModel;
             this.udc = udc;
@@ -69,11 +95,12 @@ namespace Echo.Logic
             keepaliveWorker.WorkerReportsProgress = false;
             keepaliveWorker.DoWork += new DoWorkEventHandler(keepaliveWorker_DoWork);
 
+            Analyzing = false;
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             this.sendArgs = new SocketAsyncEventArgs();
             this.receiveArgs = new SocketAsyncEventArgs();
-            sendArgs.UserToken = new ReceiveInfo(this.socket);
-            receiveArgs.UserToken = new ReceiveInfo(this.socket);
+            sendArgs.UserToken = new ReceiveInfo(this);
+            receiveArgs.UserToken = new ReceiveInfo(this);
             sendArgs.Completed += new EventHandler<SocketAsyncEventArgs>(Send_Completed);
             receiveArgs.Completed += new EventHandler<SocketAsyncEventArgs>(Receive_Completed);
 
@@ -97,6 +124,7 @@ namespace Echo.Logic
             if (this.socket.Connected)
             {
                 this.socket.Close();
+                this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             }
 
             ip = null;
@@ -122,7 +150,7 @@ namespace Echo.Logic
             }
 
             this.socket.ConnectAsync(sendArgs);
-            this.socket.ConnectAsync(receiveArgs);
+            //this.socket.ConnectAsync(receiveArgs);
         }
 
 
@@ -135,6 +163,7 @@ namespace Echo.Logic
                 {
                     case SocketAsyncOperation.Connect:
                         this.login(e);
+                        listen(receiveArgs);
                         break;
                     case SocketAsyncOperation.Receive:
                         //should not happen
@@ -208,6 +237,7 @@ namespace Echo.Logic
                                 case ServerHeader.ANALYSING:
                                     info.LastOperation = ServerHeader.ANALYSING;
                                     this.analyzing();
+                                    listen(receiveArgs);
                                     break;
                                 case ServerHeader.VOICEPORT:
                                     info.LastOperation = ServerHeader.VOICEPORT;
@@ -227,45 +257,45 @@ namespace Echo.Logic
                         {
                             switch (info.LastOperation)
                             {
-                            case ServerHeader.KEY:
-                                keyReceived(e.Buffer, e);
-                                break;
-                            case ServerHeader.TOKEN:
-                                tokenReceived(e.Buffer, e);
-                                listen(e);
-                                break;
-                            case ServerHeader.INCOMINGCALL:
-                                incomingCall(e.Buffer, e);
-                                listen(e);
-                                break;
-                            case ServerHeader.ERROR:
-                                error(e.Buffer, e);
-                                listen(e);
-                                break;
-                            case ServerHeader.VOICEPORT:
-                                voicePortReceived(e.Buffer);
-                                listen(e);
-                                break;
-                            case ServerHeader.TEXT:
-                                textLengthReceived(e.Buffer, e);
-                                info.LastOperation = ServerHeader.MORETEXT;
-                                break;
-                            case ServerHeader.MORETEXT:
-                                moreTextReceived(e.Buffer);
-                                listen(e);
+                                case ServerHeader.KEY:
+                                    keyReceived(e.Buffer, e);
+                                    break;
+                                case ServerHeader.TOKEN:
+                                    tokenReceived(e.Buffer, e);
+                                    listen(e);
+                                    break;
+                                case ServerHeader.INCOMINGCALL:
+                                    incomingCall(e.Buffer, e);
+                                    listen(e);
+                                    break;
+                                case ServerHeader.ERROR:
+                                    error(e.Buffer, e);
+                                    listen(e);
+                                    break;
+                                case ServerHeader.VOICEPORT:
+                                    voicePortReceived(e.Buffer);
+                                    listen(e);
+                                    break;
+                                case ServerHeader.TEXT:
+                                    textLengthReceived(e.Buffer, e);
+                                    info.LastOperation = ServerHeader.MORETEXT;
+                                    break;
+                                case ServerHeader.MORETEXT:
+                                    moreTextReceived(e.Buffer);
+                                    listen(e);
+                                    info.LastOperation = -1;
+                                    break;
+                            }
+                            if (info.LastOperation != ServerHeader.MORETEXT)
+                            {
                                 info.LastOperation = -1;
-                                break;
+                            }
                         }
-                        if (info.LastOperation != ServerHeader.MORETEXT)
-                        {
-                            info.LastOperation = -1;
-                        }
-                    }
-                    break;
-                case SocketAsyncOperation.Send:
-                    this.listen(e);
-                    break;
-                //default:
+                        break;
+                    case SocketAsyncOperation.Send:
+                        this.listen(e);
+                        break;
+                    //default:
                     //throw new Exception("Invalid operation completed");
                 }
             }
@@ -292,7 +322,7 @@ namespace Echo.Logic
         {
             byte[] buffer = new byte[data.Length + 1];
             buffer[0] = header;
-            
+
             for (int i = 1; i <= data.Length; i++)
             {
                 buffer[i] = data[i - 1];
@@ -311,7 +341,7 @@ namespace Echo.Logic
             info.Sock.ReceiveAsync(e);
         }
 
-        private void keyReceived(byte[] data, SocketAsyncEventArgs e) 
+        private void keyReceived(byte[] data, SocketAsyncEventArgs e)
         {
             String xmlKey = Encoding.UTF8.GetString(data, 0, data.Length);
             Crypt.setServerPublicKey(xmlKey);
@@ -320,20 +350,29 @@ namespace Echo.Logic
 
         private void voicePortReceived(byte[] data)
         {
-            String port = Encoding.UTF8.GetString(data);
+            String port = Encoding.UTF8.GetString(data, 0, data.Length);
+            if (!int.TryParse(port, out voicePort))
+            {
+                voicePort = -1;
+            }
+            else
+            {
+                OnAcquiredPort(voicePort);
+            }
         }
 
         private void textLengthReceived(byte[] data, SocketAsyncEventArgs e)
         {
-
-            String textLength = Encoding.UTF8.GetString(data);
-            int length = Convert.ToInt32(textLength);
+            String textLength = Encoding.UTF8.GetString(data, 0, data.Length);
+            int length = int.Parse(textLength);
             receiveData(length, e);
         }
 
         private void moreTextReceived(byte[] data)
         {
-            String text = Encoding.UTF8.GetString(data);
+            Analyzing = false;
+            String text = Encoding.UTF8.GetString(data, 0, data.Length);
+            OnDataReceived(text);
             //do something
         }
 
@@ -345,7 +384,7 @@ namespace Echo.Logic
             string sipPort = setModel.getValueOrDefault<int>(setModel.PortSettingKeyName, setModel.PortDefault).ToString();
 
             String userdata = username + ";" + sipServer + ";" + password + ";" + sipPort; //"1467440;sipgate.de;DDAFTG;5060";
-            
+
             byte[] data = Encoding.UTF8.GetBytes(userdata);
             byte[] netData = encryptNetData(data);
             sendData(ClientHeader.USERDATA, netData, e);
@@ -403,9 +442,9 @@ namespace Echo.Logic
 
         private void tokenReceived(byte[] data, SocketAsyncEventArgs e)
         {
-           
+
             sessionToken = decryptAndVerify(data);
-          
+
         }
 
         private void incomingCall(byte[] data, SocketAsyncEventArgs e)
@@ -413,19 +452,23 @@ namespace Echo.Logic
             UserModel caller;
             string fromID = decryptAndVerify(data);
             var userMatch = from UserModel u in udc.DataContext.UserTable where u.UserID.Equals(fromID) select u;
-            if (userMatch.Any()) {
+            if (userMatch.Any())
+            {
                 caller = userMatch.First();
-            } else {
-                caller = new UserModel(fromID, "Unknown", "", "");
+            }
+            else
+            {
+                caller = new UserModel(fromID, "Unknown", "Unknown", "");
                 udc.addUser(caller);
                 udc.SubmitChanges();
             }
 
-            Deployment.Current.Dispatcher.BeginInvoke(() => {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
                 Coroutine.BeginExecute(IncomingCall(caller.ID));
             });
-                //do something
-            
+            //do something
+
         }
 
         private ShowDialog<IncomingCallDialogViewModel> callDialog;
@@ -494,6 +537,7 @@ namespace Echo.Logic
 
         private void analyzing()
         {
+            Analyzing = true;
         }
 
         public void logout()
@@ -570,16 +614,16 @@ namespace Echo.Logic
 
     public class ReceiveInfo
     {
-        private Socket sock;
+        private Connection con;
         private int lastOperation;
-        public ReceiveInfo(Socket sock)
+        public ReceiveInfo(Connection con)
         {
-            this.sock = sock;
             this.lastOperation = -1;
+            this.con = con;
         }
         public Socket Sock
         {
-            get { return this.sock; }
+            get { return con.Socket; }
         }
         public int LastOperation
         {
