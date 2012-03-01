@@ -48,7 +48,7 @@ namespace Echo.Logic
                 }
             }
         }
-
+        private bool SendKeepAlive;
         public event DataReceivedEventHandler DataReceived;
 
         protected virtual void OnDataReceived(EventArgs e)
@@ -82,9 +82,12 @@ namespace Echo.Logic
 
         void keepaliveWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => KeepAlive());
-            // keepalives every 20 secs
-            Thread.Sleep(20000);
+            while (SendKeepAlive)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => KeepAlive());
+                // keepalives every 20 secs
+                Thread.Sleep(20000);
+            }
         }
 
         public void Connect()
@@ -125,115 +128,121 @@ namespace Echo.Logic
 
         private void Send_Completed(object sender, SocketAsyncEventArgs e)
         {
-            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
-            switch (e.LastOperation)
+            if (e.SocketError == SocketError.Success)
             {
-                case SocketAsyncOperation.Connect:
-                    this.login(e);
-                    break;
-                case SocketAsyncOperation.Receive:
-                    //should not happen
-                    break;
-                case SocketAsyncOperation.Send:
-                    switch (info.LastOperation)
-                    {
-                        case ClientHeader.RECONNECT:
-                            sendUserData(e);
-                            break;
-                        
-                    }
-                    info.LastOperation = -1;
-                    break;
-                //default:
+                ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
+                switch (e.LastOperation)
+                {
+                    case SocketAsyncOperation.Connect:
+                        this.login(e);
+                        break;
+                    case SocketAsyncOperation.Receive:
+                        //should not happen
+                        break;
+                    case SocketAsyncOperation.Send:
+                        switch (info.LastOperation)
+                        {
+                            case ClientHeader.RECONNECT:
+                                sendUserData(e);
+                                break;
+
+                        }
+                        info.LastOperation = -1;
+                        break;
+                    //default:
                     //throw new Exception("Invalid operation completed");
-            } 
+                }
+            }
         }
 
         private void Receive_Completed(object sender, SocketAsyncEventArgs e)
         {
-            ReceiveInfo info = e.UserToken as ReceiveInfo;
-            switch (e.LastOperation)
+            if (e.SocketError == SocketError.Success)
             {
-                case SocketAsyncOperation.Connect:
-                    this.listen(e);
-                    break;
-                case SocketAsyncOperation.Receive:
-                    if (e.Buffer.Length == 1 && info.LastOperation != ServerHeader.ERROR) //interpret header
-                    {
-                        int header = e.Buffer[0];
-                        switch (header)
+                ReceiveInfo info = e.UserToken as ReceiveInfo;
+                switch (e.LastOperation)
+                {
+                    case SocketAsyncOperation.Connect:
+                        this.listen(e);
+                        break;
+                    case SocketAsyncOperation.Receive:
+                        if (e.Buffer.Length == 1 && info.LastOperation != ServerHeader.ERROR) //interpret header
                         {
-                            case ServerHeader.KEY:
-                                info.LastOperation = ServerHeader.KEY;
-                                receiveData(297, e);
-                                break;
-                            case ServerHeader.TOKEN:
-                                info.LastOperation = ServerHeader.TOKEN;
-                                receiveData(344, e);
-                                break;
-                            case ServerHeader.INCOMINGCALL:
-                                info.LastOperation = ServerHeader.INCOMINGCALL;
-                                receiveData(344, e);
-                                break;
-                            case ServerHeader.REGISTERSUCCESS:
-                                info.LastOperation = ServerHeader.REGISTERSUCCESS;
-                                registerSuccessful();
-                                listen(e);
-                                break;
-                            case ServerHeader.ERROR:
-                                info.LastOperation = ServerHeader.ERROR;
-                                receiveData(1, e);
-                                break;
-                            case ServerHeader.REMOTEHANGUP:
-                                info.LastOperation = ServerHeader.REMOTEHANGUP;
-                                this.remoteHangup();
-                                break;
-                            case ServerHeader.RINGING:
-                                info.LastOperation = ServerHeader.RINGING;
-                                this.ringing();
-                                break;
-                            case ServerHeader.CALLEEPICKUP:
-                                info.LastOperation = ServerHeader.CALLEEPICKUP;
-                                this.calleePickup();
-                                break;
-                            case ServerHeader.ANALYSING:
-                                info.LastOperation = ServerHeader.ANALYSING;
-                                this.analyzing();
-                                break;
-                            default:
-                                info.LastOperation = -1;
-                                this.listen(e);
-                                break;
+                            int header = e.Buffer[0];
+                            switch (header)
+                            {
+                                case ServerHeader.KEY:
+                                    info.LastOperation = ServerHeader.KEY;
+                                    receiveData(297, e);
+                                    break;
+                                case ServerHeader.TOKEN:
+                                    info.LastOperation = ServerHeader.TOKEN;
+                                    receiveData(344, e);
+                                    break;
+                                case ServerHeader.INCOMINGCALL:
+                                    info.LastOperation = ServerHeader.INCOMINGCALL;
+                                    receiveData(344, e);
+                                    break;
+                                case ServerHeader.REGISTERSUCCESS:
+                                    info.LastOperation = ServerHeader.REGISTERSUCCESS;
+                                    registerSuccessful();
+                                    listen(e);
+                                    break;
+                                case ServerHeader.ERROR:
+                                    info.LastOperation = ServerHeader.ERROR;
+                                    receiveData(1, e);
+                                    break;
+                                case ServerHeader.REMOTEHANGUP:
+                                    info.LastOperation = ServerHeader.REMOTEHANGUP;
+                                    this.remoteHangup();
+                                    break;
+                                case ServerHeader.RINGING:
+                                    info.LastOperation = ServerHeader.RINGING;
+                                    this.ringing();
+                                    break;
+                                case ServerHeader.CALLEEPICKUP:
+                                    info.LastOperation = ServerHeader.CALLEEPICKUP;
+                                    this.calleePickup();
+                                    break;
+                                case ServerHeader.ANALYSING:
+                                    info.LastOperation = ServerHeader.ANALYSING;
+                                    this.analyzing();
+                                    break;
+                                default:
+                                    info.LastOperation = -1;
+                                    this.listen(e);
+                                    break;
+                            }
+                            break;
+                        }
+                        else //interpret data
+                        {
+                            switch (info.LastOperation)
+                            {
+                                case ServerHeader.KEY:
+                                    keyReceived(e.Buffer, e);
+                                    break;
+                                case ServerHeader.TOKEN:
+                                    tokenReceived(e.Buffer, e);
+                                    listen(e);
+                                    break;
+                                case ServerHeader.INCOMINGCALL:
+                                    incomingCall(e.Buffer, e);
+                                    break;
+                                case ServerHeader.ERROR:
+                                    error(e.Buffer, e);
+                                    break;
+                            }
+                            info.LastOperation = -1;
                         }
                         break;
-                    }
-                    else //interpret data
-                    {             
-                        switch (info.LastOperation)
-                        {
-                            case ServerHeader.KEY:
-                                keyReceived(e.Buffer, e);
-                                break;
-                            case ServerHeader.TOKEN:
-                                tokenReceived(e.Buffer, e);
-                                listen(e);
-                                break;
-                            case ServerHeader.INCOMINGCALL:
-                                incomingCall(e.Buffer, e);
-                                break;
-                            case ServerHeader.ERROR:
-                                error(e.Buffer, e);
-                                break;                            
-                        }
-                        info.LastOperation = -1;
-                    }
-                    break;
-                case SocketAsyncOperation.Send:
-                    this.listen(e);
-                    break;
-                //default:
+                    case SocketAsyncOperation.Send:
+                        this.listen(e);
+                        break;
+                    //default:
                     //throw new Exception("Invalid operation completed");
-            } 
+                }
+            }
         }
 
         private void listen(SocketAsyncEventArgs e)
@@ -395,6 +404,8 @@ namespace Echo.Logic
 
         private void registerSuccessful()
         {
+            SendKeepAlive = true;
+            keepaliveWorker.RunWorkerAsync();
         }
 
         private void error(byte[] data, SocketAsyncEventArgs e)
@@ -442,6 +453,7 @@ namespace Echo.Logic
 
         public void logout()
         {
+            SendKeepAlive = false;
             byte[] header = new byte[1];
             header[0] = ClientHeader.LOGOUT;
             ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
