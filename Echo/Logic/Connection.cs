@@ -200,6 +200,14 @@ namespace Echo.Logic
                                 info.LastOperation = ServerHeader.ANALYSING;
                                 this.analyzing();
                                 break;
+                            case ServerHeader.VOICEPORT:
+                                info.LastOperation = ServerHeader.VOICEPORT;
+                                receiveData(4, e);
+                                break;
+                            case ServerHeader.TEXT:
+                                info.LastOperation = ServerHeader.TEXT;
+                                receiveData(4, e);
+                                break;
                             default:
                                 info.LastOperation = -1;
                                 this.listen(e);
@@ -220,12 +228,30 @@ namespace Echo.Logic
                                 break;
                             case ServerHeader.INCOMINGCALL:
                                 incomingCall(e.Buffer, e);
+                                listen(e);
                                 break;
                             case ServerHeader.ERROR:
                                 error(e.Buffer, e);
-                                break;                            
+                                listen(e);
+                                break;
+                            case ServerHeader.VOICEPORT:
+                                voicePortReceived(e.Buffer);
+                                listen(e);
+                                break;
+                            case ServerHeader.TEXT:
+                                textLengthReceived(e.Buffer, e);
+                                info.LastOperation = ServerHeader.MORETEXT;
+                                break;
+                            case ServerHeader.MORETEXT:
+                                moreTextReceived(e.Buffer);
+                                listen(e);
+                                info.LastOperation = -1;
+                                break;
                         }
-                        info.LastOperation = -1;
+                        if (info.LastOperation != ServerHeader.MORETEXT)
+                        {
+                            info.LastOperation = -1;
+                        }
                     }
                     break;
                 case SocketAsyncOperation.Send:
@@ -281,6 +307,25 @@ namespace Echo.Logic
             String xmlKey = Encoding.UTF8.GetString(data, 0, data.Length);
             Crypt.setServerPublicKey(xmlKey);
             sendUserData(e);
+        }
+
+        private void voicePortReceived(byte[] data)
+        {
+            String port = Encoding.UTF8.GetString(data);
+        }
+
+        private void textLengthReceived(byte[] data, SocketAsyncEventArgs e)
+        {
+
+            String textLength = Encoding.UTF8.GetString(data);
+            int length = Convert.ToInt32(textLength);
+            receiveData(length, e);
+        }
+
+        private void moreTextReceived(byte[] data)
+        {
+            String text = Encoding.UTF8.GetString(data);
+            //do something
         }
 
         private void sendUserData(SocketAsyncEventArgs e)
