@@ -23,6 +23,7 @@ namespace Echo.Helpers
 
             Dialog = screen;
             WindowManager.ShowDialog(screen);
+            
 
             var deactivated = screen as IDeactivate;
             if (deactivated == null)

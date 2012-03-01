@@ -13,13 +13,13 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
 
-    <phone:PhoneApplicationPage.Resources>
+    <!--<phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="ByteHolderTemplate">
             <TextBlock Text="{Binding ByteString}"
                        Style="{StaticResource PhoneTextNormalStyle}"
                        TextWrapping="Wrap" />
         </DataTemplate>
-    </phone:PhoneApplicationPage.Resources>
+    </phone:PhoneApplicationPage.Resources>-->
     
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -66,7 +66,7 @@
                     Grid.Column="1"
                     Content="Stop"/>
             
-            <TextBox x:Name="IP_Address"
+            <TextBox x:Name="Server"
                      Grid.Row="2"
                      Grid.Column="0"
                      Grid.ColumnSpan="2" />

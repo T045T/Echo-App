@@ -49,7 +49,7 @@ namespace Echo.ViewModels
         }
 
         private string _IP_Address;
-        public string IP_Address
+        public string Server
         {
             get { return _IP_Address; }
             set
@@ -62,8 +62,8 @@ namespace Echo.ViewModels
             }
         }
 
-        private int _Port;
-        public int Port
+        private string _Port;
+        public string Port
         {
             get { return _Port; }
             set
@@ -118,20 +118,27 @@ namespace Echo.ViewModels
         public void ConnectSocket()
         {
             mySocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            IPAddress address = IPAddress.Parse(Server);
+            int port = int.Parse(Port);
             SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs()
             {
-                RemoteEndPoint = new IPEndPoint(IPAddress.Parse(IP_Address), Port)
+                RemoteEndPoint = new IPEndPoint(IPAddress.Parse(Server), int.Parse(Port))
             };
             socketEventArg.Completed += OnConnectCompleted;
+            mySocket.ConnectAsync(socketEventArg);
         }
+
         void OnConnectCompleted(object sender, SocketAsyncEventArgs e)
         {
             if (e.SocketError == SocketError.Success)
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    MessageBox.Show("Connected successfully.");
-                });
+                _Sending = true;
+                NotifyOfPropertyChange("CanStartSending");
+                NotifyOfPropertyChange("CanStopSending");
+                //Deployment.Current.Dispatcher.BeginInvoke(() =>
+                //{
+                //    MessageBox.Show("Connected successfully.");
+                //});
                 //Deployment.Current.Dispatcher.BeginInvoke(new Enabledelegate(EnableControl), true);
 
             }
@@ -150,10 +157,19 @@ namespace Echo.ViewModels
             if (mySocket != null) {
                 SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs()
                 {
-                    RemoteEndPoint = new IPEndPoint(IPAddress.Parse(IP_Address), Port)
+                    RemoteEndPoint = new IPEndPoint(IPAddress.Parse(Server), int.Parse(Port))
                 };
                 socketEventArg.SetBuffer(buffer, 0, buffer.Length);
+                socketEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(socketEventArg_Completed);
                 mySocket.SendAsync(socketEventArg);
+            }
+        }
+
+        void socketEventArg_Completed(object sender, SocketAsyncEventArgs e)
+        {
+            if (e.SocketError != SocketError.Success)
+            {
+                int foo = 0;
             }
         }
 
@@ -161,11 +177,19 @@ namespace Echo.ViewModels
 
         void microphone_BufferReady(object sender, EventArgs e)
         {
+            if (!_Sending) return;
             microphone.GetData(buffer);
             stream.Write(buffer, 0, buffer.Length);
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                SendBytes(ALawEncoder.ALawEncode(buffer));
+                if (ALAW)
+                {
+                    SendBytes(ALawEncoder.ALawEncode(buffer));
+                }
+                else if (ULAW)
+                {
+                    SendBytes(MuLawEncoder.MuLawEncode(buffer));
+                }
             });
         }
 
@@ -193,10 +217,8 @@ namespace Echo.ViewModels
 
         public void StartSending()
         {
-            _Sending = true;
-            NotifyOfPropertyChange("CanStartSending");
-            NotifyOfPropertyChange("CanStopSending");
-            microphone.BufferDuration = TimeSpan.FromMilliseconds(100);
+            ConnectSocket();
+            microphone.BufferDuration = TimeSpan.FromMilliseconds(1000);
             buffer = new byte[microphone.GetSampleSizeInBytes(microphone.BufferDuration)];
             microphone.Start();
         }
@@ -209,6 +231,13 @@ namespace Echo.ViewModels
             microphone.Stop();
         }
         public bool CanStopSending { get { return _Sending; } }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            this.Server = "192.168.178.36";
+            Port = "1135";
+        }
     }
 
     public class ByteHolder : Screen
