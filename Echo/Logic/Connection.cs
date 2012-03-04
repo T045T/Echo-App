@@ -175,7 +175,11 @@ namespace Echo.Logic
                             case ClientHeader.RECONNECT:
                                 sendUserData(e);
                                 break;
-
+                            case ClientHeader.LOGOUT:
+                                Socket.Close();
+                                Ringing = false;
+                                Analyzing = false;
+                                break;
                         }
                         LastOperation = -1;
                         break;
