@@ -40,10 +40,10 @@ namespace Echo.Logic
 
         private DispatcherTimer keepaliveWorker;
 
-        public bool Connected
-        {
-            get { return this.Socket.Connected; }
-        }
+        public bool Connected;
+        //{
+        //    get { return this.Socket.Connected; }
+        //}
 
         private bool _Ringing;
         public bool Ringing
@@ -91,8 +91,10 @@ namespace Echo.Logic
             }
         }
 
-        public Connection(INavigationService navService, SettingsModel setModel, UDCListModel udc)
+        public Connection(INavigationService navService, SettingsModel setModel, UDCListModel udc, IPhoneService phoneService)
         {
+            phoneService.Deactivated += new EventHandler<Microsoft.Phone.Shell.DeactivatedEventArgs>(phoneService_Deactivated);
+            phoneService.Activated += new EventHandler<Microsoft.Phone.Shell.ActivatedEventArgs>(phoneService_Activated);
             Crypt.init();
             this.LastOperation = -1;
             this.navService = navService;
@@ -105,12 +107,24 @@ namespace Echo.Logic
 
             Analyzing = false;
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            this.sendArgs = new SocketAsyncEventArgs();
-            this.receiveArgs = new SocketAsyncEventArgs();
-            sendArgs.Completed += new EventHandler<SocketAsyncEventArgs>(Send_Completed);
-            receiveArgs.Completed += new EventHandler<SocketAsyncEventArgs>(Receive_Completed);
+            //this.sendArgs = new SocketAsyncEventArgs();
+            //this.receiveArgs = new SocketAsyncEventArgs();
+            //sendArgs.UserToken = true; // UserToken zeigt an, ob das Objekt gerade verfügbar ist.
+            //receiveArgs.UserToken = true;
+            //sendArgs.Completed += new EventHandler<SocketAsyncEventArgs>(Send_Completed);
+            //receiveArgs.Completed += new EventHandler<SocketAsyncEventArgs>(Receive_Completed);
 
             Connect();
+        }
+
+        void phoneService_Activated(object sender, Microsoft.Phone.Shell.ActivatedEventArgs e)
+        {
+            Connect();
+        }
+
+        void phoneService_Deactivated(object sender, Microsoft.Phone.Shell.DeactivatedEventArgs e)
+        {
+            logout();
         }
 
         void keepaliveWorker_Tick(object sender, EventArgs e)
@@ -121,12 +135,24 @@ namespace Echo.Logic
         public void Connect()
         {
             LastOperation = -1;
+
+            SocketAsyncEventArgs initialConnectionArgs = new SocketAsyncEventArgs();
+
+            this.sendArgs = new SocketAsyncEventArgs();
+            this.receiveArgs = new SocketAsyncEventArgs();
+            sendArgs.UserToken = true; // UserToken zeigt an, ob das Objekt gerade verfügbar ist.
+            receiveArgs.UserToken = true;
+            sendArgs.Completed += new EventHandler<SocketAsyncEventArgs>(Send_Completed);
+            receiveArgs.Completed += new EventHandler<SocketAsyncEventArgs>(Receive_Completed);
+
             string AddressOrDns = setModel.getValueOrDefault<string>(setModel.EchoServerSettingKeyName, setModel.EchoServerDefault);
             int port = setModel.getValueOrDefault<int>(setModel.EchoPortSettingKeyName, setModel.EchoPortDefault);
             if (this.socket.Connected)
             {
+                this.socket.Shutdown(SocketShutdown.Both);
                 this.socket.Close();
                 this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                this.socket.NoDelay = true;
             }
 
             ip = null;
@@ -143,18 +169,31 @@ namespace Echo.Logic
                 this.endpoint = new IPEndPoint(ip, port);
                 sendArgs.RemoteEndPoint = endpoint;
                 receiveArgs.RemoteEndPoint = endpoint;
+                initialConnectionArgs.RemoteEndPoint = endpoint;
             }
             else
             {
                 this.dnsEndpoint = new DnsEndPoint(dns, port);
                 sendArgs.RemoteEndPoint = dnsEndpoint;
                 receiveArgs.RemoteEndPoint = dnsEndpoint;
+                initialConnectionArgs.RemoteEndPoint = dnsEndpoint;
             }
 
-            this.socket.ConnectAsync(sendArgs);
+            initialConnectionArgs.Completed += new EventHandler<SocketAsyncEventArgs>(initialConnection_Completed);
+
+            this.socket.ConnectAsync(initialConnectionArgs);
             //this.socket.ConnectAsync(receiveArgs);
         }
 
+        void initialConnection_Completed(object sender, SocketAsyncEventArgs e)
+        {
+            if (e.SocketError == SocketError.Success)
+            {
+                e.Completed -= new EventHandler<SocketAsyncEventArgs>(initialConnection_Completed);
+                this.login(sendArgs);
+                listen(receiveArgs);
+            }
+        }
 
         private void Send_Completed(object sender, SocketAsyncEventArgs e)
         {
@@ -164,7 +203,7 @@ namespace Echo.Logic
                 {
                     case SocketAsyncOperation.Connect:
                         this.login(e);
-                        listen(receiveArgs);
+                        listen(e);
                         break;
                     case SocketAsyncOperation.Receive:
                         //should not happen
@@ -176,6 +215,8 @@ namespace Echo.Logic
                                 sendUserData(e);
                                 break;
                             case ClientHeader.LOGOUT:
+                                Connected = false;
+                                Socket.Shutdown(SocketShutdown.Both);
                                 Socket.Close();
                                 Ringing = false;
                                 Analyzing = false;
@@ -187,6 +228,15 @@ namespace Echo.Logic
                     //throw new Exception("Invalid operation completed");
                 }
             }
+            else
+            {
+                Connected = false;
+                if (Socket.Connected)
+                {
+                    Socket.Shutdown(SocketShutdown.Both);
+                    Socket.Close();
+                }
+            }
         }
 
         private void Receive_Completed(object sender, SocketAsyncEventArgs e)
@@ -195,9 +245,9 @@ namespace Echo.Logic
             {
                 switch (e.LastOperation)
                 {
-                    case SocketAsyncOperation.Connect:
-                        this.listen(e);
-                        break;
+                    //case SocketAsyncOperation.Connect:
+                    //    this.listen(e);
+                    //    break;
                     case SocketAsyncOperation.Receive:
                         if (e.Buffer.Length == 1 && LastOperation != ServerHeader.ERROR) //interpret header
                         {
@@ -224,7 +274,7 @@ namespace Echo.Logic
                                     break;
                                 case ServerHeader.ERROR:
                                     LastOperation = ServerHeader.ERROR;
-                                    receiveData(1, e);
+                                    listen(e);
                                     break;
                                 case ServerHeader.REMOTEHANGUP:
                                     LastOperation = ServerHeader.REMOTEHANGUP;
@@ -241,7 +291,7 @@ namespace Echo.Logic
                                 case ServerHeader.ANALYSING:
                                     LastOperation = ServerHeader.ANALYSING;
                                     this.analyzing();
-                                    listen(receiveArgs);
+                                    listen(e);
                                     break;
                                 case ServerHeader.VOICEPORT:
                                     LastOperation = ServerHeader.VOICEPORT;
@@ -299,19 +349,19 @@ namespace Echo.Logic
                     case SocketAsyncOperation.Send:
                         this.listen(e);
                         break;
-                    //default:
-                    //throw new Exception("Invalid operation completed");
+                    default:
+                        //throw new Exception("Invalid operation completed");
+                        break;
                 }
             }
-        }
-
-        private void listen(SocketAsyncEventArgs e)
-        {
-            if (Connected)
+            else
             {
-                byte[] header = new byte[1];
-                e.SetBuffer(header, 0, header.Length);
-                this.socket.ReceiveAsync(e);
+                Connected = false;
+                if (Socket.Connected)
+                {
+                    Socket.Shutdown(SocketShutdown.Both);
+                    Socket.Close();
+                }
             }
         }
 
@@ -321,6 +371,7 @@ namespace Echo.Logic
             String xmlKey = Crypt.getPublicKeyInXML();
             byte[] data = Encoding.UTF8.GetBytes(xmlKey);
 
+            Connected = true;
             sendData(header, data, e);
         }
 
@@ -336,7 +387,10 @@ namespace Echo.Logic
                     buffer[i] = data[i - 1];
                 }
                 e.SetBuffer(buffer, 0, buffer.Length);
-                this.socket.SendAsync(e);
+                if (!this.socket.SendAsync(e))
+                {
+                    Send_Completed(this, e);
+                }
             }
         }
 
@@ -347,8 +401,17 @@ namespace Echo.Logic
                 byte[] header = new byte[1];
                 header[0] = (byte)headerValue;
                 this.sendArgs.SetBuffer(header, 0, header.Length);
-                this.socket.SendAsync(this.sendArgs);
+                
+                if (!this.socket.SendAsync(this.sendArgs))
+                {
+                    Send_Completed(this, sendArgs);
+                }
             }
+        }
+
+        private void listen(SocketAsyncEventArgs e)
+        {
+            receiveData(1, e);
         }
 
         private void receiveData(int length, SocketAsyncEventArgs e)
@@ -357,7 +420,10 @@ namespace Echo.Logic
             {
                 byte[] buffer = new byte[length];
                 e.SetBuffer(buffer, 0, buffer.Length);
-                this.socket.ReceiveAsync(e);
+                if (!this.socket.ReceiveAsync(e))
+                {
+                    Receive_Completed(this, e);
+                }
             }
         }
 
