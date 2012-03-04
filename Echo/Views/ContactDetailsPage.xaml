@@ -153,7 +153,7 @@
 
             <!--Pivot-Element 2-->
             <controls:PivotItem Header="History">
-                <ListBox ItemTemplate="{StaticResource HistoryTemplate}" ItemsSource="{Binding Path=User.CallLogs}"/>
+                <ListBox ItemTemplate="{StaticResource HistoryTemplate}" ItemsSource="{Binding CallLogs}"/>
             </controls:PivotItem>
         </controls:Pivot>
     </Grid>

@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Echo.Model;
 using Caliburn.Micro;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace Echo.ViewModels
 {
@@ -68,6 +69,11 @@ namespace Echo.ViewModels
                     NotifyOfPropertyChange("LastCallLogEntry");
                 }
             }
+        }
+
+        public ObservableCollection<CallLogModel> CallLogs
+        {
+            get { return new ObservableCollection<CallLogModel>(User.CallLogs.OrderByDescending(x => x.StartTime)); }
         }
         #endregion Properties
 
