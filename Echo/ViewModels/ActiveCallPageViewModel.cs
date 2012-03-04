@@ -14,6 +14,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Collections.Generic;
 using Echo.Logic;
+using System.ComponentModel;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace Echo.ViewModels
 {
@@ -68,12 +71,13 @@ namespace Echo.ViewModels
             }
         }
 
+        private DispatcherTimer TimeUpdater;
         public string TimeElapsed
         {
             get
             {
                 var timeSpan = (DateTime.Now - CallStart);
-                return String.Format("{0:00{:};;}{1:00}:{2:00}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+                return String.Format("{0:00:;;''}{1:00}:{2:00}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
             }
         }
 
@@ -108,13 +112,24 @@ namespace Echo.ViewModels
             this.navService = navService;
             this.con = con;
             CallInProgress = false;
+            con.DataReceived += new DataReceivedEventHandler(con_DataReceived);
+            con.AcquiredPort += new AcquiredPortEventHandler(con_AcquiredPort);
+            // TODO Should be a DispatcherTimer =)
+            TimeUpdater = new DispatcherTimer();
+            TimeUpdater.Interval = TimeSpan.FromSeconds(1);
+            TimeUpdater.Tick += new EventHandler(TimeUpdater_Tick);
+
+            this.UDPSink = new UDPAudioSink(true);
+        }
+
+        void TimeUpdater_Tick(object sender, EventArgs e)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() => NotifyOfPropertyChange("TimeElapsed"));
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
-            con.DataReceived += new DataReceivedEventHandler(con_DataReceived);
-            con.AcquiredPort += new AcquiredPortEventHandler(con_AcquiredPort);
             Callee = udc.GetUser(calleeID);
             if (Callee == null) return;
             var previousLogs = from CallLogModel clm in udc.DataContext.CallLogTable where clm.CalleeID == this.calleeID orderby clm.StartTime descending select clm;
@@ -125,6 +140,7 @@ namespace Echo.ViewModels
             }
             CurrentCallLog = new CallLogModel(Callee.ID);
             CallStart = CurrentCallLog.StartTime;
+            TimeUpdater.Start();
 
             //CurrentCallLog.addEntry("Helvetica salvia keytar, tattooed lo-fi eiusmod freegan DIY bespoke sed pop-up mlkshk small batch four loko brunch.");
             Callee.CallLogs.Add(CurrentCallLog);
@@ -137,7 +153,6 @@ namespace Echo.ViewModels
             else
             {
                 con.call(Callee.UserID);
-                con_AcquiredPort(con, 1337);
                 // start call
             }
 
@@ -146,14 +161,7 @@ namespace Echo.ViewModels
 
         void con_AcquiredPort(object sender, int e)
         {
-            if (UDPSink == null)
-            {
-                this.UDPSink = new UDPAudioSink(true);
-            }
-            else
-            {
-                this.UDPSink.StopSending();
-            }
+            this.UDPSink.StopSending();
             this.UDPSink.StartSending(setModel.getValueOrDefault<string>(setModel.EchoServerSettingKeyName, setModel.EchoServerDefault), e);
         }
 
@@ -173,6 +181,7 @@ namespace Echo.ViewModels
             con.hangup();
             UDPSink.StopSending();
             CallInProgress = false;
+            TimeUpdater.Stop();
             navService.GoBack();
         }
 

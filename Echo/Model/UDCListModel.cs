@@ -312,6 +312,7 @@ namespace Echo.Model
                 {
                     var entries = from CallLogEntry en in udc.EntryTable where en.CallLogID.Equals(e.CallLogID) select en;
                     udc.EntryTable.DeleteAllOnSubmit(entries);
+                    AllLogsList.Remove(e);
                 }
 
                 if (User.HasImage)

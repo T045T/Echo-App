@@ -181,7 +181,8 @@
         <!--Das TitlePanel-Objekt enthält den Namen der Anwendung und den Seitentitel.-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,0,0,0">
             <TextBlock x:Name="ApplicationTitle" 
-                       Text="{Binding Path=ElapsedTime, Mode=OneWay}"
+                       Text="{Binding Path=TimeElapsed, Mode=OneWay}"
+                       Margin="0"
                        Style="{StaticResource PhoneTextNormalStyle}" 
                        Foreground="{StaticResource PhoneAccentBrush}"/>
             <TextBlock x:Name="PageTitle" 
@@ -230,7 +231,6 @@
                           Grid.Row="0"
                           Grid.Column="2"
                           Style="{StaticResource SpeakerToggle}" 
-                          IsChecked="{Binding ServerAnalyzing, Mode=TwoWay}"
                           BorderThickness="0,3,3,3"/>
             <!--<Grid x:Name="Shrink"
                       Grid.Row="0"
