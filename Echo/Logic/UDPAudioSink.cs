@@ -39,6 +39,7 @@ namespace Echo.Logic
             _Sending = false;
             ALAW = ALaw;
 
+            dt = new DispatcherTimer();
             microphone = Microphone.Default;
             stream = new MemoryStream();
 
@@ -47,7 +48,7 @@ namespace Echo.Logic
         public void StartTimer()
         {
             // Timer to simulate the XNA Game Studio game loop (Microphone is from XNA Game Studio)
-            dt = new DispatcherTimer();
+            
             dt.Interval = TimeSpan.FromMilliseconds(50);
             dt.Tick += delegate
             {
@@ -132,7 +133,7 @@ namespace Echo.Logic
 
         public void SendBytes(byte[] buffer)
         {
-            if (mySocket != null)
+            if (mySocket != null && mySocket.Connected)
             {
                 SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs()
                 {
@@ -142,6 +143,10 @@ namespace Echo.Logic
                 //socketEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(socketEventArg_Completed);
                 mySocket.SendAsync(socketEventArg);
             }
-        }
+            else
+            {
+                StopSending();
+            }
+        } 
     }
 }

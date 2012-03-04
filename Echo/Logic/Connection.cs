@@ -11,6 +11,7 @@ using Echo.ViewModels;
 using System.Linq;
 using System.ComponentModel;
 using System.Threading;
+using System.Windows.Threading;
 
 namespace Echo.Logic
 {
@@ -35,7 +36,14 @@ namespace Echo.Logic
         private string dns;
         private int voicePort;
 
-        private BackgroundWorker keepaliveWorker;
+        private int LastOperation;
+
+        private DispatcherTimer keepaliveWorker;
+
+        public bool Connected
+        {
+            get { return this.Socket.Connected; }
+        }
 
         private bool _Ringing;
         public bool Ringing
@@ -64,7 +72,6 @@ namespace Echo.Logic
                 }
             }
         }
-        private bool SendKeepAlive;
         public event DataReceivedEventHandler DataReceived;
         public event AcquiredPortEventHandler AcquiredPort;
 
@@ -87,38 +94,33 @@ namespace Echo.Logic
         public Connection(INavigationService navService, SettingsModel setModel, UDCListModel udc)
         {
             Crypt.init();
+            this.LastOperation = -1;
             this.navService = navService;
             this.setModel = setModel;
             this.udc = udc;
 
-            this.keepaliveWorker = new BackgroundWorker();
-            keepaliveWorker.WorkerReportsProgress = false;
-            keepaliveWorker.DoWork += new DoWorkEventHandler(keepaliveWorker_DoWork);
+            this.keepaliveWorker = new DispatcherTimer();
+            keepaliveWorker.Interval = TimeSpan.FromSeconds(20);
+            keepaliveWorker.Tick += new EventHandler(keepaliveWorker_Tick);
 
             Analyzing = false;
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             this.sendArgs = new SocketAsyncEventArgs();
             this.receiveArgs = new SocketAsyncEventArgs();
-            sendArgs.UserToken = new ReceiveInfo(this);
-            receiveArgs.UserToken = new ReceiveInfo(this);
             sendArgs.Completed += new EventHandler<SocketAsyncEventArgs>(Send_Completed);
             receiveArgs.Completed += new EventHandler<SocketAsyncEventArgs>(Receive_Completed);
 
             Connect();
         }
 
-        void keepaliveWorker_DoWork(object sender, DoWorkEventArgs e)
+        void keepaliveWorker_Tick(object sender, EventArgs e)
         {
-            while (SendKeepAlive)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() => KeepAlive());
-                // keepalives every 20 secs
-                Thread.Sleep(20000);
-            }
+            Deployment.Current.Dispatcher.BeginInvoke(() => KeepAlive());
         }
 
         public void Connect()
         {
+            LastOperation = -1;
             string AddressOrDns = setModel.getValueOrDefault<string>(setModel.EchoServerSettingKeyName, setModel.EchoServerDefault);
             int port = setModel.getValueOrDefault<int>(setModel.EchoPortSettingKeyName, setModel.EchoPortDefault);
             if (this.socket.Connected)
@@ -158,7 +160,6 @@ namespace Echo.Logic
         {
             if (e.SocketError == SocketError.Success)
             {
-                ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
                 switch (e.LastOperation)
                 {
                     case SocketAsyncOperation.Connect:
@@ -169,14 +170,14 @@ namespace Echo.Logic
                         //should not happen
                         break;
                     case SocketAsyncOperation.Send:
-                        switch (info.LastOperation)
+                        switch (LastOperation)
                         {
                             case ClientHeader.RECONNECT:
                                 sendUserData(e);
                                 break;
 
                         }
-                        info.LastOperation = -1;
+                        LastOperation = -1;
                         break;
                     //default:
                     //throw new Exception("Invalid operation completed");
@@ -188,74 +189,73 @@ namespace Echo.Logic
         {
             if (e.SocketError == SocketError.Success)
             {
-                ReceiveInfo info = e.UserToken as ReceiveInfo;
                 switch (e.LastOperation)
                 {
                     case SocketAsyncOperation.Connect:
                         this.listen(e);
                         break;
                     case SocketAsyncOperation.Receive:
-                        if (e.Buffer.Length == 1 && info.LastOperation != ServerHeader.ERROR) //interpret header
+                        if (e.Buffer.Length == 1 && LastOperation != ServerHeader.ERROR) //interpret header
                         {
                             int header = e.Buffer[0];
                             switch (header)
                             {
 
                                 case ServerHeader.KEY:
-                                    info.LastOperation = ServerHeader.KEY;
+                                    LastOperation = ServerHeader.KEY;
                                     receiveData(297, e);
                                     break;
                                 case ServerHeader.TOKEN:
-                                    info.LastOperation = ServerHeader.TOKEN;
+                                    LastOperation = ServerHeader.TOKEN;
                                     receiveData(344, e);
                                     break;
                                 case ServerHeader.INCOMINGCALL:
-                                    info.LastOperation = ServerHeader.INCOMINGCALL;
+                                    LastOperation = ServerHeader.INCOMINGCALL;
                                     receiveData(344, e);
                                     break;
                                 case ServerHeader.REGISTERSUCCESS:
-                                    info.LastOperation = ServerHeader.REGISTERSUCCESS;
+                                    LastOperation = ServerHeader.REGISTERSUCCESS;
                                     registerSuccessful();
                                     listen(e);
                                     break;
                                 case ServerHeader.ERROR:
-                                    info.LastOperation = ServerHeader.ERROR;
+                                    LastOperation = ServerHeader.ERROR;
                                     receiveData(1, e);
                                     break;
                                 case ServerHeader.REMOTEHANGUP:
-                                    info.LastOperation = ServerHeader.REMOTEHANGUP;
+                                    LastOperation = ServerHeader.REMOTEHANGUP;
                                     this.remoteHangup();
                                     break;
                                 case ServerHeader.RINGING:
-                                    info.LastOperation = ServerHeader.RINGING;
+                                    LastOperation = ServerHeader.RINGING;
                                     this.ringing();
                                     break;
                                 case ServerHeader.CALLEEPICKUP:
-                                    info.LastOperation = ServerHeader.CALLEEPICKUP;
+                                    LastOperation = ServerHeader.CALLEEPICKUP;
                                     this.calleePickup();
                                     break;
                                 case ServerHeader.ANALYSING:
-                                    info.LastOperation = ServerHeader.ANALYSING;
+                                    LastOperation = ServerHeader.ANALYSING;
                                     this.analyzing();
                                     listen(receiveArgs);
                                     break;
                                 case ServerHeader.VOICEPORT:
-                                    info.LastOperation = ServerHeader.VOICEPORT;
+                                    LastOperation = ServerHeader.VOICEPORT;
                                     receiveData(4, e);
                                     break;
                                 case ServerHeader.TEXT:
-                                    info.LastOperation = ServerHeader.TEXT;
+                                    LastOperation = ServerHeader.TEXT;
                                     receiveData(4, e);
                                     break;
                                 default:
-                                    info.LastOperation = -1;
+                                    LastOperation = -1;
                                     this.listen(e);
                                     break;
                             }
                         }
                         else //interpret data
                         {
-                            switch (info.LastOperation)
+                            switch (LastOperation)
                             {
                                 case ServerHeader.KEY:
                                     keyReceived(e.Buffer, e);
@@ -278,17 +278,17 @@ namespace Echo.Logic
                                     break;
                                 case ServerHeader.TEXT:
                                     textLengthReceived(e.Buffer, e);
-                                    info.LastOperation = ServerHeader.MORETEXT;
+                                    LastOperation = ServerHeader.MORETEXT;
                                     break;
                                 case ServerHeader.MORETEXT:
                                     moreTextReceived(e.Buffer);
                                     listen(e);
-                                    info.LastOperation = -1;
+                                    LastOperation = -1;
                                     break;
                             }
-                            if (info.LastOperation != ServerHeader.MORETEXT)
+                            if (LastOperation != ServerHeader.MORETEXT)
                             {
-                                info.LastOperation = -1;
+                                LastOperation = -1;
                             }
                         }
                         break;
@@ -303,10 +303,12 @@ namespace Echo.Logic
 
         private void listen(SocketAsyncEventArgs e)
         {
-            byte[] header = new byte[1];
-            e.SetBuffer(header, 0, header.Length);
-            ReceiveInfo info = e.UserToken as ReceiveInfo;
-            info.Sock.ReceiveAsync(e);
+            if (Connected)
+            {
+                byte[] header = new byte[1];
+                e.SetBuffer(header, 0, header.Length);
+                this.socket.ReceiveAsync(e);
+            }
         }
 
         private void login(SocketAsyncEventArgs e)
@@ -318,27 +320,41 @@ namespace Echo.Logic
             sendData(header, data, e);
         }
 
-        private static void sendData(byte header, byte[] data, SocketAsyncEventArgs e)
+        private void sendData(byte header, byte[] data, SocketAsyncEventArgs e)
         {
-            byte[] buffer = new byte[data.Length + 1];
-            buffer[0] = header;
-
-            for (int i = 1; i <= data.Length; i++)
+            if (this.Connected)
             {
-                buffer[i] = data[i - 1];
-            }
+                byte[] buffer = new byte[data.Length + 1];
+                buffer[0] = header;
 
-            ReceiveInfo info = e.UserToken as ReceiveInfo;
-            e.SetBuffer(buffer, 0, buffer.Length);
-            info.Sock.SendAsync(e);
+                for (int i = 1; i <= data.Length; i++)
+                {
+                    buffer[i] = data[i - 1];
+                }
+                e.SetBuffer(buffer, 0, buffer.Length);
+                this.socket.SendAsync(e);
+            }
         }
 
-        private static void receiveData(int length, SocketAsyncEventArgs e)
+        private void sendHeader(int headerValue)
         {
-            ReceiveInfo info = e.UserToken as ReceiveInfo;
-            byte[] buffer = new byte[length];
-            e.SetBuffer(buffer, 0, buffer.Length);
-            info.Sock.ReceiveAsync(e);
+            if (this.Connected)
+            {
+                byte[] header = new byte[1];
+                header[0] = (byte)headerValue;
+                this.sendArgs.SetBuffer(header, 0, header.Length);
+                this.socket.SendAsync(this.sendArgs);
+            }
+        }
+
+        private void receiveData(int length, SocketAsyncEventArgs e)
+        {
+            if (Connected)
+            {
+                byte[] buffer = new byte[length];
+                e.SetBuffer(buffer, 0, buffer.Length);
+                this.socket.ReceiveAsync(e);
+            }
         }
 
         private void keyReceived(byte[] data, SocketAsyncEventArgs e)
@@ -492,8 +508,7 @@ namespace Echo.Logic
 
         private void registerSuccessful()
         {
-            SendKeepAlive = true;
-            keepaliveWorker.RunWorkerAsync();
+            keepaliveWorker.Start();
         }
 
         private void error(byte[] data, SocketAsyncEventArgs e)
@@ -542,93 +557,48 @@ namespace Echo.Logic
 
         public void logout()
         {
-            SendKeepAlive = false;
-            byte[] header = new byte[1];
-            header[0] = ClientHeader.LOGOUT;
-            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
-            info.LastOperation = ClientHeader.LOGOUT;
-            this.sendArgs.SetBuffer(header, 0, header.Length);
-            this.socket.SendAsync(this.sendArgs);
+            keepaliveWorker.Stop();
+            LastOperation = ClientHeader.LOGOUT;
+            this.sendHeader(ClientHeader.LOGOUT);
         }
 
         public void KeepAlive()
         {
-            byte[] header = new byte[1];
-            header[0] = ClientHeader.KEEPALIVE;
-            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
-            info.LastOperation = ClientHeader.KEEPALIVE;
-            this.sendArgs.SetBuffer(header, 0, header.Length);
-            this.socket.SendAsync(sendArgs);
+            LastOperation = ClientHeader.KEEPALIVE;
+            this.sendHeader(ClientHeader.KEEPALIVE);
         }
 
         public void pickupCall()
         {
-            byte[] header = new byte[1];
-            header[0] = ClientHeader.PICKUPCALL;
-            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
-            info.LastOperation = ClientHeader.PICKUPCALL;
-            this.sendArgs.SetBuffer(header, 0, header.Length);
-            this.socket.SendAsync(sendArgs);
+            LastOperation = ClientHeader.PICKUPCALL;
+            this.sendHeader(ClientHeader.PICKUPCALL);
         }
 
         public void rejectCall()
         {
-            byte[] header = new byte[1];
-            header[0] = ClientHeader.REJECTCALL;
-            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
-            info.LastOperation = ClientHeader.REJECTCALL;
-            this.sendArgs.SetBuffer(header, 0, header.Length);
-            this.socket.SendAsync(sendArgs);
+            LastOperation = ClientHeader.REJECTCALL;
+            this.sendHeader(ClientHeader.REJECTCALL);
         }
 
         public void hangup()
         {
             Ringing = false;
-            byte[] header = new byte[1];
-            header[0] = ClientHeader.HANGUP;
-            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
-            info.LastOperation = ClientHeader.HANGUP;
-            this.sendArgs.SetBuffer(header, 0, header.Length);
-            this.socket.SendAsync(sendArgs);
+            LastOperation = ClientHeader.HANGUP;
+            this.sendHeader(ClientHeader.HANGUP);
         }
 
         public void call(String uri) // "sip:userName@dom.ain | Nummer
         {
             byte[] data = Encoding.UTF8.GetBytes(uri);
             byte[] netData = encryptNetData(data);
-            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
-            info.LastOperation = ClientHeader.INITIATECALL;
+            LastOperation = ClientHeader.INITIATECALL;
             sendData(ClientHeader.INITIATECALL, netData, sendArgs);
         }
 
         public void reconnect()
         {
-            byte[] header = new byte[1];
-            header[0] = ClientHeader.RECONNECT;
-            ReceiveInfo info = sendArgs.UserToken as ReceiveInfo;
-            info.LastOperation = ClientHeader.RECONNECT;
-            this.sendArgs.SetBuffer(header, 0, header.Length);
-            this.socket.SendAsync(sendArgs);
-        }
-    }
-
-    public class ReceiveInfo
-    {
-        private Connection con;
-        private int lastOperation;
-        public ReceiveInfo(Connection con)
-        {
-            this.lastOperation = -1;
-            this.con = con;
-        }
-        public Socket Sock
-        {
-            get { return con.Socket; }
-        }
-        public int LastOperation
-        {
-            get { return this.lastOperation; }
-            set { this.lastOperation = value; }
+            LastOperation = ClientHeader.RECONNECT;
+            this.sendHeader(ClientHeader.RECONNECT);
         }
     }
 }
