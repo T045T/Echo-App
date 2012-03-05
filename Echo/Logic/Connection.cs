@@ -663,7 +663,7 @@ namespace Echo.Logic
         public void call(String uri) // "sip:userName@dom.ain | Nummer
         {
             String datastring = uri + ";" + sessionToken;
-            byte[] data = Encoding.UTF8.GetBytes(uri);
+            byte[] data = Encoding.UTF8.GetBytes(datastring);
             byte[] netData = encryptNetData(data);
             LastOperation = ClientHeader.INITIATECALL;
             sendData(ClientHeader.INITIATECALL, netData, sendArgs);
