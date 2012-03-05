@@ -36,7 +36,8 @@ namespace Echo.Logic
         private string dns;
         private int voicePort;
 
-        private int LastOperation;
+        private int LastSendOperation;
+        private int LastReceiveOperation;
 
         private DispatcherTimer keepaliveWorker;
 
@@ -96,7 +97,8 @@ namespace Echo.Logic
             phoneService.Deactivated += new EventHandler<Microsoft.Phone.Shell.DeactivatedEventArgs>(phoneService_Deactivated);
             phoneService.Activated += new EventHandler<Microsoft.Phone.Shell.ActivatedEventArgs>(phoneService_Activated);
             Crypt.init();
-            this.LastOperation = -1;
+            this.LastSendOperation = -1;
+            this.LastReceiveOperation = -1;
             this.navService = navService;
             this.setModel = setModel;
             this.udc = udc;
@@ -134,7 +136,8 @@ namespace Echo.Logic
 
         public void Connect()
         {
-            LastOperation = -1;
+            LastSendOperation = -1;
+            LastReceiveOperation = -1;
 
             SocketAsyncEventArgs initialConnectionArgs = new SocketAsyncEventArgs();
 
@@ -209,7 +212,7 @@ namespace Echo.Logic
                         //should not happen
                         break;
                     case SocketAsyncOperation.Send:
-                        switch (LastOperation)
+                        switch (LastSendOperation)
                         {
                             case ClientHeader.RECONNECT:
                                 sendUserData(e);
@@ -222,7 +225,7 @@ namespace Echo.Logic
                                 Analyzing = false;
                                 break;
                         }
-                        LastOperation = -1;
+                        LastSendOperation = -1;
                         break;
                     //default:
                     //throw new Exception("Invalid operation completed");
@@ -249,26 +252,26 @@ namespace Echo.Logic
                     //    this.listen(e);
                     //    break;
                     case SocketAsyncOperation.Receive:
-                        if (e.Buffer.Length == 1 && LastOperation != ServerHeader.ERROR) //interpret header
+                        if (e.Buffer.Length == 1 && LastReceiveOperation != ServerHeader.ERROR) //interpret header
                         {
                             int header = e.Buffer[0];
                             switch (header)
                             {
 
                                 case ServerHeader.KEY:
-                                    LastOperation = ServerHeader.KEY;
+                                    LastReceiveOperation = ServerHeader.KEY;
                                     receiveData(297, e);
                                     break;
                                 case ServerHeader.TOKEN:
-                                    LastOperation = ServerHeader.TOKEN;
+                                    LastReceiveOperation = ServerHeader.TOKEN;
                                     receiveData(344, e);
                                     break;
                                 case ServerHeader.INCOMINGCALL:
-                                    LastOperation = ServerHeader.INCOMINGCALL;
+                                    LastReceiveOperation = ServerHeader.INCOMINGCALL;
                                     receiveData(344, e);
                                     break;
                                 case ServerHeader.REGISTERSUCCESS:
-                                    LastOperation = ServerHeader.REGISTERSUCCESS;
+                                    LastReceiveOperation = ServerHeader.REGISTERSUCCESS;
                                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                                     {
                                         registerSuccessful();
@@ -276,43 +279,43 @@ namespace Echo.Logic
                                     listen(e);
                                     break;
                                 case ServerHeader.ERROR:
-                                    LastOperation = ServerHeader.ERROR;
+                                    LastReceiveOperation = ServerHeader.ERROR;
                                     listen(e);
                                     break;
                                 case ServerHeader.REMOTEHANGUP:
-                                    LastOperation = ServerHeader.REMOTEHANGUP;
+                                    LastReceiveOperation = ServerHeader.REMOTEHANGUP;
                                     remoteHangup();
                                     break;
                                 case ServerHeader.RINGING:
-                                    LastOperation = ServerHeader.RINGING;
+                                    LastReceiveOperation = ServerHeader.RINGING;
                                     this.ringing();
                                     break;
                                 case ServerHeader.CALLEEPICKUP:
-                                    LastOperation = ServerHeader.CALLEEPICKUP;
+                                    LastReceiveOperation = ServerHeader.CALLEEPICKUP;
                                     calleePickup();
                                     break;
                                 case ServerHeader.ANALYSING:
-                                    LastOperation = ServerHeader.ANALYSING;
+                                    LastReceiveOperation = ServerHeader.ANALYSING;
                                     analyzing();
                                     listen(e);
                                     break;
                                 case ServerHeader.VOICEPORT:
-                                    LastOperation = ServerHeader.VOICEPORT;
+                                    LastReceiveOperation = ServerHeader.VOICEPORT;
                                     receiveData(4, e);
                                     break;
                                 case ServerHeader.TEXT:
-                                    LastOperation = ServerHeader.TEXT;
+                                    LastReceiveOperation = ServerHeader.TEXT;
                                     receiveData(4, e);
                                     break;
                                 default:
-                                    LastOperation = -1;
+                                    LastReceiveOperation = -1;
                                     listen(e);
                                     break;
                             }
                         }
                         else //interpret data
                         {
-                            switch (LastOperation)
+                            switch (LastReceiveOperation)
                             {
                                 case ServerHeader.KEY:
                                     keyReceived(e.Buffer, e);
@@ -335,17 +338,17 @@ namespace Echo.Logic
                                     break;
                                 case ServerHeader.TEXT:
                                     textLengthReceived(e.Buffer, e);
-                                    LastOperation = ServerHeader.MORETEXT;
+                                    LastReceiveOperation = ServerHeader.MORETEXT;
                                     break;
                                 case ServerHeader.MORETEXT:
                                     moreTextReceived(e.Buffer);
                                     listen(e);
-                                    LastOperation = -1;
+                                    LastReceiveOperation = -1;
                                     break;
                             }
-                            if (LastOperation != ServerHeader.MORETEXT)
+                            if (LastReceiveOperation != ServerHeader.MORETEXT)
                             {
-                                LastOperation = -1;
+                                LastReceiveOperation = -1;
                             }
                         }
                         break;
@@ -631,32 +634,32 @@ namespace Echo.Logic
         public void logout()
         {
             keepaliveWorker.Stop();
-            LastOperation = ClientHeader.LOGOUT;
+            LastSendOperation = ClientHeader.LOGOUT;
             this.sendHeader(ClientHeader.LOGOUT);
         }
 
         public void KeepAlive()
         {
-            LastOperation = ClientHeader.KEEPALIVE;
+            LastSendOperation = ClientHeader.KEEPALIVE;
             this.sendHeader(ClientHeader.KEEPALIVE);
         }
 
         public void pickupCall()
         {
-            LastOperation = ClientHeader.PICKUPCALL;
+            LastSendOperation = ClientHeader.PICKUPCALL;
             this.sendHeader(ClientHeader.PICKUPCALL);
         }
 
         public void rejectCall()
         {
-            LastOperation = ClientHeader.REJECTCALL;
+            LastSendOperation = ClientHeader.REJECTCALL;
             this.sendHeader(ClientHeader.REJECTCALL);
         }
 
         public void hangup()
         {
             Ringing = false;
-            LastOperation = ClientHeader.HANGUP;
+            LastSendOperation = ClientHeader.HANGUP;
             this.sendHeader(ClientHeader.HANGUP);
         }
 
@@ -665,13 +668,13 @@ namespace Echo.Logic
             String datastring = uri + ";" + sessionToken;
             byte[] data = Encoding.UTF8.GetBytes(datastring);
             byte[] netData = encryptNetData(data);
-            LastOperation = ClientHeader.INITIATECALL;
+            LastSendOperation = ClientHeader.INITIATECALL;
             sendData(ClientHeader.INITIATECALL, netData, sendArgs);
         }
 
         public void reconnect()
         {
-            LastOperation = ClientHeader.RECONNECT;
+            LastSendOperation = ClientHeader.RECONNECT;
             this.sendHeader(ClientHeader.RECONNECT);
         }
     }
