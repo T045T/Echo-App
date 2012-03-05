@@ -269,7 +269,10 @@ namespace Echo.Logic
                                     break;
                                 case ServerHeader.REGISTERSUCCESS:
                                     LastOperation = ServerHeader.REGISTERSUCCESS;
-                                    registerSuccessful();
+                                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                    {
+                                        registerSuccessful();
+                                    });
                                     listen(e);
                                     break;
                                 case ServerHeader.ERROR:
@@ -278,7 +281,7 @@ namespace Echo.Logic
                                     break;
                                 case ServerHeader.REMOTEHANGUP:
                                     LastOperation = ServerHeader.REMOTEHANGUP;
-                                    this.remoteHangup();
+                                    remoteHangup();
                                     break;
                                 case ServerHeader.RINGING:
                                     LastOperation = ServerHeader.RINGING;
@@ -286,11 +289,11 @@ namespace Echo.Logic
                                     break;
                                 case ServerHeader.CALLEEPICKUP:
                                     LastOperation = ServerHeader.CALLEEPICKUP;
-                                    this.calleePickup();
+                                    calleePickup();
                                     break;
                                 case ServerHeader.ANALYSING:
                                     LastOperation = ServerHeader.ANALYSING;
-                                    this.analyzing();
+                                    analyzing();
                                     listen(e);
                                     break;
                                 case ServerHeader.VOICEPORT:
@@ -303,7 +306,7 @@ namespace Echo.Logic
                                     break;
                                 default:
                                     LastOperation = -1;
-                                    this.listen(e);
+                                    listen(e);
                                     break;
                             }
                         }
