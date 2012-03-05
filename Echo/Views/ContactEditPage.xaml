@@ -1,0 +1,190 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Echo.Views.ContactEditPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:helpers="clr-namespace:Echo.Helpers"
+    xmlns:keyboard="clr-namespace:WPKeyboardHelper"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:SlideTransition Mode="SlideUpFadeIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:SlideTransition Mode="SlideUpFadeIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:SlideTransition Mode="SlideDownFadeOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:SlideTransition Mode="SlideDownFadeOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True">
+            <shell:ApplicationBar.Buttons>
+                <cal:AppBarButton x:Name="Save" Text="save" Message="Save" IconUri="/icons/appbar.check.rest.png" />
+                <cal:AppBarButton x:Name="Cancel" Text="cancel" Message="Cancel" IconUri="/icons/appbar.cancel.rest.png" />
+            </shell:ApplicationBar.Buttons>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+    <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel enthält den Namen der Anwendung und den Seitentitel-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" 
+                       Text="NEW CONTACT" 
+                       Style="{StaticResource PhoneTextNormalStyle}"/>
+        </StackPanel>
+
+        <!--ContentPanel - zusätzliche Inhalte hier platzieren-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <i:Interaction.Behaviors>
+                <keyboard:KeyboardTabHelperBehavior />
+            </i:Interaction.Behaviors>
+            <ListBox x:Name="Values" Width="444" Margin="0,0,0,12">
+                <Border x:Name="ImagePlaceHolder"
+                        Width="150"
+                        Height="150"
+                        Margin="12, 0, 0, 12"
+                        Background="{StaticResource PhoneAccentBrush}"
+                        toolkit:TiltEffect.IsTiltEnabled="True">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Tap">
+                            <cal:ActionMessage MethodName="PictureTapped" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Grid Height="150" Width="150">
+                        <TextBlock Text="add photo"
+                               HorizontalAlignment="Left" 
+                               VerticalAlignment="Bottom" 
+                               TextWrapping="Wrap"
+                               Foreground="{StaticResource PhoneForegroundBrush}"
+                               Style="{StaticResource PhoneTextLargeStyle}"
+                               Margin="4, 0, 10, 2" />
+                        <Image Source="{Binding UserImageSource}"
+                               Width="150"
+                               Height="150" />
+                    </Grid>
+                </Border>
+
+                <ListBoxItem x:Name="FirstNameItem">
+                    <StackPanel Margin="0,0,0,12" Width="444">
+                        <TextBlock Text="First Name" 
+                                   TextWrapping="Wrap" 
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Foreground="{StaticResource PhoneForegroundBrush}" 
+                                   Opacity="0.7"/>
+                        <TextBox x:Name="FirstName"
+                                 TabIndex="1"
+                                 Text="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=Default}"
+                                 TextWrapping="Wrap" />
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem x:Name="LastNameItem">
+                    <StackPanel Margin="0,0,0,12" Width="444">
+                        <TextBlock Text="Last Name"
+                                   TextWrapping="Wrap" 
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Foreground="{StaticResource PhoneForegroundBrush}" 
+                                   Opacity="0.7" />
+                        <TextBox x:Name="LastName" 
+                                 TabIndex="2"
+                                 TextWrapping="Wrap" 
+                                 Text="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=Default}" />
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem x:Name="UserIDItem">
+                    <StackPanel Margin="0,0,0,12" Width="444">
+                        <TextBlock Text="User ID (Phone #)" 
+                                   TextWrapping="Wrap"
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Foreground="{StaticResource PhoneForegroundBrush}" Opacity="0.7"/>
+                        <TextBox x:Name="UserID" 
+                                 TextWrapping="Wrap" 
+                                 Text="{Binding Path=UserID, Mode=TwoWay, UpdateSourceTrigger=Default}"
+                                 TabIndex="3">
+                            <i:Interaction.Behaviors>
+                                <helpers:TextBoxUpdateBehavior />
+                            </i:Interaction.Behaviors>
+                        </TextBox>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem x:Name="GroupsText">
+                    <StackPanel Margin="0, 0, 0, -30"
+                         Orientation="Horizontal">
+                        <Border Width="3"
+                                Height="84"
+                                Margin="0, 12, 0, 0"
+                                Background="{StaticResource PhoneAccentBrush}" />
+                        <TextBlock Text="Groups:"
+                               Style="{StaticResource PhoneTextExtraLargeStyle}" />
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem x:Name="GroupListItem">
+                    <ItemsControl x:Name="GroupList"
+                                  toolkit:TiltEffect.IsTiltEnabled="True">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox x:Name="GroupCheckBox"
+                                          Margin="0, -12, 0, -12"
+                                          IsChecked="{Binding Path=UserIsMember, Mode=TwoWay}">
+                                    <TextBlock x:Name="GroupName"
+                                               Text="{Binding Path=GroupName}"
+                                               Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu cal:Action.TargetWithoutContext="{Binding DataContext, ElementName=GroupList}">
+                                            <toolkit:MenuItem Header="Delete" 
+                                                              cal:Message.Attach="DeleteGroup($dataContext)" />
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                </CheckBox>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <StackPanel Margin="0,0,0,12" Width="444" Orientation="Horizontal"
+                                toolkit:TiltEffect.IsTiltEnabled="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Tap">
+                                <cal:ActionMessage MethodName="NewGroupTapped">
+                                    <!--<cal:Parameter Value="$dataContext" />-->
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <Image Source="/icons/appbar.add.rest.png" Width="56" />
+                        <TextBlock TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" Text="New Group" />
+                    </StackPanel>
+                </ListBoxItem>
+            </ListBox>
+        </Grid>
+    </Grid>
+</phone:PhoneApplicationPage>

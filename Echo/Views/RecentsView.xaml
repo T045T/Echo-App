@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="Echo.Views.RecentsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480">
+
+    <Grid x:Name="LayoutRoot">
+        <ScrollViewer>
+            <StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="4" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="recent" 
+                       Style="{StaticResource PhoneTextTitle1Style}" 
+                       Margin="12, 0, 0, 12"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"/>
+                    <Border Margin="12, 0, 0, 0" 
+                    Grid.Row="1" 
+                    Grid.Column="0" 
+                    Background="{StaticResource PhoneAccentBrush}" />
+                </Grid>
+                <ItemsControl ItemsSource="{Binding Path=UDC.AllLogsList, Mode=OneWay}" 
+                              Margin="0,0,-12,0"
+                              toolkit:TiltEffect.IsTiltEnabled="True">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="12">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Tap">
+                                        <cal:ActionMessage MethodName="GotoCallLogPage">
+                                            <cal:Parameter Value="$dataContext" />
+                                        </cal:ActionMessage>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="4"/>
+                                    <ColumnDefinition Width="6*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+
+                                <Border Grid.Column="0"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2">
+                                    <Image Source="/icons/lePhone.png" />
+                                </Border>
+                                <Border Grid.Column="1"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="3"
+                                        Background="{StaticResource PhoneAccentBrush}"
+                                        Opacity="0.5"/>
+
+                                <TextBlock TextWrapping="Wrap" 
+                                           Grid.Column="2"
+                                           Grid.Row="0"
+                                           Text="{Binding StartTime}" 
+                                           Style="{StaticResource PhoneTextNormalStyle}"
+                                           Foreground="{StaticResource PhoneAccentBrush}"/>
+                                <TextBlock Text="{Binding Path=User.FirstLast, Mode=OneWay}" 
+                                           Grid.Column="2"
+                                           Grid.Row="1"
+                                           Style="{StaticResource PhoneTextLargeStyle}" 
+                                           Foreground="{StaticResource PhoneForegroundBrush}"/>
+                                <TextBlock Text="{Binding Snippet}" 
+                                           Grid.Column="2"
+                                           Grid.Row="2"
+                                           TextWrapping="Wrap"
+                                           Style="{StaticResource PhoneTextSubtleStyle}" 
+                                           Foreground="{StaticResource PhoneForegroundBrush}" 
+                                           Opacity="0.7" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

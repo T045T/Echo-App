@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Echo", "Echo\Echo.csproj", "{16292F56-8854-4CC5-BDCB-3A1E6E305F4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkTestApp", "NetworkTestApp\NetworkTestApp.csproj", "{B7CD5FE2-6EE6-40B5-8817-3596909FCAB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkTestApp_Moritz", "NetworkTestApp_Moritz\NetworkTestApp_Moritz.csproj", "{3455E32E-E2FC-407E-BBCB-C30CABCEFB5C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16292F56-8854-4CC5-BDCB-3A1E6E305F4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16292F56-8854-4CC5-BDCB-3A1E6E305F4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16292F56-8854-4CC5-BDCB-3A1E6E305F4D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{16292F56-8854-4CC5-BDCB-3A1E6E305F4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16292F56-8854-4CC5-BDCB-3A1E6E305F4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16292F56-8854-4CC5-BDCB-3A1E6E305F4D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B7CD5FE2-6EE6-40B5-8817-3596909FCAB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7CD5FE2-6EE6-40B5-8817-3596909FCAB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7CD5FE2-6EE6-40B5-8817-3596909FCAB2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B7CD5FE2-6EE6-40B5-8817-3596909FCAB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7CD5FE2-6EE6-40B5-8817-3596909FCAB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7CD5FE2-6EE6-40B5-8817-3596909FCAB2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{3455E32E-E2FC-407E-BBCB-C30CABCEFB5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3455E32E-E2FC-407E-BBCB-C30CABCEFB5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3455E32E-E2FC-407E-BBCB-C30CABCEFB5C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{3455E32E-E2FC-407E-BBCB-C30CABCEFB5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3455E32E-E2FC-407E-BBCB-C30CABCEFB5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3455E32E-E2FC-407E-BBCB-C30CABCEFB5C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

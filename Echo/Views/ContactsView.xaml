@@ -1,0 +1,187 @@
+﻿<UserControl x:Class="Echo.Views.ContactsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:hlp="clr-namespace:Echo.Helpers"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480">
+
+    <Grid x:Name="LayoutRoot">
+        <toolkit:LongListSelector IsFlatList="False" 
+                                  x:Name="UserLongList" 
+                                  ItemsSource="{Binding Path=UsersByName, Mode=OneWay}"
+                                  Margin="0,0,-12,0" Background="Transparent" 
+                                  Foreground="{StaticResource PhoneForegroundBrush}"
+                                  BufferSize="2.5"
+                                  toolkit:TiltEffect.IsTiltEnabled="True"
+                                  MaximumFlickVelocity="2000">
+            
+            <toolkit:LongListSelector.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal"  Margin="12,0,0,12"
+                                Background="{StaticResource PhoneBackgroundBrush}">
+                        <toolkit:ContextMenuService.ContextMenu>
+                            <toolkit:ContextMenu cal:Action.TargetWithoutContext="{Binding DataContext, ElementName=UserLongList}">
+                                <toolkit:MenuItem Header="Delete" 
+                                                  cal:Message.Attach="DeleteContact($dataContext)" />
+                                <toolkit:MenuItem Header="Edit"
+                                                  cal:Message.Attach="EditContact($dataContext)" />
+                            </toolkit:ContextMenu>
+                        </toolkit:ContextMenuService.ContextMenu>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Tap">
+                                <cal:ActionMessage MethodName="ContactTapped">
+                                    <cal:Parameter Value="$dataContext" />
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        
+                        <Border Width="62" Height="62" Background="Gray">
+                            <Image Width="62" Height="62" Source="{Binding Path=UserImageSource, Mode=OneWay}"/>
+                        </Border>
+                        <StackPanel>
+                            <TextBlock x:Name="FirstLast" Text="{Binding Path=FirstLast}" 
+                                       Visibility="{Binding ElementName=UserLongList, Path=DataContext.NameOrder, Mode=OneWay}" 
+                                       Style="{StaticResource PhoneTextLargeStyle}" 
+                                       Foreground="{StaticResource PhoneForegroundBrush}" />
+                            <TextBlock x:Name="LastFirst" Text="{Binding Path=LastFirst}" 
+                                       Visibility="{Binding ElementName=UserLongList, Path=DataContext.NotNameOrder, Mode=OneWay}" 
+                                       Style="{StaticResource PhoneTextLargeStyle}" 
+                                       Foreground="{StaticResource PhoneForegroundBrush}" />
+                            <TextBlock x:Name="UserID" 
+                                       Text="{Binding Path=UserID, Mode=OneWay}" 
+                                       TextWrapping="NoWrap"  
+                                       Margin="12,-4,0,0" 
+                                       Style="{StaticResource PhoneTextSubtleStyle}" 
+                                       Foreground="{StaticResource PhoneForegroundBrush}" 
+                                       Opacity="0.695" />
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </toolkit:LongListSelector.ItemTemplate>
+
+            <toolkit:LongListSelector.GroupHeaderTemplate>
+                <DataTemplate>
+                    <Border HorizontalAlignment="Left" Margin="12, 0, 0, 12" Width="62" Height="62" 
+                            Background="{StaticResource PhoneAccentBrush}">
+                        <TextBlock Text="{Binding Title}" 
+                                   Style="{StaticResource PhoneTextExtraLargeStyle}" 
+                                   Margin="6, 0, 0, 0" VerticalAlignment="Bottom" 
+                                   Foreground="{StaticResource PhoneForegroundBrush}" />
+                    </Border>
+                </DataTemplate>
+            </toolkit:LongListSelector.GroupHeaderTemplate>
+
+            <toolkit:LongListSelector.GroupItemsPanel>
+                <ItemsPanelTemplate>
+                    <toolkit:WrapPanel toolkit:TiltEffect.IsTiltEnabled="True" />
+                </ItemsPanelTemplate>
+            </toolkit:LongListSelector.GroupItemsPanel>
+
+            <toolkit:LongListSelector.GroupItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem>
+                    <Border Width="99" Height="99" Margin="6"  
+                            Background="{Binding GroupBackgroundBrush}" 
+                            IsHitTestVisible="{Binding HasItems}">
+                        <TextBlock Text="{Binding Title}"
+                                   Foreground="{StaticResource PhoneForegroundBrush}"
+                                   VerticalAlignment="Bottom"
+                                   Style="{StaticResource PhoneTextExtraLargeStyle}"
+                                   Margin="6, 0" />
+                    </Border>
+                    </ListBoxItem>
+                </DataTemplate>
+            </toolkit:LongListSelector.GroupItemTemplate>
+
+            <toolkit:LongListSelector.ListHeaderTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="contacts" 
+                                   Style="{StaticResource PhoneTextTitle1Style}" 
+                                   Margin="12, 0, 0, 12"
+                                   Grid.Row="0" />
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Margin="12, 0, 0, 0" Grid.Row="0" Grid.Column="0" Background="{StaticResource PhoneAccentBrush}" />
+                        </Grid>
+                        <ItemsControl x:Name="GroupList" 
+                                      ItemsSource="{Binding ElementName=UserLongList, Path=DataContext.GroupList}"
+                                      Grid.Row="2"
+                                      Margin="0, 12, 0, 0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ListBoxItem>
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Tap">
+                                                <cal:ActionMessage MethodName="GroupTapped">
+                                                    <cal:Parameter Value="$dataContext" />
+                                                </cal:ActionMessage>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <Grid Background="{StaticResource PhoneBackgroundBrush}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="GroupName"
+                                               Text="{Binding Path=GroupName, Mode=OneWay}"
+                                               Style="{StaticResource PhoneTextExtraLargeStyle}"
+                                                   Margin="12, 0, 0, 12"
+                                               Grid.Row="0"
+                                               Grid.Column="0">
+                                        </TextBlock>
+                                    </Grid>
+                                    </ListBoxItem>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Text=" " Grid.Row="3" />
+                    </Grid>
+                </DataTemplate>
+            </toolkit:LongListSelector.ListHeaderTemplate>
+            
+            <toolkit:LongListSelector.ListFooterTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text=" " Style="{StaticResource PhoneTextExtraLargeStyle}" Grid.Column="0" Grid.Row="0" />
+                        <TextBlock Text=" " Style="{StaticResource PhoneTextExtraLargeStyle}" Grid.Column="0" Grid.Row="1" />
+                    </Grid>
+                </DataTemplate>
+            </toolkit:LongListSelector.ListFooterTemplate>
+        </toolkit:LongListSelector>
+    </Grid>
+</UserControl>

@@ -1,0 +1,139 @@
+﻿<phone:PhoneApplicationPage 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:views="clr-namespace:Echo.Views"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+	xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+	xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:keyboard="clr-namespace:WPKeyboardHelper"
+	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+	x:Class="Echo.Views.SettingsPage"
+	FontFamily="{StaticResource PhoneFontFamilyNormal}"
+	FontSize="{StaticResource PhoneFontSizeNormal}"
+	Foreground="{StaticResource PhoneForegroundBrush}"
+	SupportedOrientations="Portrait" Orientation="Portrait"
+	shell:SystemTray.IsVisible="True">
+
+    <!--Das LayoutRoot-Objekt ist das Stammraster, das den gesamten Seiteninhalt aufnimmt.-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <controls:Pivot Title="SETTINGS">
+            <!--Pivot-Element 1-->
+            <controls:PivotItem Header="general">
+                <StackPanel>
+                    <toolkit:ToggleSwitch x:Name="STTSwitch" 
+                                          Header="Speech-to-Text" 
+                                          IsChecked="{Binding Path=STTSetting, Mode=TwoWay}"/>
+                    <toolkit:ToggleSwitch x:Name="BGASwitch" 
+                                          Header="Background Agent" 
+                                          IsChecked="{Binding Path=BackgroundSetting, Mode=TwoWay}"/>
+                    <toolkit:ToggleSwitch x:Name="RunUnderLockSwitch" 
+                                          Header="Run under lock screen" 
+                                          IsChecked="{Binding Path=RunUnderLockSetting, Mode=TwoWay}"/>
+                    <toolkit:ToggleSwitch x:Name="NameSwitch" 
+                                          Header="Name Order (On -> First Last)" 
+                                          IsChecked="{Binding Path=NameOrderSetting, Mode=TwoWay}"/>
+                </StackPanel>
+            </controls:PivotItem>
+
+            <!--Pivot-Element 2-->
+            <controls:PivotItem Header="account">
+                <i:Interaction.Behaviors>
+                    <keyboard:KeyboardTabHelperBehavior />
+                </i:Interaction.Behaviors>
+                
+                <StackPanel>
+                    <TextBlock Text="SIP Service"
+                               Style="{StaticResource PhoneTextLargeStyle}"
+                               Foreground="{StaticResource PhoneAccentBrush}"/>
+                    <StackPanel Margin="0,0,0,12">
+                        <TextBlock TextWrapping="Wrap" 
+                                   Text="Login" 
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Foreground="{StaticResource PhoneForegroundBrush}"
+                                   Opacity="0.7"/>
+                        <TextBox x:Name="UserName" 
+                                 TextWrapping="Wrap" 
+                                 TabIndex="1"
+                                 Text="{Binding Path=UsernameSetting, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,12">
+                        <TextBlock TextWrapping="Wrap" 
+                                   Text="Password" 
+                                   Style="{StaticResource PhoneTextSubtleStyle}"
+                                   Foreground="{StaticResource PhoneForegroundBrush}" 
+                                   Opacity="0.7"/>
+                        <PasswordBox x:Name="Password" 
+                                     TabIndex="2"
+                                     Password="{Binding Path=PasswordSetting, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="100">
+                        <StackPanel Margin="0" Width="336">
+                            <TextBlock TextWrapping="Wrap" 
+                                       Text="Server" 
+                                       Style="{StaticResource PhoneTextSubtleStyle}"
+                                       Foreground="{StaticResource PhoneForegroundBrush}" 
+                                       Opacity="0.7"/>
+                            <TextBox x:Name="ServerAddress" 
+                                     TextWrapping="Wrap" 
+                                     TabIndex="3"
+                                     InputScope="Url"
+                                     Text="{Binding Path=ServerSetting, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Margin="0" Width="120">
+                            <TextBlock TextWrapping="Wrap" 
+                                       Text="Port"
+                                       Style="{StaticResource PhoneTextSubtleStyle}"
+                                       Foreground="{StaticResource PhoneForegroundBrush}" 
+                                       Opacity="0.7"/>
+                            <TextBox x:Name="ServerPort"
+                                     TextWrapping="Wrap"
+                                     TabIndex="4"
+                                     Width="120"
+                                     Text="{Binding Path=PortSetting, Mode=TwoWay}"
+                                     InputScope="Number"
+                                     TextAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <TextBlock Text="Echo"
+                               Style="{StaticResource PhoneTextLargeStyle}"
+                               Foreground="{StaticResource PhoneAccentBrush}"/>
+                    <StackPanel Orientation="Horizontal" Height="100">
+                        <StackPanel Margin="0" Width="336">
+                            <TextBlock TextWrapping="Wrap" 
+                                       Text="Server" 
+                                       Style="{StaticResource PhoneTextSubtleStyle}"
+                                       Foreground="{StaticResource PhoneForegroundBrush}" 
+                                       Opacity="0.7"/>
+                            <TextBox x:Name="EchoServerAddress" 
+                                     TextWrapping="Wrap" 
+                                     TabIndex="3"
+                                     InputScope="Url"
+                                     Text="{Binding Path=EchoServerSetting, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Margin="0" Width="120">
+                            <TextBlock TextWrapping="Wrap" 
+                                       Text="Port"
+                                       Style="{StaticResource PhoneTextSubtleStyle}"
+                                       Foreground="{StaticResource PhoneForegroundBrush}" 
+                                       Opacity="0.7"/>
+                            <TextBox x:Name="EchoServerPort"
+                                     TextWrapping="Wrap"
+                                     TabIndex="4"
+                                     Width="120"
+                                     Text="{Binding Path=EchoPortSetting, Mode=TwoWay}"
+                                     InputScope="Number"
+                                     TextAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <!--<toolkit:ToggleSwitch x:Name="SSLSwitch"  Header="Use SSL" IsChecked="{Binding Path=UseSSLSetting, Mode=TwoWay}"/>-->
+                    <Button Content="Test Settings" IsEnabled="{Binding Path=TestButtonEnabled, Mode=OneWay}"/>
+                </StackPanel>
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+</phone:PhoneApplicationPage>

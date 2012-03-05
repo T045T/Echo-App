@@ -1,0 +1,199 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Echo.Views.TrainerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Landscape" Orientation="Landscape"
+    mc:Ignorable="d" d:DesignHeight="480" d:DesignWidth="728"
+    shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True">
+            <shell:ApplicationBar.Buttons>
+                <cal:AppBarButton Text="previous"
+                                  IconUri="/icons/appbar.back.rest.png" />
+                <cal:AppBarButton Text="stop training" 
+                                  IconUri="/icons/appbar.transport.stop.rest.png" />
+                <cal:AppBarButton Text="next"
+                                  IconUri="/icons/appbar.next.rest.png" />
+            </shell:ApplicationBar.Buttons>
+            <shell:ApplicationBar.MenuItems>
+                <cal:AppBarMenuItem Text="View instruction video" />
+                <cal:AppBarMenuItem Text="Start Over" />
+            </shell:ApplicationBar.MenuItems>
+
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+    <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel enthält den Namen der Anwendung und den Seitentitel-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,12,0,12">
+            <TextBlock x:Name="PageTitle" 
+                       Text="apple" 
+                       Margin="9,-7,0,0" 
+                       Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+        </StackPanel>
+
+        <!--ContentPanel - zusätzliche Inhalte hier platzieren-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border Background="{StaticResource TransparentBrush}"
+                    Grid.Row="0">
+                <Image Source="/icons/TrainerMockupContent.PNG"
+                       HorizontalAlignment="Left"/>
+            <!--<Image Source="{Binding Visualization}" />-->
+            </Border>
+            <ItemsControl ItemsSource="{Binding OffsetList}" 
+                          Grid.Row="1">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="12">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Tap">
+                                    <cal:ActionMessage MethodName="PhonemeTapped">
+                                        <cal:Parameter Value="$dataContext" />
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="4" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.RenderTransform>
+                                <TranslateTransform X="{Binding OffsetPixels}" />
+                            </Grid.RenderTransform>
+                            <Border Grid.Row="0" 
+                                Width="{Binding LengthPixels}" 
+                                Background="{StaticResource PhoneAccentBrush}"
+                                HorizontalAlignment="Left"/>
+                            <TextBlock Grid.Row="1" 
+                                   Margin="0"
+                                   Text="{Binding Content}"
+                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                   HorizontalAlignment="Left"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ListBoxItem>
+                    <Grid Margin="0, 12, 0, 12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.RenderTransform>
+                            <TranslateTransform X="115" />
+                        </Grid.RenderTransform>
+                        <Border Grid.Row="0" 
+                                Width="145" 
+                                Background="{StaticResource PhoneAccentBrush}"
+                                HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Row="1" 
+                                   Margin="0"
+                                   Text="æ"
+                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                   HorizontalAlignment="Left"/>
+                    </Grid>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <Grid Margin="0, 12, 0, 12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.RenderTransform>
+                            <TranslateTransform X="345" />
+                        </Grid.RenderTransform>
+                        <Border Grid.Row="0" 
+                                Width="18" 
+                                Background="{StaticResource PhoneAccentBrush}"
+                                HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Row="1" 
+                                   Margin="0"
+                                   Text="p"
+                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                   HorizontalAlignment="Left"/>
+                    </Grid>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <Grid Margin="0, 12, 0, 12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.RenderTransform>
+                            <TranslateTransform X="367" />
+                        </Grid.RenderTransform>
+                        <Border Grid.Row="0" 
+                                Width="120" 
+                                Background="{StaticResource PhoneAccentBrush}"
+                                HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Row="1" 
+                                   Margin="0"
+                                   Text="a"
+                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                   HorizontalAlignment="Left"/>
+                    </Grid>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <Grid Margin="0, 12, 0, 12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.RenderTransform>
+                            <TranslateTransform X="490" />
+                        </Grid.RenderTransform>
+                        <Border Grid.Row="0" 
+                                Width="100" 
+                                Background="{StaticResource PhoneAccentBrush}"
+                                HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Row="1" 
+                                   Margin="0"
+                                   Text="l"
+                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                   HorizontalAlignment="Left"/>
+                    </Grid>
+                </ListBoxItem>
+            </ItemsControl>
+        </Grid>
+    </Grid>
+
+    <!--Beispielcode zur Verwendung von ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Schaltfläche 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Schaltfläche 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Menüelement 1"/>
+                <shell:ApplicationBarMenuItem Text="Menüelement 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>

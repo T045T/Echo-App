@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Echo.Views.ContactDetailView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="800" d:DesignWidth="480">
+    
+    <Grid x:Name="LayoutRoot">
+        <ListBox BorderThickness="12,0,0,0">
+                <StackPanel Orientation="Horizontal" Width="444">
+                    <Image Width="180" Source="{Binding Path=UserImagePath, Mode=OneWay}" Height="180"/>
+                    <StackPanel x:Name="LogEntry" Width="264" Height="150" VerticalAlignment="Top">
+                        <TextBlock TextWrapping="Wrap" Text="Last Call:" Foreground="{StaticResource PhoneAccentBrush}" FontSize="24"/>
+                        <TextBlock TextWrapping="Wrap" x:Name="LogContent" FontSize="21.333" Foreground="{StaticResource PhoneForegroundBrush}"/>
+                        <TextBlock TextWrapping="Wrap" Text="15 minutes ago" Foreground="{StaticResource PhoneForegroundBrush}" Opacity="0.7" FontSize="16"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel x:Name="CallBtn" Width="444" Margin="0,5,0,10">
+                    <TextBlock TextWrapping="Wrap" Text="call using echo" FontSize="34.667"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Path=UserID, Mode=OneWay}" Foreground="{StaticResource PhoneAccentBrush}" FontSize="21.333"/>
+                </StackPanel>
+            <!--
+                <StackPanel Width="444" Margin="0,5,0,10">
+                    <TextBlock TextWrapping="Wrap" Text="call regular phone" FontSize="34.667"/>
+                    <TextBlock TextWrapping="Wrap" Text="(1)-555-1337" Foreground="{StaticResource PhoneAccentBrush}" FontSize="21.333"/>
+                </StackPanel>
+                <StackPanel Margin="0,5,0,10" Width="444">
+                    <TextBlock TextWrapping="Wrap" Text="text" FontSize="34.667"/>
+                    <TextBlock TextWrapping="Wrap" Text="(1)-555-1337" Foreground="{StaticResource PhoneAccentBrush}" FontSize="21.333"/>
+                </StackPanel>
+            -->
+            </ListBox>
+    </Grid>
+</UserControl>
