@@ -17,6 +17,7 @@ namespace Echo.Logic
 {
     public delegate void DataReceivedEventHandler(object sender, string e);
     public delegate void AcquiredPortEventHandler(object sender, int e);
+    public delegate void CallStartedHandler(object sender, EventArgs e);
 
     public class Connection : Screen
     {
@@ -75,6 +76,7 @@ namespace Echo.Logic
         }
         public event DataReceivedEventHandler DataReceived;
         public event AcquiredPortEventHandler AcquiredPort;
+        public event CallStartedHandler CallStarted;
 
         protected virtual void OnDataReceived(string s)
         {
@@ -89,6 +91,14 @@ namespace Echo.Logic
             if (AcquiredPort != null)
             {
                 AcquiredPort(this, i);
+            }
+        }
+
+        protected virtual void OnCallStarted()
+        {
+            if (CallStarted != null)
+            {
+                CallStarted(this, new EventArgs());
             }
         }
 

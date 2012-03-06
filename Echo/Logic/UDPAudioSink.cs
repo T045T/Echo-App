@@ -24,7 +24,18 @@ namespace Echo.Logic
         private bool ALAW;
 
         private string Server;
-        private int Port;
+        private int? _Port;
+        public int? Port
+        {
+            get { return _Port; }
+            set
+            {
+                if (value != _Port)
+                {
+                    _Port = value;
+                }
+            }
+        }
 
         private DispatcherTimer dt;
 
@@ -97,16 +108,25 @@ namespace Echo.Logic
 
         }
 
-        public void StartSending(string AddressOrDns, int Port)
+        public bool StartSending(string AddressOrDns)
         {
-            ConnectSocket(AddressOrDns, Port);
-            microphone.BufferDuration = TimeSpan.FromMilliseconds(1000);
-            buffer = new byte[microphone.GetSampleSizeInBytes(microphone.BufferDuration)];
-            microphone.Start();
+            if (Port != null)
+            {
+                ConnectSocket(AddressOrDns, (int) Port);
+                microphone.BufferDuration = TimeSpan.FromMilliseconds(1000);
+                buffer = new byte[microphone.GetSampleSizeInBytes(microphone.BufferDuration)];
+                microphone.Start();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public void StopSending()
         {
             _Sending = false;
+            Port = null;
             NotifyOfPropertyChange("CanStartSending");
             NotifyOfPropertyChange("CanStopSending");
             microphone.Stop();
@@ -133,11 +153,11 @@ namespace Echo.Logic
 
         public void SendBytes(byte[] buffer)
         {
-            if (mySocket != null && mySocket.Connected)
+            if (Port != null && mySocket != null && mySocket.Connected)
             {
                 SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs()
                 {
-                    RemoteEndPoint = new IPEndPoint(IPAddress.Parse(Server), Port)
+                    RemoteEndPoint = new IPEndPoint(IPAddress.Parse(Server), (int) Port)
                 };
                 socketEventArg.SetBuffer(buffer, 0, buffer.Length);
                 //socketEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(socketEventArg_Completed);

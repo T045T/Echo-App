@@ -138,17 +138,10 @@ namespace Echo.ViewModels
             {
                 PreviousCallLog = previousLogs.First();
             }
-            CurrentCallLog = new CallLogModel(Callee.ID);
-            CallStart = CurrentCallLog.StartTime;
-            TimeUpdater.Start();
-
-            //CurrentCallLog.addEntry("Helvetica salvia keytar, tattooed lo-fi eiusmod freegan DIY bespoke sed pop-up mlkshk small batch four loko brunch.");
-            Callee.CallLogs.Add(CurrentCallLog);
-            udc.SubmitChanges();
             if (isIncoming)
             {
                 // Answer call
-                con.pickupCall();
+                    con.pickupCall();
             }
             else
             {
@@ -159,10 +152,45 @@ namespace Echo.ViewModels
             CallInProgress = true;
         }
 
+        private void StartCall()
+        {
+            CurrentCallLog = new CallLogModel(Callee.ID);
+            CallStart = CurrentCallLog.StartTime;
+            TimeUpdater.Start();
+
+            Callee.CallLogs.Add(CurrentCallLog);
+            udc.SubmitChanges();
+
+            CallInProgress = true;
+        }
+
         void con_AcquiredPort(object sender, int e)
         {
             this.UDPSink.StopSending();
-            this.UDPSink.StartSending(setModel.getValueOrDefault<string>(setModel.EchoServerSettingKeyName, setModel.EchoServerDefault), e);
+            this.UDPSink.Port = e;
+            if (isIncoming)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    con.pickupCall();
+                    this.UDPSink.StartSending(setModel.getValueOrDefault<string>(setModel.EchoServerSettingKeyName, setModel.EchoServerDefault));
+                    StartCall();
+                });
+            }
+            else
+            {
+                con.CallStarted += new CallStartedHandler(con_CallStarted);
+            }
+        }
+
+        void con_CallStarted(object sender, EventArgs e)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                this.UDPSink.StartSending(setModel.getValueOrDefault<string>(setModel.EchoServerSettingKeyName, setModel.EchoServerDefault));
+                StartCall();
+                con.CallStarted -= new CallStartedHandler(con_CallStarted);
+            });
         }
 
         void con_DataReceived(object sender, string e)
