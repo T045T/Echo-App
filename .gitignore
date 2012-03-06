@@ -1,0 +1,21 @@
+.DS_Store
+
+*~
+*.class
+/visual studio projekte/Echo/Echo/Bin/Release/
+/Visual Studio Projekte/Echo/Echo/Bin/Release/
+/visual studio projekte/Echo/Echo/Bin/
+/Visual Studio Projekte/Echo/Echo/Bin/
+/visual studio projekte/Echo/Echo/PerformanceLogs/
+/Visual Studio Projekte/Echo/Echo/PerformanceLogs/
+/visual studio projekte/Echo/Echo/obj/
+/Visual Studio Projekte/Echo/Echo/obj/
+/visual studio projekte/Echo/Echo/src/
+/Visual Studio Projekte/Echo/Echo/src/
+/Eclipse Projekte/Echo_Server/bin
+/Eclipse Projekte/peers/peers-lib/target/
+*.dgml
+*.suo
+TestFooBenni.java
+*.classpath
+*.sap
