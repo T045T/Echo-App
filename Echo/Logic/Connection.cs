@@ -634,6 +634,7 @@ namespace Echo.Logic
         private void calleePickup()
         {
             Ringing = false;
+            OnCallStarted();
         }
 
         private void analyzing()
