@@ -7,6 +7,7 @@ In Addition to the telephone part, *Echo* includes a pronunciation trainer that 
 
 License
 -------
+This License, of course, only applies to Echo's original assets, not to the Libraries and assemblies used within.
 
 Copyright (c) 2012, [Team Echo](http://www.echo-app.org)
 
