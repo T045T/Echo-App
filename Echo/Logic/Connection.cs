@@ -605,7 +605,7 @@ namespace Echo.Logic
                 case ErrorCodes.CORRUPTEDDATA:
                     break;
                 case ErrorCodes.LOGINFAILED:
-                    reconnect();
+                    //reconnect();
                     break;
                 case ErrorCodes.CALLFAILED:
                     break;
