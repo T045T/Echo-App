@@ -66,27 +66,25 @@
     <Grid x:Name="LayoutRoot"
           Background="{StaticResource PhoneChromeBrush}">
         <StackPanel>
-            <Grid>
-                <Border Background="{StaticResource PhoneAccentBrush}"
-                        Margin="0, 0, 0, 12">
+               <Border Background="{StaticResource PhoneAccentBrush}"
+                        Margin="0">
                     <TextBlock Text="Incoming Call" 
-                               Padding="12"
+                               Padding="0"
+                               Margin="0, -4, 0, 4"
                                Style="{StaticResource PhoneTextTitle2Style}"
                                HorizontalAlignment="Center"/>
                 </Border>
-            </Grid>
-            <Grid Margin="6, 0, 0, 0">
+            <Grid Margin="24, 12, 0, 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Border Width="180"
-                        Height="180"
+                <Border Width="173"
+                        Height="173"
                         Background="Gray"
-                        Margin="6">
-                    <Image Width="180"
-                           Height="180"
-                           Grid.Column="0"
+                        Grid.Column="0">
+                    <Image Width="173"
+                           Height="173"
                            Source="{Binding Path=Caller.UserImageSource, Mode=OneWay}" />
                 </Border>
                 <StackPanel Grid.Column="1"
@@ -94,16 +92,18 @@
                     <TextBlock Text="{Binding Path=Caller.FirstName, Mode=OneWay}"
                                TextWrapping="NoWrap"
                                Margin="12, 0, 0, 0"
+                               FontSize="64"
                                Style="{StaticResource PhoneTextTitle1Style}"
                                VerticalAlignment="Top"/>
                     <TextBlock Text="{Binding Path=Caller.LastName, Mode=OneWay}"
                                TextWrapping="NoWrap"
                                VerticalAlignment="Top"
                                Margin="12, -12, 0, 0"
+                               FontSize="64"
                                Style="{StaticResource PhoneTextTitle1Style}"/>
                 </StackPanel>
             </Grid>
-            <Grid Margin="6, 0, 6, 6">
+            <Grid Margin="24, 6, 24, 6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*"/>
@@ -116,10 +116,12 @@
                         Content="Answer"
                         Padding="12"
                         Background="Gray"
+                        Margin="-6, 0, 0, 0"
                         BorderThickness="0" Style="{StaticResource MarginlessButtonStyle}" />
                 <Button x:Name="Decline"
                         Content="Decline"
                         Padding="12"
+                        Margin="0, 0, -6, 0"
                         Background="Gray"
                 	    BorderThickness="0" Style="{StaticResource MarginlessButtonStyle}" Grid.Column="1" />
             </Grid>
