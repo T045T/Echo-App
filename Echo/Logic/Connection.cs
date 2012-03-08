@@ -355,6 +355,8 @@ namespace Echo.Logic
                                     listen(e);
                                     LastReceiveOperation = -1;
                                     break;
+                                default: LastReceiveOperation = -1;
+                                    break;
                             }
                             if (LastReceiveOperation != ServerHeader.MORETEXT)
                             {
@@ -485,7 +487,7 @@ namespace Echo.Logic
             string sipServer = setModel.getValueOrDefault<string>(setModel.ServerSettingKeyName, setModel.ServerDefault);
             string sipPort = setModel.getValueOrDefault<int>(setModel.PortSettingKeyName, setModel.PortDefault).ToString();
 
-            String userdata = username + ";" + sipServer + ";" + password + ";" + sipPort; //"1467440;sipgate.de;DDAFTG;5060";
+            String userdata = username + ";" + sipServer + ";" + password + ";" + sipPort; //format: "username;server;password;port"
 
             byte[] data = Encoding.UTF8.GetBytes(userdata);
             byte[] netData = encryptNetData(data);
