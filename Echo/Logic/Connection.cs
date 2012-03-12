@@ -17,6 +17,7 @@ namespace Echo.Logic
 {
     public delegate void DataReceivedEventHandler(object sender, string e);
     public delegate void AcquiredPortEventHandler(object sender, int e);
+    public delegate void RemoteHangupEventHandler(object sender, EventArgs e);
     public delegate void CallStartedHandler(object sender, EventArgs e);
 
     public class Connection : Screen
@@ -35,7 +36,6 @@ namespace Echo.Logic
 
         private IPAddress ip;
         private string dns;
-        private int voicePort;
 
         private int LastSendOperation;
         private int LastReceiveOperation;
@@ -46,6 +46,20 @@ namespace Echo.Logic
         //{
         //    get { return this.Socket.Connected; }
         //}
+
+        private int? _VoicePort;
+        public int? VoicePort
+        {
+            get { return _VoicePort; }
+            set
+            {
+                if (value != _VoicePort)
+                {
+                    _VoicePort = value;
+                    NotifyOfPropertyChange("Port");
+                }
+            }
+        }
 
         private bool _Ringing;
         public bool Ringing
@@ -76,6 +90,7 @@ namespace Echo.Logic
         }
         public event DataReceivedEventHandler DataReceived;
         public event AcquiredPortEventHandler AcquiredPort;
+        public event RemoteHangupEventHandler RemoteHangup;
         public event CallStartedHandler CallStarted;
 
         protected virtual void OnDataReceived(string s)
@@ -91,6 +106,14 @@ namespace Echo.Logic
             if (AcquiredPort != null)
             {
                 AcquiredPort(this, i);
+            }
+        }
+
+        protected virtual void OnRemoteHangup()
+        {
+            if (RemoteHangup != null)
+            {
+                RemoteHangup(this, new EventArgs());
             }
         }
 
@@ -112,6 +135,7 @@ namespace Echo.Logic
             this.navService = navService;
             this.setModel = setModel;
             this.udc = udc;
+            this.VoicePort = null;
 
             this.keepaliveWorker = new DispatcherTimer();
             keepaliveWorker.Interval = TimeSpan.FromSeconds(20);
@@ -455,13 +479,15 @@ namespace Echo.Logic
         private void voicePortReceived(byte[] data)
         {
             String port = Encoding.UTF8.GetString(data, 0, data.Length);
-            if (!int.TryParse(port, out voicePort))
+            int tmpPort;
+            if (!int.TryParse(port, out tmpPort))
             {
-                voicePort = -1;
+                VoicePort = null;
             }
             else
             {
-                OnAcquiredPort(voicePort);
+                VoicePort = tmpPort;
+                OnAcquiredPort((int) VoicePort);
             }
         }
 
@@ -619,6 +645,7 @@ namespace Echo.Logic
         private void remoteHangup()
         {
             Ringing = false;
+            VoicePort = null;
             if (callDialog != null)
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -626,6 +653,7 @@ namespace Echo.Logic
                     callDialog.Dialog.TryClose();
                 });
             }
+            OnRemoteHangup();
         }
 
         private void ringing()
@@ -672,6 +700,7 @@ namespace Echo.Logic
         public void hangup()
         {
             Ringing = false;
+            VoicePort = null;
             LastSendOperation = ClientHeader.HANGUP;
             this.sendHeader(ClientHeader.HANGUP);
         }
