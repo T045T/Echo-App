@@ -645,7 +645,7 @@ namespace Echo.Logic
         private void remoteHangup()
         {
             Ringing = false;
-            VoicePort = null;
+            //VoicePort = null;
             if (callDialog != null && callDialog.Dialog.IsActive)
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -700,7 +700,7 @@ namespace Echo.Logic
         public void hangup()
         {
             Ringing = false;
-            VoicePort = null;
+            //VoicePort = null;
             LastSendOperation = ClientHeader.HANGUP;
             this.sendHeader(ClientHeader.HANGUP);
         }

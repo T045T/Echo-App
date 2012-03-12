@@ -113,7 +113,7 @@ namespace Echo.Logic
             if (Port != null)
             {
                 ConnectSocket(AddressOrDns, (int) Port);
-                microphone.BufferDuration = TimeSpan.FromMilliseconds(1000);
+                microphone.BufferDuration = TimeSpan.FromMilliseconds(320);
                 buffer = new byte[microphone.GetSampleSizeInBytes(microphone.BufferDuration)];
                 microphone.Start();
                 return true;

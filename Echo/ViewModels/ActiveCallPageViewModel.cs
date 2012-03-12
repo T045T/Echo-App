@@ -136,27 +136,47 @@ namespace Echo.ViewModels
             if (Callee == null) return;
             var previousLogs = from CallLogModel clm in udc.DataContext.CallLogTable where clm.CalleeID == this.calleeID orderby clm.StartTime descending select clm;
             List<CallLogModel> tmp = new List<CallLogModel>(previousLogs);
-            
+
             if (previousLogs.Any())
             {
                 PreviousCallLog = previousLogs.First();
             }
-            if (!isIncoming)
+            //if (con.VoicePort != null)
+            //{
+                StartCall();
+            //}
+            //else
+            //{
+            //    con.AcquiredPort += new AcquiredPortEventHandler(con_AcquiredPort);
+            //}
+        }
+
+        private void StartCall()
+        {
+            if (isIncoming)
             {
-                con.call(Callee.UserID);
-                // start call
-            }
-            if (con.VoicePort != null)
-            {
-                StartCall((int)con.VoicePort);
+                if (con.VoicePort != null)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                        {
+                            PrepareCall((int)con.VoicePort);
+                            con.pickupCall();
+                            StartTransmission();
+                        });
+                }
+                else
+                {
+                    con.AcquiredPort += new AcquiredPortEventHandler(con_AcquiredPort);
+                }
             }
             else
             {
-                con.AcquiredPort += new AcquiredPortEventHandler(con_AcquiredPort);
+                con.call(Callee.UserID);
+                con.CallStarted += new CallStartedHandler(con_CallStarted);
             }
         }
 
-        private void StartCall(int Port)
+        private void PrepareCall(int Port)
         {
             CurrentCallLog = new CallLogModel(Callee.ID);
             CallStart = CurrentCallLog.StartTime;
@@ -170,34 +190,47 @@ namespace Echo.ViewModels
 
             this.UDPSink.StopSending();
             this.UDPSink.Port = Port;
-            if (isIncoming)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    con.pickupCall();
-                    this.UDPSink.StartSending(setModel.getValueOrDefault<string>(setModel.EchoServerSettingKeyName, setModel.EchoServerDefault));
-                });
-            }
-            else
-            {
-                con.CallStarted += new CallStartedHandler(con_CallStarted);
-            }
+        }
+        public void StartTransmission()
+        {
+            this.UDPSink.StartSending(setModel.getValueOrDefault<string>(setModel.EchoServerSettingKeyName, setModel.EchoServerDefault));
+            CallInProgress = true;
+            NotifyOfPropertyChange("CanEndCall");
         }
 
         void con_AcquiredPort(object sender, int e)
         {
-            con.AcquiredPort -= new AcquiredPortEventHandler(con_AcquiredPort);
-            StartCall(e);
+            if (isIncoming)
+            {
+                con.AcquiredPort -= new AcquiredPortEventHandler(con_AcquiredPort);
+                Deployment.Current.Dispatcher.BeginInvoke(() => StartCall());
+            }
+            else
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                {
+                                    PrepareCall((int)con.VoicePort);
+                                    con.CallStarted -= new CallStartedHandler(con_CallStarted);
+                                    StartTransmission();
+                                });
+            }
         }
 
         void con_CallStarted(object sender, EventArgs e)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            if (con.VoicePort != null)
             {
-                this.UDPSink.StartSending(setModel.getValueOrDefault<string>(setModel.EchoServerSettingKeyName, setModel.EchoServerDefault));
-                StartCall((int) con.VoicePort);
-                con.CallStarted -= new CallStartedHandler(con_CallStarted);
-            });
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    PrepareCall((int)con.VoicePort);
+                    con.CallStarted -= new CallStartedHandler(con_CallStarted);
+                    StartTransmission();
+                });
+            }
+            else
+            {
+                con.AcquiredPort += new AcquiredPortEventHandler(con_AcquiredPort);
+            }
         }
 
         void con_DataReceived(object sender, string e)
@@ -229,6 +262,7 @@ namespace Echo.ViewModels
                 CallInProgress = false;
                 UDPSink.StopSending();
                 callback(true);
+                con.hangup();
             }
             else
             {
