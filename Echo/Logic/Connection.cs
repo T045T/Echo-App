@@ -646,7 +646,7 @@ namespace Echo.Logic
         {
             Ringing = false;
             VoicePort = null;
-            if (callDialog != null)
+            if (callDialog != null && callDialog.Dialog.IsActive)
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
