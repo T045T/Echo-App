@@ -117,7 +117,6 @@ namespace Echo.ViewModels
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() => navService.GoBack());
             });
-            // TODO Should be a DispatcherTimer =)
             TimeUpdater = new DispatcherTimer();
             TimeUpdater.Interval = TimeSpan.FromSeconds(1);
             TimeUpdater.Tick += new EventHandler(TimeUpdater_Tick);
@@ -142,12 +141,7 @@ namespace Echo.ViewModels
             {
                 PreviousCallLog = previousLogs.First();
             }
-            if (isIncoming)
-            {
-                // Answer call
-                    con.pickupCall();
-            }
-            else
+            if (!isIncoming)
             {
                 con.call(Callee.UserID);
                 // start call
