@@ -63,7 +63,7 @@ namespace Echo.Logic
         {
             // Timer to simulate the XNA Game Studio game loop (Microphone is from XNA Game Studio)
 
-            dt.Interval = TimeSpan.FromMilliseconds(100);
+            dt.Interval = TimeSpan.FromMilliseconds(50);
             dt.Tick += delegate
             {
                 try
@@ -117,7 +117,7 @@ namespace Echo.Logic
             if (Port != null)
             {
                 ConnectSocket(AddressOrDns, (int)Port);
-                microphone.BufferDuration = TimeSpan.FromMilliseconds(100);
+                microphone.BufferDuration = TimeSpan.FromMilliseconds(150);
                 buffer = new byte[microphone.GetSampleSizeInBytes(microphone.BufferDuration)];
                 downSampleBuffer = new byte[buffer.Length / 2];
                 microphone.Start();
@@ -141,6 +141,8 @@ namespace Echo.Logic
         void microphone_BufferReady(object sender, EventArgs e)
         {
             if (!_Sending) return;
+            //System.Diagnostics.Debug.WriteLine(DateTime.Now.Millisecond);
+
             microphone.GetData(buffer);
             //stream.Write(buffer, 0, buffer.Length);
             //Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -159,16 +161,16 @@ namespace Echo.Logic
              * Matched z-transform: no
              * Lower Limit: none
              */
-            float[] xv = new float[5];
-            float[] yv = new float[5];
-            for (int i = 0; i < 5; i++)
-            {
-                xv[i] = 0;
-                yv[i] = 0;
-            }
-            int lowpassed;
-            double gain = 1.064046542e+01;
-            for (int i = 0; i < buffer.Length; i += 2)
+            //float[] xv = new float[5];
+            //float[] yv = new float[5];
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    xv[i] = 0;
+            //    yv[i] = 0;
+            //}
+            //int lowpassed;
+            //double gain = 1.064046542e+01;
+            for (int i = 0; i < buffer.Length; i += 4)
             {
                 //xv[0] = xv[1]; xv[1] = xv[2]; xv[2] = xv[3]; xv[3] = xv[4];
                 //xv[4] = (float)((((int)buffer[i] << 8) & (int)buffer[i + 1]) / gain);

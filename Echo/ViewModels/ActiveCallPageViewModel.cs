@@ -254,6 +254,7 @@ namespace Echo.ViewModels
             {
                 UDPSink.StopSending();
                 CallInProgress = false;
+                con.hangup();
             }
             TimeUpdater.Stop();
             navService.GoBack();
@@ -265,10 +266,9 @@ namespace Echo.ViewModels
             {
                 udc.SubmitChanges();
                 udc.LoadListsFromDatabase();
-                CallInProgress = false;
                 UDPSink.StopSending();
                 callback(true);
-                con.hangup();
+                //con.hangup();
             }
             else
             {
