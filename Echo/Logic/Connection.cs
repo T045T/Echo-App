@@ -319,6 +319,7 @@ namespace Echo.Logic
                                 case ServerHeader.REMOTEHANGUP:
                                     LastReceiveOperation = ServerHeader.REMOTEHANGUP;
                                     remoteHangup();
+                                    listen(e);
                                     break;
                                 case ServerHeader.RINGING:
                                     LastReceiveOperation = ServerHeader.RINGING;

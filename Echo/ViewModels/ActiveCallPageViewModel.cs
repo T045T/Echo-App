@@ -115,7 +115,11 @@ namespace Echo.ViewModels
             con.DataReceived += new DataReceivedEventHandler(con_DataReceived);
             con.RemoteHangup += new RemoteHangupEventHandler((obj, e) =>
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() => EndCall());
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    CallInProgress = false;
+                    EndCall();
+                });
             });
             TimeUpdater = new DispatcherTimer();
             TimeUpdater.Interval = TimeSpan.FromSeconds(1);
@@ -246,9 +250,11 @@ namespace Echo.ViewModels
         public void EndCall()
         {
             // Actually end the call
-            con.hangup();
-            UDPSink.StopSending();
-            CallInProgress = false;
+            if (CallInProgress)
+            {
+                UDPSink.StopSending();
+                CallInProgress = false;
+            }
             TimeUpdater.Stop();
             navService.GoBack();
         }
