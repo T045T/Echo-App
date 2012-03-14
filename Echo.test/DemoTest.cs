@@ -6,7 +6,9 @@ public class DemoTest
     [TestMethod]
     public void MyFirstUnitTest()
     {
-        Assert.IsFalse(false);
+        bool foo = false;
+        
+        Assert.IsFalse(foo);
         //Assert.Inconclusive("We need to write our first unit test");
     }
 }

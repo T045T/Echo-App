@@ -9,9 +9,7 @@
     using System.Diagnostics;
     using Echo.Model;
     using System.Windows.Media;
-    using Echo.Helpers;
     using Echo.Logic;
-    using System.ComponentModel;
 
     public class AppBootstrapper : PhoneBootstrapper
     {
