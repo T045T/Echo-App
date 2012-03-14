@@ -84,6 +84,13 @@ namespace Echo.Model
             settings = IsolatedStorageSettings.ApplicationSettings;
         }
 
+        // Special constructor for testing use - should only be accessed in Echo.test
+        internal SettingsModel(bool clearSettings)
+        {
+            IsolatedStorageSettings.ApplicationSettings.Clear();
+            settings = IsolatedStorageSettings.ApplicationSettings;
+        }
+
         public bool AddOrUpdateValue(string key, Object value)
         {
             bool valueChanged = false;
@@ -123,14 +130,16 @@ namespace Echo.Model
         }
 
 
-        public bool NetworkSettingsAreDefault
+        public bool NetworkSettingsAreChanged
         {
             get
             {
                 return !getValueOrDefault<string>(ServerSettingKeyName, ServerDefault).Equals(ServerDefault)
-                    || getValueOrDefault<int>(PortSettingKeyName, PortDefault) != PortDefault
+                    ||  getValueOrDefault<int>(PortSettingKeyName, PortDefault) != PortDefault
                     || !getValueOrDefault<string>(UsernameSettingKeyName, UsernameDefault).Equals(UsernameDefault)
-                    || !getValueOrDefault<string>(PasswordSettingKeyName, PasswordDefault).Equals(PasswordDefault);
+                    || !getValueOrDefault<string>(PasswordSettingKeyName, PasswordDefault).Equals(PasswordDefault)
+                    || !getValueOrDefault<string>(EchoServerSettingKeyName, EchoServerDefault).Equals(EchoServerDefault)
+                    ||  getValueOrDefault<int>(EchoPortSettingKeyName, EchoPortDefault) != EchoPortDefault;
             }
         }
     }

@@ -245,7 +245,7 @@ namespace Echo.ViewModels
 
         public bool TestButtonEnabled
         {
-            get { return SetModel.NetworkSettingsAreDefault; }
+            get { return SetModel.NetworkSettingsAreChanged; }
         }
     }
 }

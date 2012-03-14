@@ -15,6 +15,8 @@ using System.Resources;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
+[assembly: InternalsVisibleTo("Echo.test")]
+
 // Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly 
 // für COM-Komponenten unsichtbar. Wenn Sie auf einen Typ in dieser Assembly von 
 // COM aus zugreifen müssen, legen Sie das ComVisible-Attribut für diesen Typ auf "true" fest.

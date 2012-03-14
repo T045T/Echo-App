@@ -37,6 +37,13 @@ namespace Echo.Model
             LoadListsFromDatabase();
         }
 
+        // Special constructor for testing use - should only be accessed in Echo.test
+        internal UDCListModel(string ConnectionString, bool overWrite)
+        {
+            this.udc = new UserDataContext(ConnectionString, overWrite);
+            LoadListsFromDatabase();
+        }
+
         private readonly string alphabet = "#abcdefghijklmnopqrstuvwxyz";
         private ObservableCollection<TitleGroup<UserModel>> _UsersByFirstName;
         private ObservableCollection<TitleGroup<UserModel>> _UsersByLastName;

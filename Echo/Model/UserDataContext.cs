@@ -11,9 +11,18 @@ namespace Echo.Model
 {
     public class UserDataContext : DataContext
     {
-        public UserDataContext(string connectionString)
+        public UserDataContext(string connectionString, bool overWrite)
             : base(connectionString)
         {
+            if (!this.DatabaseExists())
+            {
+                this.CreateDatabase();
+            }
+            else if (overWrite)
+            {
+                this.DeleteDatabase();
+                this.CreateDatabase();
+            }
             //LoadListsFromDatabase();
         }
         public UserDataContext()
