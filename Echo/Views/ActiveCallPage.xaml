@@ -267,7 +267,7 @@
                                       Opacity="0.6" />
                 <ItemsControl ItemTemplate="{StaticResource BubbleCallList}" 
                                       ItemsSource="{Binding Path=CurrentCallLog.Entries, Mode=OneWay}" >
-                    <ListBoxItem>
+                    <!--<ListBoxItem>
                         <Grid Margin="12, 0, 12, 12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -301,7 +301,7 @@
                                       Margin="12, 0, 0, -1"
 					                  Grid.Row="0"/>
                         </Grid>
-                    </ListBoxItem>
+                    </ListBoxItem>-->
                 </ItemsControl>
                 <Grid Margin="24"
                               Visibility="{Binding Path=Con.Analyzing, Mode=OneWay, Converter={StaticResource boolConv}}">

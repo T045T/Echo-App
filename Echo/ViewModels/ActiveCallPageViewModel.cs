@@ -200,7 +200,6 @@ namespace Echo.ViewModels
         {
             this.UDPSink.StartSending(setModel.getValueOrDefault<string>(setModel.EchoServerSettingKeyName, setModel.EchoServerDefault));
             CallInProgress = true;
-            NotifyOfPropertyChange("CanEndCall");
         }
 
         void con_AcquiredPort(object sender, int e)
@@ -240,7 +239,7 @@ namespace Echo.ViewModels
 
         void con_DataReceived(object sender, string e)
         {
-            CurrentCallLog.addEntry(e);
+            Deployment.Current.Dispatcher.BeginInvoke(() => CurrentCallLog.addEntry(e));
         }
 
         public bool CanEndCall

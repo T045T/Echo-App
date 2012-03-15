@@ -324,6 +324,7 @@ namespace Echo.Logic
                                 case ServerHeader.RINGING:
                                     LastReceiveOperation = ServerHeader.RINGING;
                                     this.ringing();
+                                    listen(e);
                                     break;
                                 case ServerHeader.CALLEEPICKUP:
                                     LastReceiveOperation = ServerHeader.CALLEEPICKUP;
