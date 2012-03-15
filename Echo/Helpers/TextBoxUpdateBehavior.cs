@@ -33,5 +33,26 @@ namespace Echo.Helpers
             AssociatedObject.TextChanged -= AssociatedObjectOnTextChanged;
         }
     }
+    public class PasswordBoxUpdateBehavior : Behavior<PasswordBox>
+    {
+        public PasswordBoxUpdateBehavior() { }
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            AssociatedObject.PasswordChanged += AssociatedObjectOnTextChanged;
+        }
+
+        private void AssociatedObjectOnTextChanged(object sender, EventArgs args)
+        {
+            var binding = (sender as PasswordBox).GetBindingExpression(PasswordBox.PasswordProperty);
+            binding.UpdateSource();
+        }
+
+        protected override void OnDetaching()
+        {
+            base.OnDetaching();
+            AssociatedObject.PasswordChanged -= AssociatedObjectOnTextChanged;
+        }
+    }
 }
 
