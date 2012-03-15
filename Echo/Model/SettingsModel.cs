@@ -30,6 +30,7 @@ namespace Echo.Model
         const string _RunUnderLockSettingKeyName = "RunUnderLockSetting";
         const string _ImportSettingKeyName = "ImportSetting";
         const string _NameOrderSettingKeyName = "NameOrderSetting";
+        const string _ShowWelcomeScreenSettingKeyName = "ShowWelcomeScreen";
 
         // keyName Properties
         public string UsernameSettingKeyName { get { return _UsernameSettingKeyName; } }
@@ -44,6 +45,7 @@ namespace Echo.Model
         public string RunUnderLockSettingKeyName { get { return _RunUnderLockSettingKeyName; } }
         public string ImportSettingKeyName { get { return _ImportSettingKeyName; } }
         public string NameOrderSettingKeyName { get { return _NameOrderSettingKeyName; } }
+        public string ShowWelcomeScreenSettingKeyName { get { return _ShowWelcomeScreenSettingKeyName; } }
 
         // Default values
         const bool _STTSettingDefault = true;
@@ -58,6 +60,7 @@ namespace Echo.Model
         const string _EchoServerDefault = "server.echo-app.org";
         const int _EchoPortDefault = 1123;
         const bool _NameOrderDefault = true; // true -> "First Last", false -> "Last, First"
+        const bool _ShowWelcomeScreenDefault = true;
 
 
         // defaultValue Properties
@@ -73,6 +76,7 @@ namespace Echo.Model
         public string EchoServerDefault { get { return _ServerDefault; } }
         public int EchoPortDefault { get { return _PortDefault; } }
         public bool NameOrderDefault { get { return _NameOrderDefault; } }
+        public bool ShowWelcomeScreenDefault { get { return _ShowWelcomeScreenDefault; } }
 
         // value Properties
         /// <summary>

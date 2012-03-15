@@ -147,26 +147,34 @@ namespace Echo.Model
         public void LoadListsFromDatabase()
         {
             udc.SubmitChanges();
-            var UsersFromDbByFirst = new List<TitleGroup<UserModel>>(from UserModel u in udc.UserTable
-                                                                     group u by u.FirstName.Substring(0, 1).ToLower() into foo
-                                                                     orderby foo.Key
-                                                                     select new TitleGroup<UserModel>(foo.Key, foo));
+            if (udc.UserTable.Any())
+            {
+                var UsersFromDbByFirst = new List<TitleGroup<UserModel>>(from UserModel u in udc.UserTable
+                                                                         group u by u.FirstName.Substring(0, 1).ToLower() into foo
+                                                                         orderby foo.Key
+                                                                         select new TitleGroup<UserModel>(foo.Key, foo));
 
-            var UsersFromDbByLast = new List<TitleGroup<UserModel>>(from UserModel u in udc.UserTable
-                                                                    group u by u.LastName.Substring(0, 1).ToLower() into foo
-                                                                    orderby foo.Key
-                                                                    select new TitleGroup<UserModel>(foo.Key, foo));
-            
-            UsersByFirstName = SortIntoTitleGroups(UsersFromDbByFirst);
-            UsersByLastName = SortIntoTitleGroups(UsersFromDbByLast);
+                var UsersFromDbByLast = new List<TitleGroup<UserModel>>(from UserModel u in udc.UserTable
+                                                                        group u by u.LastName.Substring(0, 1).ToLower() into foo
+                                                                        orderby foo.Key
+                                                                        select new TitleGroup<UserModel>(foo.Key, foo));
 
-            foreach (TitleGroup<UserModel> g in UsersByFirstName)
-                g.OrderBy((u, v) => u.FirstName.CompareTo(v.FirstName));
-            foreach (TitleGroup<UserModel> g in UsersByLastName)
-                g.OrderBy((u, v) => u.LastName.CompareTo(v.LastName));
+                UsersByFirstName = SortIntoTitleGroups(UsersFromDbByFirst);
+                UsersByLastName = SortIntoTitleGroups(UsersFromDbByLast);
 
-            GroupList = new ObservableCollection<GroupModel>(udc.GroupTable.ToList().OrderBy(x => x.GroupName));
-            AllLogsList = new ObservableCollection<CallLogModel>(udc.CallLogTable.ToList().OrderByDescending(c => c.StartTime));
+                foreach (TitleGroup<UserModel> g in UsersByFirstName)
+                    g.OrderBy((u, v) => u.FirstName.CompareTo(v.FirstName));
+                foreach (TitleGroup<UserModel> g in UsersByLastName)
+                    g.OrderBy((u, v) => u.LastName.CompareTo(v.LastName));
+            }
+            if (udc.GroupTable.Any())
+            {
+                GroupList = new ObservableCollection<GroupModel>(udc.GroupTable.ToList().OrderBy(x => x.GroupName));
+            }
+            if (udc.CallLogTable.Any())
+            {
+                AllLogsList = new ObservableCollection<CallLogModel>(udc.CallLogTable.ToList().OrderByDescending(c => c.StartTime));
+            }
             LoadedLists = true;
 
         }

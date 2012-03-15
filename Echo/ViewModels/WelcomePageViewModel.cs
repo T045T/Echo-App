@@ -17,34 +17,34 @@ namespace Echo.ViewModels
 {
     public class WelcomePageViewModel : Screen
     {
-        SettingsModel sm;
-        private TransitionFrame root;
+        private SettingsModel sm;
+        private INavigationService navService;
 
 
-        #region CommandProperties
-        private ICommand _Continue;
-        public ICommand Continue
-        {
-            get { return _Continue; }
-        }
+        //#region CommandProperties
+        //private ICommand _Continue;
+        //public ICommand Continue
+        //{
+        //    get { return _Continue; }
+        //}
 
-        private ICommand _ImportFromPhonebook;
-        public ICommand ImportFromPhonebook
-        {
-            get { return _ImportFromPhonebook; }
-        }
-        private ICommand _DontImport;
-        public ICommand DontImport
-        {
-            get { return _DontImport; }
-        }
+        //private ICommand _ImportFromPhonebook;
+        //public ICommand ImportFromPhonebook
+        //{
+        //    get { return _ImportFromPhonebook; }
+        //}
+        //private ICommand _DontImport;
+        //public ICommand DontImport
+        //{
+        //    get { return _DontImport; }
+        //}
 
-        private ICommand _Finish;
-        public ICommand Finish
-        {
-            get { return _Finish; }
-        }
-        #endregion
+        //private ICommand _Finish;
+        //public ICommand Finish
+        //{
+        //    get { return _Finish; }
+        //}
+        //#endregion
 
         #region VisibilityProperties
         private Visibility _Page1Visibility;
@@ -108,43 +108,88 @@ namespace Echo.ViewModels
 
         #endregion VisibilityProperties
 
-        public WelcomePageViewModel()
+        public WelcomePageViewModel(SettingsModel sm, INavigationService navService)
         {
-            sm = new SettingsModel();
-            root = Application.Current.RootVisual as TransitionFrame;
-            _Continue = new DelegateCommand(this.ContinueImpl, (o => Page1Visibility == Visibility.Visible));
-            _ImportFromPhonebook = new DelegateCommand(this.ImportFromPhonebookImpl);
-            _DontImport = new DelegateCommand(this.DontImportImpl);
-            _Finish = new DelegateCommand(this.FinishImpl);
+            this.sm = sm;
+            this.navService = navService;
+            UserName = "";
+            Password = "";
+            //_ImportFromPhonebook = new DelegateCommand(this.ImportFromPhonebookImpl);
+            //_DontImport = new DelegateCommand(this.DontImportImpl);
+            //_Finish = new DelegateCommand(this.FinishImpl);
         }
 
-        #region CommandImplementations
-        public void ContinueImpl(object sender)
+        #region Text Field Properties
+        private string _UserName;
+        public string UserName
+        {
+            get
+            {
+                return _UserName;
+            }
+            set
+            {
+                if (value != _UserName)
+                {
+                    _UserName = value;
+                    NotifyOfPropertyChange("UserName");
+                    NotifyOfPropertyChange("CanContinue");
+                }
+            }
+        }
+        private string _Password;
+        public string Password
+        {
+            get
+            {
+                return _Password;
+            }
+            set
+            {
+                if (value != _Password)
+                {
+                    _Password = value;
+                    NotifyOfPropertyChange("Password");
+                    NotifyOfPropertyChange("CanContinue");
+                }
+            }
+        }
+        #endregion
+
+        #region Button Methods
+        public void Continue()
         {
             Page2Visibility = Visibility.Visible;
         }
+        public bool CanContinue { get { return UserName.Length > 0 && Password.Length > 0; } }
 
-        public void ImportFromPhonebookImpl(object sender)
+        public void NoAccount()
         {
+            // TODO implement account helper
+        }
+        public bool CanNoAccount { get { return false; } }
+
+        public void ImportContacts()
+        {
+            // TODO actually import contacts
             if (sm.AddOrUpdateValue(sm.ImportSettingKeyName, true))
             {
                 sm.Save();
             }
-            throw new NotImplementedException();
-            Page3Visibility = Visibility.Visible;
         }
+        public bool CanImportContacts { get { return false; } }
 
-        public void DontImportImpl(object sender)
+        public void DontImportContacts()
         {
-            if (sm.AddOrUpdateValue(sm.ImportSettingKeyName, false)) {
-                sm.Save();
-            }
             Page3Visibility = Visibility.Visible;
         }
+        public bool CanDontImportContacts { get { return true; } }
 
-        public void FinishImpl(object sender) {
-            root.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+        public void Finish()
+        {
+            navService.GoBack();
         }
+        public bool CanFinish { get { return true; } }
         #endregion
     }
 }

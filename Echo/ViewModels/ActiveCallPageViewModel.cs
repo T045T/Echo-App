@@ -43,6 +43,7 @@ namespace Echo.ViewModels
                 {
                     _CallInProgress = value;
                     NotifyOfPropertyChange("CallInProgress");
+                    NotifyOfPropertyChange("CanEndCall");
                 }
             }
         }

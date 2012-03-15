@@ -197,7 +197,7 @@
     <Compile Include="Views\WelcomePage3View.xaml.cs">
       <DependentUpon>WelcomePage3View.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WelcomePage.xaml.cs">
+    <Compile Include="Views\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPKeyboardHelper\KeyboardDependency.cs" />
@@ -301,7 +301,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WelcomePage.xaml">
+    <Page Include="Views\WelcomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

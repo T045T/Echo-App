@@ -40,6 +40,7 @@
             container.PerRequest<ActiveCallPageViewModel>();
             container.PerRequest<CallLogPageViewModel>();
             container.PerRequest<NetworkTestPageViewModel>();
+            container.PerRequest<WelcomePageViewModel>();
 
             container.PerRequest<GroupDialogViewModel, GroupDialogViewModel>();
             container.PerRequest<IncomingCallDialogViewModel, IncomingCallDialogViewModel>();

@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using Echo.ViewModels;
 using System.Windows.Controls.Primitives;
 using Echo.Logic;
+using Echo.Model;
 
 namespace Echo
 {
@@ -16,6 +17,7 @@ namespace Echo
     {
         private readonly INavigationService navService;
         private IPhoneService phoneService;
+        private IWindowManager winMan;
 
         //private Popup myPopup;
         private ApplicationBar appBar;
@@ -58,8 +60,16 @@ namespace Echo
         public bool ClearBackStack { get; set; }
         public bool Reload { get; set; }
 
-        public MainPageViewModel(INavigationService navService, IPhoneService phoneService, ContactsViewModel cvm, RecentsViewModel rvm, TrainerFrontViewModel tvm, Connection con)
+        public MainPageViewModel(INavigationService navService, 
+            WelcomePageViewModel wvm,
+            IPhoneService phoneService, 
+            ContactsViewModel cvm, 
+            RecentsViewModel rvm, 
+            TrainerFrontViewModel tvm, 
+            SettingsModel sm,
+            Connection con)
         {
+            //this.winMan = windowMan;
             this.navService = navService;
             this.phoneService = phoneService;
 
@@ -78,6 +88,13 @@ namespace Echo
             Items.Add(cvm);
             Items.Add(rvm);
             Items.Add(tvm);
+
+            if (sm.getValueOrDefault<bool>(sm.ShowWelcomeScreenSettingKeyName, sm.ShowWelcomeScreenDefault))
+            {
+                //sm.AddOrUpdateValue(sm.ShowWelcomeScreenSettingKeyName, false);
+                navService.UriFor<WelcomePageViewModel>().Navigate();
+                //winMan.ShowPopup(new WelcomePageViewModel());
+            }
             //ActivateItem(cvm);
         }
 

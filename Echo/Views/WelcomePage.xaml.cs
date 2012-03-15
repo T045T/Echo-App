@@ -9,12 +9,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using Microsoft.Phone.Controls;
+using Echo.ViewModels;
 
 namespace Echo.Views
 {
-    public partial class WelcomePage1View : UserControl
+    public partial class WelcomePage : PhoneApplicationPage
     {
-        public WelcomePage1View()
+        public WelcomePage()
         {
             InitializeComponent();
         }
