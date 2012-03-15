@@ -188,15 +188,6 @@
     <Compile Include="Views\TrainerPage.xaml.cs">
       <DependentUpon>TrainerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\WelcomePage1View.xaml.cs">
-      <DependentUpon>WelcomePage1View.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WelcomePage2View.xaml.cs">
-      <DependentUpon>WelcomePage2View.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WelcomePage3View.xaml.cs">
-      <DependentUpon>WelcomePage3View.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
@@ -288,18 +279,6 @@
     <Page Include="Views\TrainerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WelcomePage1View.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\WelcomePage2View.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\WelcomePage3View.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\WelcomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
