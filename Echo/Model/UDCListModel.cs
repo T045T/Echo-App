@@ -167,13 +167,34 @@ namespace Echo.Model
                 foreach (TitleGroup<UserModel> g in UsersByLastName)
                     g.OrderBy((u, v) => u.LastName.CompareTo(v.LastName));
             }
+            else
+            {
+                UsersByFirstName = new ObservableCollection<TitleGroup<UserModel>>();
+                foreach (char c in alphabet)
+                {
+                    UsersByFirstName.Add(new TitleGroup<UserModel>(c.ToString(), new List<UserModel>()));
+                }
+                UsersByLastName = new ObservableCollection<TitleGroup<UserModel>>();
+                foreach (char c in alphabet)
+                {
+                    UsersByLastName.Add(new TitleGroup<UserModel>(c.ToString(), new List<UserModel>()));
+                }
+            }
             if (udc.GroupTable.Any())
             {
                 GroupList = new ObservableCollection<GroupModel>(udc.GroupTable.ToList().OrderBy(x => x.GroupName));
             }
+            else
+            {
+                GroupList = new ObservableCollection<GroupModel>();
+            }
             if (udc.CallLogTable.Any())
             {
                 AllLogsList = new ObservableCollection<CallLogModel>(udc.CallLogTable.ToList().OrderByDescending(c => c.StartTime));
+            }
+            else
+            {
+                AllLogsList = new ObservableCollection<CallLogModel>();
             }
             LoadedLists = true;
 
