@@ -7,10 +7,6 @@ namespace Echo.Helpers
 {
     public class LongListCollection<T> : ObservableCollection<LongListItem<T>>
     {
-        public LongListCollection()
-        {
-        }
-
         private readonly string alphabet = "#abcdefghijklmnopqrstuvwxyz";
         private Func<T, string> keySelector;
         private Func<T, string> orderFunction;

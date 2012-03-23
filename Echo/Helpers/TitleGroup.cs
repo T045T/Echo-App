@@ -1,39 +1,11 @@
-﻿using System.Windows;
-using System.Windows.Media;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Echo.Helpers
 {
-    //public class TitleGroup<T> : ObservableCollection<T>
-    //{
-    //    public string Title { get; set; }
-
-    //    public TitleGroup(string name, IEnumerable<T> items) : base(items)
-    //    {
-    //        this.Title = name;
-    //    }
-
-    //    public bool HasItems
-    //    {
-    //        get { return Items.Count > 0; }
-    //    }
-
-    //    public Brush GroupBackgroundBrush
-    //    {
-    //        get
-    //        {
-    //            if (HasItems)
-    //                return (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"];
-    //            else
-    //                return (SolidColorBrush)Application.Current.Resources["PhoneChromeBrush"];
-    //        }
-    //    }
-    //}
-
-
     public class TitleGroup<T> : IEnumerable<T>, INotifyPropertyChanged
     {
         public TitleGroup(string name, IEnumerable<T> items)

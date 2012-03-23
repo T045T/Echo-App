@@ -1,17 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Caliburn.Micro;
-using Echo.Model;
-using System.Linq;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using Microsoft.Phone.Tasks;
-using Echo.Helpers;
-using System.Windows.Media.Imaging;
-using System.IO.IsolatedStorage;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Caliburn.Micro;
+using Echo.Helpers;
+using Echo.Model;
+using Microsoft.Phone.Tasks;
 
 
 namespace Echo.ViewModels
@@ -381,13 +381,6 @@ namespace Echo.ViewModels
                 changedPicture = false;
             }
 
-            /*
-            navService.RemoveBackEntry();
-            navService.UriFor<MainPageViewModel>()
-                .WithParam(x => x.Reload, changedAnything || CreateUser)
-                .WithParam(x => x.ClearBackStack, true)
-                .Navigate();
-             */
             dc.LoadListsFromDatabase();
             navService.GoBack();
         }
@@ -431,7 +424,7 @@ namespace Echo.ViewModels
         }
     }
 
-    public class GroupMembership : ViewModelBase
+    public class GroupMembership : PropertyChangedBase
     {
         private string _GroupName;
         public string GroupName
@@ -445,7 +438,7 @@ namespace Echo.ViewModels
                 if (value != _GroupName)
                 {
                     _GroupName = value;
-                    RaisePropertyChangedEvent("GroupName");
+                    NotifyOfPropertyChange("GroupName");
                 }
             }
         }
@@ -462,7 +455,7 @@ namespace Echo.ViewModels
                 {
                     _UserIsMember = value;
                     Dirty ^= true;
-                    RaisePropertyChangedEvent("UserIsMember");
+                    NotifyOfPropertyChange("UserIsMember");
                 }
             }
         }

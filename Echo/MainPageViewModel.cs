@@ -1,15 +1,12 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Phone.Shell;
-using Microsoft.Phone.Controls;
 using Caliburn.Micro;
-using Echo.ViewModels;
-using System.Windows.Controls.Primitives;
 using Echo.Logic;
 using Echo.Model;
+using Echo.ViewModels;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace Echo
 {
@@ -17,9 +14,7 @@ namespace Echo
     {
         private readonly INavigationService navService;
         private IPhoneService phoneService;
-        private IWindowManager winMan;
 
-        //private Popup myPopup;
         private ApplicationBar appBar;
         private ContactsViewModel _cvm;
         public ContactsViewModel cvm
@@ -69,19 +64,10 @@ namespace Echo
             SettingsModel sm,
             Connection con)
         {
-            //this.winMan = windowMan;
             this.navService = navService;
             this.phoneService = phoneService;
 
             this.con = con;
-            //if (firstConstructor)
-            //{
-            //    myPopup = new Popup() { IsOpen = false, Child = new StartupSplashScreen() };
-            //}
-            //else
-            //{
-            //    myPopup = new Popup() { IsOpen = false, Child = new SplashScreen() };
-            //}
             this.cvm = cvm;
             this.rvm = rvm;
             this.tvm = tvm;
@@ -93,9 +79,7 @@ namespace Echo
             {
                 //sm.AddOrUpdateValue(sm.ShowWelcomeScreenSettingKeyName, false);
                 navService.UriFor<WelcomePageViewModel>().Navigate();
-                //winMan.ShowPopup(new WelcomePageViewModel());
             }
-            //ActivateItem(cvm);
         }
 
 
@@ -117,36 +101,6 @@ namespace Echo
             base.OnActivate();
             if (appBar != null && appBar.Buttons.Count == 0 && appBar.MenuItems.Count == 0)
                 exchangeAppBarButtons(cvm.AppBarButtons);
-            if (!firstConstructor)
-            {
-                //myPopup.Child = new SplashScreen();
-            }
-            else
-            {
-                firstConstructor = false;
-            }
-            if (!cvm.LoadedOnce || cvm.NameOrderChanged || Reload)
-            {
-                //myPopup.IsOpen = true;
-                //PropertyChanged += new PropertyChangedEventHandler((sender, args) =>
-                //{
-                //    if (args.PropertyName.Equals("LoadedLists"))
-                //        Deployment.Current.Dispatcher.BeginInvoke(() => {
-                //            myPopup.IsOpen = false;
-                //            if (appBar != null)
-                //                appBar.IsVisible = true;
-                //        });
-                //});
-                //cvm.LoadInBackground(new RunWorkerCompletedEventHandler((sender, args) =>
-                //{
-                //    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                //    {
-                //        myPopup.IsOpen = false;
-                //        if (appBar != null)
-                //            appBar.IsVisible = true;
-                //    });
-                //}));
-            }
         }
 
         public void Settings()
@@ -196,17 +150,14 @@ namespace Echo
                 case 0:
                     exchangeAppBarButtons(cvm.AppBarButtons);
                     appBar.Mode = ApplicationBarMode.Default;
-                    //ActivateItem(cvm);
                     break;
                 case 1:
                     exchangeAppBarButtons(rvm.AppBarButtons);
                     appBar.Mode = ApplicationBarMode.Default;
-                    //ActivateItem(rvm);
                     break;
                 default:
                     exchangeAppBarButtons(null);
                     appBar.Mode = ApplicationBarMode.Minimized;
-                    //ActivateItem(tvm);
                     break;
             }
         }

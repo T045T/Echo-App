@@ -2,14 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Windows.Controls;
-    using Microsoft.Phone.Controls;
-    using Caliburn.Micro;
-    using Echo.ViewModels;
     using System.Diagnostics;
-    using Echo.Model;
+    using System.Windows.Controls;
     using System.Windows.Media;
+    using Caliburn.Micro;
     using Echo.Logic;
+    using Echo.Model;
+    using Echo.ViewModels;
+    using Microsoft.Phone.Controls;
 
     public class AppBootstrapper : PhoneBootstrapper
     {

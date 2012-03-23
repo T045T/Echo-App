@@ -1,17 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using Caliburn.Micro;
-using Echo.Model;
 using System.Windows;
-using System.Collections.Generic;
-using Echo.Helpers;
-using Echo.ViewModels;
-using System.Linq;
-using System.ComponentModel;
-using System.Threading;
 using System.Windows.Threading;
+using Caliburn.Micro;
+using Echo.Helpers;
+using Echo.Model;
+using Echo.ViewModels;
 
 namespace Echo.Logic
 {
@@ -20,7 +18,7 @@ namespace Echo.Logic
     public delegate void RemoteHangupEventHandler(object sender, EventArgs e);
     public delegate void CallStartedHandler(object sender, EventArgs e);
 
-    public class Connection : Screen
+    public class Connection : PropertyChangedBase
     {
         private INavigationService navService;
         private SettingsModel setModel;

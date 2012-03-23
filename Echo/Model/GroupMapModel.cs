@@ -1,14 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Data.Linq;
+﻿using System.Data.Linq;
 using System.Data.Linq.Mapping;
 
 namespace Echo.Model
@@ -25,7 +15,7 @@ namespace Echo.Model
             {
                 NotifyPropertyChanging("GroupName");
                 _GroupName = value;
-                RaisePropertyChangedEvent("GroupName");
+                NotifyOfPropertyChange("GroupName");
             }
         }
 
@@ -38,7 +28,7 @@ namespace Echo.Model
             {
                 NotifyPropertyChanging("UserID");
                 _UserID = value;
-                RaisePropertyChangedEvent("UserID");
+                NotifyOfPropertyChange("UserID");
             }
         }
 
@@ -54,7 +44,7 @@ namespace Echo.Model
             {
                 NotifyPropertyChanging("User");
                 _User.Entity = value;
-                RaisePropertyChangedEvent("User");
+                NotifyOfPropertyChange("User");
             }
         }
 
@@ -71,7 +61,7 @@ namespace Echo.Model
                 {
                     GroupName = value.GroupName;
                 }
-                RaisePropertyChangedEvent("Group");
+                NotifyOfPropertyChange("Group");
             }
         }
 

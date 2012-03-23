@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Caliburn.Micro;
-using Echo.Model;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Collections.Generic;
-using Echo.Logic;
-using System.ComponentModel;
-using System.Threading;
+using System.Linq;
+using System.Windows;
 using System.Windows.Threading;
+using Caliburn.Micro;
+using Echo.Logic;
+using Echo.Model;
 
 namespace Echo.ViewModels
 {
@@ -146,14 +135,7 @@ namespace Echo.ViewModels
             {
                 PreviousCallLog = previousLogs.First();
             }
-            //if (con.VoicePort != null)
-            //{
-                StartCall();
-            //}
-            //else
-            //{
-            //    con.AcquiredPort += new AcquiredPortEventHandler(con_AcquiredPort);
-            //}
+            StartCall();
         }
 
         private void StartCall()

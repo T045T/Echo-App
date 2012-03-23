@@ -1,24 +1,15 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
-using Echo.Helpers;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.IO.IsolatedStorage;
+using Caliburn.Micro;
+using Echo.Helpers;
 
 namespace Echo.Model
 {
-    public class UDCListModel : INotifyPropertyChanged
+    public class UDCListModel : PropertyChangedBase
     {
         private UserDataContext udc;
         public UserDataContext DataContext
@@ -27,7 +18,7 @@ namespace Echo.Model
             set
             {
                 udc = value;
-                RaisePropertyChangedEvent("DataContext");
+                NotifyOfPropertyChange("DataContext");
             }
         }
 
@@ -60,7 +51,7 @@ namespace Echo.Model
                 if (_UsersByFirstName != value)
                 {
                     _UsersByFirstName = value;
-                    RaisePropertyChangedEvent("UsersByFirstName");
+                    NotifyOfPropertyChange("UsersByFirstName");
                 }
             }
         }
@@ -75,7 +66,7 @@ namespace Echo.Model
                 if (_UsersByLastName != value)
                 {
                     _UsersByLastName = value;
-                    RaisePropertyChangedEvent("UsersByLastName");
+                    NotifyOfPropertyChange("UsersByLastName");
                 }
             }
         }
@@ -90,7 +81,7 @@ namespace Echo.Model
                 if (_GroupList != value)
                 {
                     _GroupList = value;
-                    RaisePropertyChangedEvent("GroupList");
+                    NotifyOfPropertyChange("GroupList");
                 }
             }
         }
@@ -107,7 +98,7 @@ namespace Echo.Model
                 if (value != _AllLogsList)
                 {
                     _AllLogsList = value;
-                    RaisePropertyChangedEvent("AllLogsList");
+                    NotifyOfPropertyChange("AllLogsList");
                 }
             }
         }
@@ -124,7 +115,7 @@ namespace Echo.Model
                 if (value != _LoadedLists)
                 {
                     _LoadedLists = value;
-                    RaisePropertyChangedEvent("LoadedLists");
+                    NotifyOfPropertyChange("LoadedLists");
                 }
             }
         }
@@ -387,7 +378,7 @@ namespace Echo.Model
                 {
                     gr.Add(User);
                     gr.OrderBy((u, v) => u.FirstName.CompareTo(v.FirstName));
-                    RaisePropertyChangedEvent("UsersByFirstName");
+                    NotifyOfPropertyChange("UsersByFirstName");
                 }
             }
             foreach (TitleGroup<UserModel> gr in UsersByLastName)
@@ -396,7 +387,7 @@ namespace Echo.Model
                 {
                     gr.Add(User);
                     gr.OrderBy((u, v) => u.LastName.CompareTo(v.LastName));
-                    RaisePropertyChangedEvent("UsersByLastName");
+                    NotifyOfPropertyChange("UsersByLastName");
                 }
             }
             return true;
@@ -496,23 +487,5 @@ namespace Echo.Model
             udc.SubmitChanges();
             LoadListsFromDatabase();
         }
-
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Raises the PropertyChanged event.
-        /// </summary>
-        /// <param name="propertyName">The name of the changed property.</param>
-        public virtual void RaisePropertyChangedEvent(string propertyName)
-        {
-            // Exit if no subscribers
-            if (PropertyChanged == null) return;
-            // Raise event
-            var e = new PropertyChangedEventArgs(propertyName);
-            PropertyChanged(this, e);
-        }
-        #endregion
     }
 }

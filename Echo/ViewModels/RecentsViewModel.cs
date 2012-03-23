@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Shell;
-using Microsoft.Phone.Controls;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Echo.Model;
-using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
+using Echo.Model;
+using Microsoft.Phone.Shell;
 
 namespace Echo.ViewModels
 {
@@ -34,12 +23,6 @@ namespace Echo.ViewModels
             this.DisplayName = "Recents";
             CreateApplicationBarButtons();
         }
-
-        //protected override void OnActivate()
-        //{
-        //    base.OnActivate();
-        //    NotifyOfPropertyChange("RecentCalls");
-        //}
 
         private void CreateApplicationBarButtons()
         {

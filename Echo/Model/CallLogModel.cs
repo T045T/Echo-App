@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Collections.ObjectModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Echo.Model
 {
@@ -54,7 +43,7 @@ namespace Echo.Model
                 if (logEntries != value)
                 {
                     logEntries.Assign(value);
-                    RaisePropertyChangedEvent("Entries");
+                    NotifyOfPropertyChange("Entries");
                 }
             }
         }
@@ -70,7 +59,7 @@ namespace Echo.Model
                 {
                     NotifyPropertyChanging("CallLogID");
                     _CallLogID = value;
-                    RaisePropertyChangedEvent("CallLogID");
+                    NotifyOfPropertyChange("CallLogID");
                 }
             }
         }
@@ -87,7 +76,7 @@ namespace Echo.Model
                 {
                     NotifyPropertyChanging("StartTime");
                     _StartTime = value;
-                    RaisePropertyChangedEvent("StartTime");
+                    NotifyOfPropertyChange("StartTime");
                 }
             }
         }
@@ -104,7 +93,7 @@ namespace Echo.Model
                 {
                     NotifyPropertyChanging("CalleeID");
                     _CalleeID = value;
-                    RaisePropertyChangedEvent("CalleeID");
+                    NotifyOfPropertyChange("CalleeID");
                 }
             }
         }
@@ -151,13 +140,13 @@ namespace Echo.Model
         {
             NotifyPropertyChanging("CallLogEntry");
             e.CallLogID = this.CallLogID;
-            RaisePropertyChangedEvent("CallLogEntry");
+            NotifyOfPropertyChange("CallLogEntry");
         }
         public void detachLog(CallLogEntry e)
         {
             NotifyPropertyChanging("CallLogEntry");
             e.CallLog = null;
-            RaisePropertyChangedEvent("CallLogEntry");
+            NotifyOfPropertyChange("CallLogEntry");
         }
 
         public void addEntry(CallLogEntry e)

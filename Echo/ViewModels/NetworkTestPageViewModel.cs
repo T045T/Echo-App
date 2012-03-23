@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-
-using Caliburn.Micro;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Audio;
-using System.IO;
-using System.Windows.Threading;
-using Microsoft.Xna.Framework;
-using g711audio;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Net;
 using System.Net.Sockets;
+using System.Windows;
+using System.Windows.Threading;
+using Caliburn.Micro;
+using g711audio;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Echo.ViewModels
 {
@@ -135,12 +126,6 @@ namespace Echo.ViewModels
                 _Sending = true;
                 NotifyOfPropertyChange("CanStartSending");
                 NotifyOfPropertyChange("CanStopSending");
-                //Deployment.Current.Dispatcher.BeginInvoke(() =>
-                //{
-                //    MessageBox.Show("Connected successfully.");
-                //});
-                //Deployment.Current.Dispatcher.BeginInvoke(new Enabledelegate(EnableControl), true);
-
             }
             else
             {
@@ -148,7 +133,6 @@ namespace Echo.ViewModels
                 {
                     MessageBox.Show("Connection Error: " + e.SocketError.ToString());
                 }); 
-                //Deployment.Current.Dispatcher.BeginInvoke(new Enabledelegate(EnableControl), false);
             }
 
         }
@@ -207,12 +191,6 @@ namespace Echo.ViewModels
             {
                 return;
             }
-            
-
-            //InputBytes.Add(new ByteHolder(buffer));
-            //NotifyOfPropertyChange("InputBytes");
-            //G711Bytes.Add(new ByteHolder(ALawEncoder.ALawEncode(buffer)));
-            //NotifyOfPropertyChange("G711Bytes");
         }
 
         public void StartSending()

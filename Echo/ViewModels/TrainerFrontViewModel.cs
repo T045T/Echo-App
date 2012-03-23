@@ -14,9 +14,10 @@ namespace Echo.ViewModels
 {
     public class TrainerFrontViewModel : Screen
     {
-        public TrainerFrontViewModel()
+        INavigationService navService;
+        public TrainerFrontViewModel(INavigationService navService)
         {
-
+            this.navService = navService;
         }
     }
 }

@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Echo.Model;
-using Caliburn.Micro;
-using System.Linq;
 using System.Collections.ObjectModel;
+using System.Linq;
+using Caliburn.Micro;
+using Echo.Model;
 
 namespace Echo.ViewModels
 {
-    public class ContactDetailsPageViewModel : Screen, INavigationTarget
+    public class ContactDetailsPageViewModel : Screen
     {
         private UDCListModel udc;
         private INavigationService navService;
@@ -105,12 +96,12 @@ namespace Echo.ViewModels
             else
             {
                 LastCallLogEntry = new CallLogEntry("You have no recent calls with " + User.FirstLast + ".", DateTime.Now, "[none]");
-                LastCallLog = new CallLogModel(User.ID, DateTime.Now);
+                //LastCallLog = new CallLogModel(User.ID, DateTime.Now);
 
-                LastCallLog.addEntry("Echo park synth fixie, accusamus anim gentrify occaecat photo booth.");
-                User.CallLogs.Add(LastCallLog);
+                //LastCallLog.addEntry("Echo park synth fixie, accusamus anim gentrify occaecat photo booth.");
+                //User.CallLogs.Add(LastCallLog);
                 //udc.CallLogTable.InsertOnSubmit(log);
-                udc.SubmitChanges();
+                //udc.SubmitChanges();
                 //log.addEntry("And now we're testing the wrapping abilities... god, I hope this works...");
                 //User.CallLogs.Add(log);
                 //udc.SubmitChanges();

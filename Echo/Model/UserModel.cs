@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Linq;
 using System.IO.IsolatedStorage;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Echo.Model
 {
@@ -37,7 +26,7 @@ namespace Echo.Model
                 {
                     NotifyPropertyChanging("ID");
                     _ID = value;
-                    RaisePropertyChangedEvent("ID");
+                    NotifyOfPropertyChange("ID");
                 }
             }
         }
@@ -53,7 +42,7 @@ namespace Echo.Model
                 {
                     NotifyPropertyChanging("UserID");
                     _UserID = value;
-                    RaisePropertyChangedEvent("UserID");
+                    NotifyOfPropertyChange("UserID");
                 }
             }
         }
@@ -70,9 +59,9 @@ namespace Echo.Model
                 {
                     NotifyPropertyChanging("FirstName");
                     _FirstName = value;
-                    RaisePropertyChangedEvent("FirstName");
-                    RaisePropertyChangedEvent("FirstLast");
-                    RaisePropertyChangedEvent("LastFirst");
+                    NotifyOfPropertyChange("FirstName");
+                    NotifyOfPropertyChange("FirstLast");
+                    NotifyOfPropertyChange("LastFirst");
                 }
             }
         }
@@ -90,9 +79,9 @@ namespace Echo.Model
                 {
                     NotifyPropertyChanging("LastName");
                     _LastName = value;
-                    RaisePropertyChangedEvent("LastName");
-                    RaisePropertyChangedEvent("FirstLast");
-                    RaisePropertyChangedEvent("LastFirst");
+                    NotifyOfPropertyChange("LastName");
+                    NotifyOfPropertyChange("FirstLast");
+                    NotifyOfPropertyChange("LastFirst");
                 }
             }
         }
@@ -117,7 +106,7 @@ namespace Echo.Model
                 {
                     NotifyPropertyChanging("UserImagePath");
                     _UserImagePath = value;
-                    RaisePropertyChangedEvent("UserImagePath");
+                    NotifyOfPropertyChange("UserImagePath");
                 }
             }
         }
@@ -157,7 +146,7 @@ namespace Echo.Model
                 if (_callLogs != value)
                 {
                     _callLogs = value;
-                    RaisePropertyChangedEvent("CallLogs");
+                    NotifyOfPropertyChange("CallLogs");
                 }
             }
         }
@@ -180,14 +169,14 @@ namespace Echo.Model
         {
             NotifyPropertyChanging("CallLogModel");
             cm.User = this;
-            RaisePropertyChangedEvent("CallLogModel");
+            NotifyOfPropertyChange("CallLogModel");
         }
 
         private void detachCallLog(CallLogModel cm)
         {
             NotifyPropertyChanging("CallLogModel");
             cm.User = null;
-            RaisePropertyChangedEvent("CallLogModel");
+            NotifyOfPropertyChange("CallLogModel");
         }
     }
 }

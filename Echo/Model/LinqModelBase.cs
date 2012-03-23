@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
+using Caliburn.Micro;
 
 namespace Echo.Model
 {
-    public class LinqModelBase : ModelBase, INotifyPropertyChanging
+    public class LinqModelBase : PropertyChangedBase, INotifyPropertyChanging
     {
         #region INotifyPropertyChanging Members
 

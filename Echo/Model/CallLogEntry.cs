@@ -22,7 +22,7 @@ namespace Echo.Model
             {
                 NotifyPropertyChanging("Content");
                 _Content = value;
-                RaisePropertyChangedEvent("Content");
+                NotifyOfPropertyChange("Content");
             }
         }
 
@@ -35,7 +35,7 @@ namespace Echo.Model
             {
                 NotifyPropertyChanging("Timestamp");
                 _Timestamp = value;
-                RaisePropertyChangedEvent("Timestamp");
+                NotifyOfPropertyChange("Timestamp");
             }
         }
 
@@ -48,7 +48,7 @@ namespace Echo.Model
             {
                 NotifyPropertyChanging("CallLogID");
                 _CallLogID = value;
-                RaisePropertyChangedEvent("CallLogID");
+                NotifyOfPropertyChange("CallLogID");
             }
         }
 
@@ -63,7 +63,7 @@ namespace Echo.Model
                 {
                     NotifyPropertyChanging("Confidence");
                     _Confidence = value;
-                    RaisePropertyChangedEvent("Confidence");
+                    NotifyOfPropertyChange("Confidence");
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace Echo.Model
                 {
                     NotifyPropertyChanging("CallLog");
                     _log.Entity = value;
-                    RaisePropertyChangedEvent("CallLog");
+                    NotifyOfPropertyChange("CallLog");
                     if (value != null)
                     {
                         CallLogID = value.CallLogID;

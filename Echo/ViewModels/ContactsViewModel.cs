@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Windows;
-using Microsoft.Phone.Shell;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Echo.Model;
-using Caliburn.Micro;
-using System.Text.RegularExpressions;
-using System.Windows.Media;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Media;
+using Caliburn.Micro;
 using Echo.Helpers;
+using Echo.Model;
 using Echo.Views;
-using System.Linq;
-using System.Data.Linq;
-using System.Windows.Navigation;
+using Microsoft.Phone.Shell;
 
 namespace Echo.ViewModels
 {
@@ -103,15 +100,6 @@ namespace Echo.ViewModels
         {
             base.OnActivate();
             NotifyOfPropertyChange("UsersByName");
-            /*
-            if (this.ReloadList || this._NameOrder != (sm.getValueOrDefault<bool>(sm.NameOrderSettingKeyName, sm.NameOrderDefault)))
-            {
-                this.LoadInBackground(new RunWorkerCompletedEventHandler((sender, args) =>
-                {
-
-                }));
-            };
-            */
         }
 
         private ContactsView myView;
@@ -144,198 +132,6 @@ namespace Echo.ViewModels
         }
 
         public bool LoadedOnce { get { return loadedOnce; } }
-        #region old user and list implementation
-        //private bool bgLock;
-        //public void LoadInBackground(RunWorkerCompletedEventHandler eh)
-        //{
-        //    NameOrder = (sm.getValueOrDefault<bool>(sm.NameOrderSettingKeyName, sm.NameOrderDefault) ? Visibility.Visible : Visibility.Collapsed);
-        //    if (!bgLock)
-        //    {
-        //        bgLock = true;
-        //        bgWorker = new BackgroundWorker();
-        //        bgWorker.DoWork += new DoWorkEventHandler((sender, args) => LoadListsFromDatabase());
-        //        bgWorker.RunWorkerCompleted += eh;
-        //        bgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler((sender, args) =>
-        //        {
-        //            Deployment.Current.Dispatcher.BeginInvoke(() =>
-        //            {
-        //                this.bgLock = false;
-        //                this.loadedOnce = true;
-        //            });
-        //        });
-        //        bgWorker.RunWorkerAsync();
-        //    }
-        //    else
-        //    {
-        //        bgWorker.RunWorkerCompleted += eh;
-        //    }
-        //}
-
-        //private ObservableCollection<Group<UserModel>> _UsersByName;
-        //public ObservableCollection<Group<UserModel>> UsersByName
-        //{
-        //    get { return _UsersByName; }
-        //    set
-        //    {
-        //        if (value != _UsersByName)
-        //        {
-        //            _UsersByName = value;
-        //            NotifyOfPropertyChange("UsersByName");
-        //        }
-        //    }
-        //}
-        //private ObservableCollection<UserModel> _UserList;
-        //public ObservableCollection<UserModel> UserList
-        //{
-        //    get { return _UserList; }
-        //    set
-        //    {
-        //        if (value != _UserList)
-        //        {
-        //            _UserList = value;
-        //            NotifyOfPropertyChange("UserList");
-        //        }
-        //    }
-        //}
-        //private ObservableCollection<GroupModel> _GroupList;
-        //public ObservableCollection<GroupModel> GroupList
-        //{
-        //    get { return _GroupList; }
-        //    set
-        //    {
-        //        if (value != _GroupList)
-        //        {
-        //            _GroupList = value;
-        //            NotifyOfPropertyChange("GroupList");
-        //        }
-        //    }
-        //}
-        //private ObservableCollection<GroupMapModel> _JunctionTable;
-        //public ObservableCollection<GroupMapModel> JunctionTable
-        //{
-        //    get { return _JunctionTable; }
-        //    set
-        //    {
-        //        _JunctionTable = value;
-        //        NotifyOfPropertyChange("JunctionTable");
-        //    }
-        //}
-
-        //private static readonly string alphabet = "#abcdefghijklmnopqrstuvwxyz";
-        //private Func<UserDataContext, IQueryable<TitleGroup<UserModel>>> UsersByFirstName =
-        //    CompiledQuery.Compile((UserDataContext dataContext) => (from UserModel u in dataContext.UserTable
-        //                                                            group u by u.FirstName.Substring(0, 1).ToLower() into foo
-        //                                                            orderby foo.Key
-        //                                                            select new TitleGroup<UserModel>(foo.Key, foo)));
-
-        ///*
-        //private Func<UserDataContext, IEnumerable<Group<UserModel>>> UsersByFirstNameList =
-        //    CompiledQuery.Compile((UserDataContext dataContext) => (from UserModel u in dataContext.UserList
-        //                                                    group u by u.FirstName.Substring(0, 1).ToLower() into foo
-        //                                                    orderby foo.Key
-        //                                                    select new Group<UserModel>(foo.Key, foo)));
-        //*/
-        //private Func<UserDataContext, IQueryable<TitleGroup<UserModel>>> UsersByLastName =
-        //    CompiledQuery.Compile((UserDataContext dataContext) => (from UserModel u in dataContext.UserTable
-        //                                                            group u by u.LastName.Substring(0, 1).ToLower() into foo
-        //                                                            orderby foo.Key
-        //                                                            select new TitleGroup<UserModel>(foo.Key, foo)));
-
-        //private Func<UserDataContext, IOrderedEnumerable<GroupModel>> GroupsFromDb =
-        //    CompiledQuery.Compile((UserDataContext dataContext) => (dataContext.GroupTable.ToList()).OrderBy(x => x.GroupName));
-        //private void LoadListsFromDatabase()
-        //{
-        //    List<TitleGroup<UserModel>> UsersFromDb;
-        //    if (sm.NameOrder)
-        //    {
-        //        UsersFromDb = UsersByFirstName(udc.DataContext).ToList();
-        //    }
-        //    else
-        //    {
-        //        UsersFromDb = UsersByLastName(udc.DataContext).ToList();
-        //    }
-        //    bool createdNumberGroup = false;
-        //    List<UserModel> NumberGroup = new List<UserModel>();
-        //    List<TitleGroup<UserModel>> tmp = new List<TitleGroup<UserModel>>();
-        //    foreach (TitleGroup<UserModel> g in UsersFromDb)
-        //    {
-
-        //        if (Regex.Match(g.Title, "[^a-zA-Z]").Success)
-        //        {
-        //            if (!createdNumberGroup)
-        //            {
-        //                NumberGroup.AddRange(g.Items);
-        //                createdNumberGroup = true;
-        //            }
-        //            else
-        //            {
-        //                NumberGroup.AddRange(g.Items);
-        //            }
-        //            tmp.Add(g);
-        //        }
-        //    }
-        //    if (createdNumberGroup)
-        //    {
-        //        foreach (TitleGroup<UserModel> g in tmp)
-        //        {
-        //            UsersFromDb.Remove(g);
-        //        }
-        //        UsersFromDb.Insert(0, new TitleGroup<UserModel>("#", NumberGroup));
-        //        UsersFromDb.OrderBy(group => group.Title);
-        //    }
-        //    var EmptyGroups = new List<TitleGroup<UserModel>>();
-        //    foreach (char c in alphabet)
-        //    {
-        //        EmptyGroups.Add(new TitleGroup<UserModel>(c.ToString(), new List<UserModel>()));
-        //    }
-        //    UsersByName = new ObservableCollection<TitleGroup<UserModel>>(UsersFromDb.Union(EmptyGroups).OrderBy((x) => x.Title));
-        //    GroupList = new ObservableCollection<GroupModel>(GroupsFromDb(udc.DataContext));
-        //}
-
-        //private string findInitial(string input)
-        //{
-
-        //    string initial = input.Substring(0, 1);
-        //    if (Regex.Match(initial, "[a-zA-Z]").Success)
-        //    {
-        //        return initial;
-        //    }
-        //    else
-        //    {
-        //        return "#";
-        //    }
-        //}
-
-        //private bool AddUser(UserModel newUser)
-        //{
-        //    udc.UserTable.InsertOnSubmit(newUser);
-        //    try
-        //    {
-        //        udc.SubmitChanges();
-        //    }
-        //    catch (System.Data.Linq.DuplicateKeyException)
-        //    {
-        //        return false;
-        //    }
-        //    UserList.Add(newUser);
-        //    return true;
-        //}
-
-        //private bool RemoveUser(UserModel remUser)
-        //{
-        //    udc.UserTable.DeleteOnSubmit(remUser);
-        //    try
-        //    {
-        //        udc.SubmitChanges();
-        //    }
-        //    catch (System.Data.Common.DbException de)
-        //    {
-        //        return false;
-        //    }
-        //    UserList.Remove(remUser);
-        //    return true;
-        //}
-        #endregion
 
         private void CreateApplicationBarButtons()
         {

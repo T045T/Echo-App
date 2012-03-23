@@ -1,17 +1,6 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Echo.Helpers;
-using Microsoft.Phone.Controls;
-using Echo.Model;
+﻿using System.Windows;
 using Caliburn.Micro;
+using Echo.Model;
 
 namespace Echo.ViewModels
 {
@@ -19,32 +8,6 @@ namespace Echo.ViewModels
     {
         private SettingsModel sm;
         private INavigationService navService;
-
-
-        //#region CommandProperties
-        //private ICommand _Continue;
-        //public ICommand Continue
-        //{
-        //    get { return _Continue; }
-        //}
-
-        //private ICommand _ImportFromPhonebook;
-        //public ICommand ImportFromPhonebook
-        //{
-        //    get { return _ImportFromPhonebook; }
-        //}
-        //private ICommand _DontImport;
-        //public ICommand DontImport
-        //{
-        //    get { return _DontImport; }
-        //}
-
-        //private ICommand _Finish;
-        //public ICommand Finish
-        //{
-        //    get { return _Finish; }
-        //}
-        //#endregion
 
         #region VisibilityProperties
         private Visibility _Page1Visibility;
@@ -114,9 +77,6 @@ namespace Echo.ViewModels
             this.navService = navService;
             UserName = "";
             Password = "";
-            //_ImportFromPhonebook = new DelegateCommand(this.ImportFromPhonebookImpl);
-            //_DontImport = new DelegateCommand(this.DontImportImpl);
-            //_Finish = new DelegateCommand(this.FinishImpl);
         }
 
         #region Text Field Properties

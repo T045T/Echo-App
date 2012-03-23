@@ -1,11 +1,4 @@
-﻿using System;
-using System.Data.Linq;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
-using System.ComponentModel;
-using Echo.Helpers;
+﻿using System.Data.Linq;
 
 namespace Echo.Model
 {
@@ -39,9 +32,5 @@ namespace Echo.Model
         public Table<GroupModel> GroupTable;
         public Table<CallLogModel> CallLogTable;
         public Table<CallLogEntry> EntryTable;
-
-
-
-        
     }
 }
