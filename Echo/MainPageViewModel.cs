@@ -75,11 +75,11 @@ namespace Echo
             Items.Add(rvm);
             Items.Add(tvm);
 
-            if (sm.getValueOrDefault<bool>(sm.ShowWelcomeScreenSettingKeyName, sm.ShowWelcomeScreenDefault))
-            {
-                //sm.AddOrUpdateValue(sm.ShowWelcomeScreenSettingKeyName, false);
-                navService.UriFor<WelcomePageViewModel>().Navigate();
-            }
+            //if (sm.getValueOrDefault<bool>(sm.ShowWelcomeScreenSettingKeyName, sm.ShowWelcomeScreenDefault))
+            //{
+            //    //sm.AddOrUpdateValue(sm.ShowWelcomeScreenSettingKeyName, false);
+            //    navService.UriFor<WelcomePageViewModel>().Navigate();
+            //}
         }
 
 
