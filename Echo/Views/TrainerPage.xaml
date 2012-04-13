@@ -60,7 +60,7 @@
             </Grid.ColumnDefinitions>
             <Border Background="{StaticResource TransparentBrush}"
                     Grid.Row="0">
-                <Image Source="/icons/TrainerMockupContent.PNG"
+                <Image Source="/icons/TrainerMockupContent_AppleSentence.PNG"
                        HorizontalAlignment="Left"/>
             <!--<Image Source="{Binding Visualization}" />-->
             </Border>
@@ -107,15 +107,35 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.RenderTransform>
-                            <TranslateTransform X="115" />
+                            <TranslateTransform X="160" />
                         </Grid.RenderTransform>
                         <Border Grid.Row="0" 
-                                Width="145" 
+                                Width="85" 
                                 Background="{StaticResource PhoneAccentBrush}"
                                 HorizontalAlignment="Left"/>
                         <TextBlock Grid.Row="1" 
                                    Margin="0"
-                                   Text="æ"
+                                   Text="This"
+                                   Style="{StaticResource PhoneTextLargeStyle}"
+                                   HorizontalAlignment="Left"/>
+                    </Grid>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <Grid Margin="0, 12, 0, 12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.RenderTransform>
+                            <TranslateTransform X="250" />
+                        </Grid.RenderTransform>
+                        <Border Grid.Row="0" 
+                                Width="75" 
+                                Background="{StaticResource PhoneAccentBrush}"
+                                HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Row="1" 
+                                   Margin="0"
+                                   Text="is"
                                    Style="{StaticResource PhoneTextLargeStyle}"
                                    HorizontalAlignment="Left"/>
                     </Grid>
@@ -130,12 +150,12 @@
                             <TranslateTransform X="345" />
                         </Grid.RenderTransform>
                         <Border Grid.Row="0" 
-                                Width="18" 
+                                Width="75" 
                                 Background="{StaticResource PhoneAccentBrush}"
                                 HorizontalAlignment="Left"/>
                         <TextBlock Grid.Row="1" 
                                    Margin="0"
-                                   Text="p"
+                                   Text="an"
                                    Style="{StaticResource PhoneTextLargeStyle}"
                                    HorizontalAlignment="Left"/>
                     </Grid>
@@ -147,35 +167,15 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.RenderTransform>
-                            <TranslateTransform X="367" />
+                            <TranslateTransform X="440" />
                         </Grid.RenderTransform>
                         <Border Grid.Row="0" 
-                                Width="120" 
+                                Width="170" 
                                 Background="{StaticResource PhoneAccentBrush}"
                                 HorizontalAlignment="Left"/>
                         <TextBlock Grid.Row="1" 
                                    Margin="0"
-                                   Text="a"
-                                   Style="{StaticResource PhoneTextLargeStyle}"
-                                   HorizontalAlignment="Left"/>
-                    </Grid>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <Grid Margin="0, 12, 0, 12">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="4" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.RenderTransform>
-                            <TranslateTransform X="490" />
-                        </Grid.RenderTransform>
-                        <Border Grid.Row="0" 
-                                Width="100" 
-                                Background="{StaticResource PhoneAccentBrush}"
-                                HorizontalAlignment="Left"/>
-                        <TextBlock Grid.Row="1" 
-                                   Margin="0"
-                                   Text="l"
+                                   Text="apple"
                                    Style="{StaticResource PhoneTextLargeStyle}"
                                    HorizontalAlignment="Left"/>
                     </Grid>
@@ -183,17 +183,4 @@
             </ItemsControl>
         </Grid>
     </Grid>
-
-    <!--Beispielcode zur Verwendung von ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Schaltfläche 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Schaltfläche 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Menüelement 1"/>
-                <shell:ApplicationBarMenuItem Text="Menüelement 2"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
-
 </phone:PhoneApplicationPage>
