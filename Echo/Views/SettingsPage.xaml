@@ -10,6 +10,7 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:keyboard="clr-namespace:WPKeyboardHelper"
+    xmlns:helpers="clr-namespace:Echo.Helpers"
 	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
 	x:Class="Echo.Views.SettingsPage"
 	FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -58,7 +59,11 @@
                         <TextBox x:Name="UserName" 
                                  TextWrapping="Wrap" 
                                  TabIndex="1"
-                                 Text="{Binding Path=UsernameSetting, Mode=TwoWay}"/>
+                                 Text="{Binding Path=UsernameSetting, Mode=TwoWay}">
+                            <i:Interaction.Behaviors>
+                                <helpers:TextBoxUpdateBehavior />
+                            </i:Interaction.Behaviors>
+                        </TextBox>
                     </StackPanel>
                     <StackPanel Margin="0,0,0,12">
                         <TextBlock TextWrapping="Wrap" 
@@ -68,7 +73,11 @@
                                    Opacity="0.7"/>
                         <PasswordBox x:Name="Password" 
                                      TabIndex="2"
-                                     Password="{Binding Path=PasswordSetting, Mode=TwoWay}"/>
+                                     Password="{Binding Path=PasswordSetting, Mode=TwoWay}">
+                            <i:Interaction.Behaviors>
+                                <helpers:PasswordBoxUpdateBehavior />
+                            </i:Interaction.Behaviors>
+                        </PasswordBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="100">
                         <StackPanel Margin="0" Width="336">
@@ -81,7 +90,11 @@
                                      TextWrapping="Wrap" 
                                      TabIndex="3"
                                      InputScope="Url"
-                                     Text="{Binding Path=ServerSetting, Mode=TwoWay}"/>
+                                     Text="{Binding Path=ServerSetting, Mode=TwoWay}">
+                                <i:Interaction.Behaviors>
+                                    <helpers:TextBoxUpdateBehavior />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                         </StackPanel>
                         <StackPanel Margin="0" Width="120">
                             <TextBlock TextWrapping="Wrap" 
@@ -95,7 +108,11 @@
                                      Width="120"
                                      Text="{Binding Path=PortSetting, Mode=TwoWay}"
                                      InputScope="Number"
-                                     TextAlignment="Center"/>
+                                     TextAlignment="Center">
+                                <i:Interaction.Behaviors>
+                                    <helpers:TextBoxUpdateBehavior />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                         </StackPanel>
                     </StackPanel>
 
@@ -113,7 +130,11 @@
                                      TextWrapping="Wrap" 
                                      TabIndex="3"
                                      InputScope="Url"
-                                     Text="{Binding Path=EchoServerSetting, Mode=TwoWay}"/>
+                                     Text="{Binding Path=EchoServerSetting, Mode=TwoWay}">
+                                <i:Interaction.Behaviors>
+                                    <helpers:TextBoxUpdateBehavior />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                         </StackPanel>
                         <StackPanel Margin="0" Width="120">
                             <TextBlock TextWrapping="Wrap" 
@@ -127,7 +148,11 @@
                                      Width="120"
                                      Text="{Binding Path=EchoPortSetting, Mode=TwoWay}"
                                      InputScope="Number"
-                                     TextAlignment="Center"/>
+                                     TextAlignment="Center">
+                                <i:Interaction.Behaviors>
+                                    <helpers:TextBoxUpdateBehavior />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
                         </StackPanel>
                     </StackPanel>
                     <!--<toolkit:ToggleSwitch x:Name="SSLSwitch"  Header="Use SSL" IsChecked="{Binding Path=UseSSLSetting, Mode=TwoWay}"/>-->
