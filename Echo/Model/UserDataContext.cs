@@ -4,6 +4,12 @@ namespace Echo.Model
 {
     public class UserDataContext : DataContext
     {
+        public Table<UserModel> UserTable;
+        public Table<GroupMapModel> JunctionTable;
+        public Table<GroupModel> GroupTable;
+        public Table<CallLogModel> CallLogTable;
+        public Table<CallLogEntry> EntryTable;
+
         public UserDataContext(string connectionString, bool overWrite)
             : base(connectionString)
         {
@@ -16,6 +22,7 @@ namespace Echo.Model
                 this.DeleteDatabase();
                 this.CreateDatabase();
             }
+            this.SubmitChanges();
             //LoadListsFromDatabase();
         }
         public UserDataContext()
@@ -24,13 +31,8 @@ namespace Echo.Model
             if (!this.DatabaseExists())
                 this.CreateDatabase();
             //LoadListsFromDatabase();
+            this.SubmitChanges();
         }
         public const string DefaultPath = "Data Source=isostore:/Users.sdf";
-
-        public Table<UserModel> UserTable;
-        public Table<GroupMapModel> JunctionTable;
-        public Table<GroupModel> GroupTable;
-        public Table<CallLogModel> CallLogTable;
-        public Table<CallLogEntry> EntryTable;
     }
 }
