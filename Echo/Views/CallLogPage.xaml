@@ -72,8 +72,6 @@
         </Grid.ColumnDefinitions>
 
         <!--TitlePanel enthält den Namen der Anwendung und den Seitentitel-->
-        <!--<ListBoxItem toolkit:TiltEffect.IsTiltEnabled="True"
-                     Grid.Row="0" >-->
         <Grid x:Name="TitlePanel" 
                   Grid.Row="0"
                     Margin="12,17,0,28">
@@ -102,7 +100,6 @@
                 </TextBlock>
             </ListBoxItem>
         </Grid>
-        <!--</ListBoxItem>-->
 
         <!--ContentPanel - zusätzliche Inhalte hier platzieren-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
@@ -123,17 +120,4 @@
             </ScrollViewer>
         </Grid>
     </Grid>
-
-    <!--Beispielcode zur Verwendung von ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Schaltfläche 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Schaltfläche 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Menüelement 1"/>
-                <shell:ApplicationBarMenuItem Text="Menüelement 2"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
-
 </phone:PhoneApplicationPage>

@@ -100,9 +100,7 @@
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="Helpers\ListBoxScrollToSelectionBehavior.cs" />
-    <Compile Include="Helpers\LongListCollection.cs" />
     <Compile Include="Helpers\TitleGroup.cs" />
-    <Compile Include="Model\TestDataContext.cs" />
     <Compile Include="Model\UDCListModel.cs" />
     <Compile Include="StartupSplashScreen.xaml.cs">
       <DependentUpon>StartupSplashScreen.xaml</DependentUpon>
@@ -114,7 +112,6 @@
     <Compile Include="Views\ContactDetailsPage.xaml.cs">
       <DependentUpon>ContactDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\DelegateCommand.cs" />
     <Compile Include="Helpers\NameConverter.cs" />
     <Compile Include="Helpers\ShowDialog.cs" />
     <Compile Include="Helpers\TextBoxUpdateBehavior.cs" />
@@ -153,9 +150,6 @@
     </Compile>
     <Compile Include="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SingleCallHistory.xaml.cs">
-      <DependentUpon>SingleCallHistory.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ContactDetailsPageViewModel.cs" />
     <Compile Include="ViewModels\ContactsViewModel.cs" />
@@ -245,10 +239,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SingleCallHistory.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\ContactDetailView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -283,8 +273,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
     <None Include="ClassDiagram3.cd" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
@@ -313,6 +301,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="icons\TrainerMockupContent.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\TrainerMockupContent_Ah.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\TrainerMockupContent_AppleAfter.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\TrainerMockupContent_AppleBefore.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\TrainerMockupContent_AppleSentence.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SplashScreenImage.jpg" />

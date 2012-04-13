@@ -138,32 +138,6 @@
                     VerticalAlignment="Bottom"
                     Margin="12, 0, 24, 12"
                     Background="{StaticResource PhoneAccentBrush}" />
-
-            <!--<Path Grid.Row="2" 
-                  Margin="12"
-                  Data="m 0,0 
-                      L0,-60 
-                      L50,-110 
-                      L100,-75 
-                      L150,-110
-                      L200,-90
-                      L250,-100
-                      L300,-120
-                      L350,-125
-                      L400,-160
-                      L450,-130
-                      L500,-140
-                      L550,-155
-                      L600,-170
-                      L650,-200
-                      L700,-210
-                      L747,-215
-                      L747,0
-                      "
-                      HorizontalAlignment="Left"
-                      VerticalAlignment="Bottom"
-					  Fill="{StaticResource PhoneAccentBrush}"
-                      />-->
         </Grid>
     </Grid>
 </UserControl>

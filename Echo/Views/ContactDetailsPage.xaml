@@ -138,16 +138,6 @@
                                    Foreground="{StaticResource PhoneAccentBrush}" 
                                    Style="{StaticResource PhoneTextNormalStyle}"/>
                     </StackPanel>
-                    <!--
-					<StackPanel Width="444" Margin="0,5,0,10">
-						<TextBlock TextWrapping="Wrap" Text="call regular phone" FontSize="34.667"/>
-						<TextBlock TextWrapping="Wrap" Text="(1)-555-1337" Foreground="{StaticResource PhoneAccentBrush}" FontSize="21.333"/>
-					</StackPanel>
-					<StackPanel Margin="0,5,0,10" Width="444">
-						<TextBlock TextWrapping="Wrap" Text="text" FontSize="34.667"/>
-						<TextBlock TextWrapping="Wrap" Text="(1)-555-1337" Foreground="{StaticResource PhoneAccentBrush}" FontSize="21.333"/>
-					</StackPanel>
-                    -->
                 </ListBox>
             </controls:PivotItem>
 

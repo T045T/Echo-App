@@ -177,7 +177,7 @@
         <Border Grid.Row="0"
                 Grid.RowSpan="2"
                 Background="{StaticResource PhoneChromeBrush}" />
-        
+
         <!--Das TitlePanel-Objekt enthält den Namen der Anwendung und den Seitentitel.-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,0,0,0">
             <TextBlock x:Name="ApplicationTitle" 
@@ -232,32 +232,6 @@
                           Grid.Column="2"
                           Style="{StaticResource SpeakerToggle}" 
                           BorderThickness="0,3,3,3"/>
-            <!--<Grid x:Name="Shrink"
-                      Grid.Row="0"
-                      Grid.Column="3"
-                      Margin="12">
-                    <Border Background="{StaticResource PhoneChromeBrush}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-                            <Image Source="/icons/appbar.upload.rest.png" />
-                            <Path Data="M2,0 L24,-24 L46,0 M24,-12 Z"
-                                      
-                                      Grid.Row="0"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"
-                                                  Fill="DarkGray" />
-                            <TextBlock Text="Shrink" 
-                                                   Grid.Row="2"
-                                                   HorizontalAlignment="Center"
-                                                   Margin="6, 0, 6, 6"
-                                                   VerticalAlignment="Bottom"
-                                                   Style="{StaticResource PhoneTextNormalStyle}" />
-                        </Grid>
-                    </Border>
-                </Grid>-->
         </Grid>
         <ScrollViewer Grid.Row="2"
                       Margin="0, 12, 0, 0">
@@ -267,41 +241,6 @@
                                       Opacity="0.6" />
                 <ItemsControl ItemTemplate="{StaticResource BubbleCallList}" 
                                       ItemsSource="{Binding Path=CurrentCallLog.Entries, Mode=OneWay}" >
-                    <!--<ListBoxItem>
-                        <Grid Margin="12, 0, 12, 12">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Border Background="{StaticResource PhoneAccentBrush}"
-                                        Grid.Row="1">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="/icons/appbar.questionmark.rest.png" 
-                                                   Visibility="{Binding TrustWorthy, Converter={StaticResource boolConv}}"/>
-                                    <StackPanel >
-                                        <TextBlock Text="{Binding Content}" 
-                                               TextWrapping="Wrap"
-                                                   Margin="12"
-                                               Style="{StaticResource PhoneTextNormalStyle}"/>
-                                        <TextBlock Text="{Binding Timestamp, Converter={StaticResource timeConv}}" 
-                                                           Style="{StaticResource PhoneTextSubtleStyle}"
-                                                           Margin="12, -12, 12, 6"
-                                                           TextWrapping="Wrap"
-                                                           HorizontalAlignment="Right"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-
-                            <Path Data="m 0,0 L0,12 L18,12"
-                                      HorizontalAlignment="Left"
-					                  Fill="{StaticResource PhoneAccentBrush}"
-                                      Margin="12, 0, 0, -1"
-					                  Grid.Row="0"/>
-                        </Grid>
-                    </ListBoxItem>-->
                 </ItemsControl>
                 <Grid Margin="24"
                               Visibility="{Binding Path=Con.Analyzing, Mode=OneWay, Converter={StaticResource boolConv}}">
