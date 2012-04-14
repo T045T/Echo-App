@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkTestApp_Moritz", "Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Echo.test", "Echo.test\Echo.test.csproj", "{FB85A97C-F5E7-4C59-A28B-C184A9EC7885}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Echo.Trainer", "Echo.Trainer\Echo.Trainer.csproj", "{136447FC-8C41-42CA-9E72-217E386F5494}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,12 @@ Global
 		{FB85A97C-F5E7-4C59-A28B-C184A9EC7885}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB85A97C-F5E7-4C59-A28B-C184A9EC7885}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB85A97C-F5E7-4C59-A28B-C184A9EC7885}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{136447FC-8C41-42CA-9E72-217E386F5494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{136447FC-8C41-42CA-9E72-217E386F5494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{136447FC-8C41-42CA-9E72-217E386F5494}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{136447FC-8C41-42CA-9E72-217E386F5494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{136447FC-8C41-42CA-9E72-217E386F5494}.Release|Any CPU.Build.0 = Release|Any CPU
+		{136447FC-8C41-42CA-9E72-217E386F5494}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
