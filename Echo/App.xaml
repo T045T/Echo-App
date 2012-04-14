@@ -2,10 +2,12 @@
     x:Class="Echo.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Echo">
+    xmlns:local="clr-namespace:Echo"
+    xmlns:res="clr-namespace:Echo.Resources">
 
     <!--Anwendungsressourcen-->
     <Application.Resources>
         <local:AppBootstrapper x:Key="bootstrapper" />
+        <res:ResourceManager x:Key="ResourceManager" />
     </Application.Resources>
 </Application>

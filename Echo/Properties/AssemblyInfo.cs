@@ -36,4 +36,4 @@ using System.Resources;
 // übernehmen, indem Sie "*" wie folgt verwenden:
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: NeutralResourcesLanguageAttribute("de-DE")]
+[assembly: NeutralResourcesLanguageAttribute("en-US")]
