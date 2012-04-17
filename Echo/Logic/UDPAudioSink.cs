@@ -48,6 +48,7 @@ namespace Echo.Logic
             dt = new DispatcherTimer();
             microphone = Microphone.Default;
             stream = new MemoryStream();
+            FrameworkDispatcher.Update();
 
             microphone.BufferReady += new EventHandler<EventArgs>(microphone_BufferReady);
         }
