@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using Caliburn.Micro;
 using Echo.Logic;
 using Echo.Model;
+using Echo.Helpers;
 
 namespace Echo.ViewModels
 {
@@ -221,12 +222,30 @@ namespace Echo.ViewModels
 
         void con_DataReceived(object sender, string e)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => CurrentCallLog.addEntry(e));
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                if (e.Length > 0)
+                    CurrentCallLog.addEntry(e);
+            });
         }
 
         public bool CanEndCall
         {
             get { return CallInProgress; }
+        }
+
+        private bool testBool;
+        public bool TestBool
+        {
+            get { return testBool; }
+            set
+            {
+                if (value != testBool)
+                {
+                    testBool = value;
+                    NotifyOfPropertyChange("TestBool");
+                }
+            }
         }
 
         public void EndCall()

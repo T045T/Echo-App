@@ -7,152 +7,160 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+	xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:helpers="clr-namespace:Echo.Helpers"
+	xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" xmlns:eim="clr-namespace:Microsoft.Expression.Interactivity.Media;assembly=Microsoft.Expression.Interactions" xmlns:el="clr-namespace:Microsoft.Expression.Interactivity.Layout;assembly=Microsoft.Expression.Interactions" x:Name="CallPage"
 	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
 	x:Class="Echo.Views.ActiveCallPage"
 	Orientation="Portrait"
 	shell:SystemTray.IsVisible="True">
     <phone:PhoneApplicationPage.Resources>
-        <cal:BooleanToVisibilityConverter x:Key="boolConv" />
-        <helpers:ShortTimeConverter x:Key="timeConv" />
+    	<cal:BooleanToVisibilityConverter x:Key="boolConv" />
+    	<helpers:ShortTimeConverter x:Key="timeConv" />
+    	<DataTemplate x:Key="BubbleCallList">
+    		<Grid Margin="12, 0, 12, 12">
+    			<Grid.ColumnDefinitions>
+    				<ColumnDefinition Width="*"/>
+    			</Grid.ColumnDefinitions>
+    			<Grid.RowDefinitions>
+    				<RowDefinition />
+    				<RowDefinition />
+    			</Grid.RowDefinitions>
+    			<Border Background="{StaticResource PhoneAccentBrush}"
+    				Grid.Row="1">
+    				<Grid>
+    					<Grid.ColumnDefinitions>
+    						<ColumnDefinition Width="auto" />
+    						<ColumnDefinition Width="*" />
+    					</Grid.ColumnDefinitions>
+    					<Image Source="/icons/appbar.questionmark.rest.png"
+    						Grid.Column="0"
+    						Visibility="{Binding Dubious, Converter={StaticResource boolConv}}"/>
+    					<StackPanel Grid.Column="1">
+    						<TextBlock Text="{Binding Content}" 
+    							TextWrapping="Wrap"
+    							Margin="12"
+    							Style="{StaticResource PhoneTextNormalStyle}"/>
+    						<TextBlock Text="{Binding Timestamp, Converter={StaticResource timeConv}}" 
+    							Style="{StaticResource PhoneTextSubtleStyle}"
+    							Margin="12, -12, 12, 6"
+    							HorizontalAlignment="Right"/>
+    					</StackPanel>
+    				</Grid>
+    			</Border>
 
-        <DataTemplate x:Key="BubbleCallList">
-            <Grid Margin="12, 0, 12, 12">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Border Background="{StaticResource PhoneAccentBrush}"
-                        Grid.Row="1">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Image Source="/icons/appbar.questionmark.rest.png"
-                               Grid.Column="0"
-                               Visibility="{Binding Dubious, Converter={StaticResource boolConv}}"/>
-                        <StackPanel Grid.Column="1">
-                            <TextBlock Text="{Binding Content}" 
-                                       TextWrapping="Wrap"
-                                       Margin="12"
-                                       Style="{StaticResource PhoneTextNormalStyle}"/>
-                            <TextBlock Text="{Binding Timestamp, Converter={StaticResource timeConv}}" 
-                                       Style="{StaticResource PhoneTextSubtleStyle}"
-                                       Margin="12, -12, 12, 6"
-                                       HorizontalAlignment="Right"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <Path Data="m 0,0 L0,12 L18,12"
-                      HorizontalAlignment="Left"
-					  Fill="{StaticResource PhoneAccentBrush}"
-                      Margin="12, 0, 0, -1"
-					  Grid.Row="0"/>
-            </Grid>
-        </DataTemplate>
-        <Style x:Key="MicToggle" TargetType="ToggleButton">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ToggleButton">
-                        <Grid Margin="12">
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CheckStates">
-                                    <VisualState x:Name="Indeterminate"/>
-                                    <VisualState x:Name="Checked">
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Unchecked1" d:IsOptimized="True"/>
-                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Checked1" d:IsOptimized="True"/>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="Unchecked">
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Unchecked1" d:IsOptimized="True"/>
-                                            <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Checked1" d:IsOptimized="True"/>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <Grid x:Name="Checked1">
-                                <Border Background="Gray">
-                                    <StackPanel>
-                                        <Image x:Name="image1" Source="/icons/appbar.check.rest.png"/>
-                                        <TextBlock Text="Mic" 
-                                                   HorizontalAlignment="Center"
-                                                   Margin="6, 0, 6, 6"
-                                                   Style="{StaticResource PhoneTextNormalStyle}" />
-                                    </StackPanel>
-                                </Border>
-                            </Grid>
-                            <Grid x:Name="Unchecked1" Opacity="0">
-                                <Border Background="Gray" Opacity="0.8">
-                                    <StackPanel>
-                                        <Image x:Name="image2" Source="/icons/appbar.cancel.rest.png"/>
-                                        <TextBlock Text="Mic" 
-                                                   HorizontalAlignment="Center"
-                                                   Margin="6, 0, 6, 6"
-                                                   Style="{StaticResource PhoneTextNormalStyle}" />
-                                    </StackPanel>
-                                </Border>
-                            </Grid>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="SpeakerToggle" TargetType="ToggleButton">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ToggleButton">
-                        <Grid Margin="12">
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CheckStates">
-                                    <VisualState x:Name="Indeterminate"/>
-                                    <VisualState x:Name="Checked">
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Unchecked1" d:IsOptimized="True"/>
-                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Checked1" d:IsOptimized="True"/>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="Unchecked">
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Unchecked1" d:IsOptimized="True"/>
-                                            <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Checked1" d:IsOptimized="True"/>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <Grid x:Name="Checked1">
-                                <Border Background="Gray">
-                                    <StackPanel>
-                                        <Image x:Name="image1" Source="/icons/appbar.check.rest.png"/>
-                                        <TextBlock Text="Speaker" 
-                                                   HorizontalAlignment="Center"
-                                                   Margin="6, 0, 6, 6"
-                                                   Style="{StaticResource PhoneTextNormalStyle}" />
-                                    </StackPanel>
-                                </Border>
-                            </Grid>
-                            <Grid x:Name="Unchecked1" Opacity="0">
-                                <Border Background="Gray" Opacity="0.8">
-                                    <StackPanel>
-                                        <Image x:Name="image2" Source="/icons/appbar.cancel.rest.png"/>
-                                        <TextBlock Text="Speaker" 
-                                                   HorizontalAlignment="Center"
-                                                   Margin="6, 0, 6, 6"
-                                                   Style="{StaticResource PhoneTextNormalStyle}" />
-                                    </StackPanel>
-                                </Border>
-                            </Grid>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+    			<Path Data="m 0,0 L0,12 L18,12"
+    				HorizontalAlignment="Left"
+    				Fill="{StaticResource PhoneAccentBrush}"
+    				Margin="12, 0, 0, -1"
+    				Grid.Row="0"/>
+    		</Grid>
+    	</DataTemplate>
+    	<Style x:Key="MicToggle" TargetType="ToggleButton">
+    		<Setter Property="Template">
+    			<Setter.Value>
+    				<ControlTemplate TargetType="ToggleButton">
+    					<Grid Margin="12">
+    						<VisualStateManager.VisualStateGroups>
+    							<VisualStateGroup x:Name="CheckStates">
+    								<VisualState x:Name="Indeterminate"/>
+    								<VisualState x:Name="Checked">
+    									<Storyboard>
+    										<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Unchecked1" d:IsOptimized="True"/>
+    										<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Checked1" d:IsOptimized="True"/>
+    									</Storyboard>
+    								</VisualState>
+    								<VisualState x:Name="Unchecked">
+    									<Storyboard>
+    										<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Unchecked1" d:IsOptimized="True"/>
+    										<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Checked1" d:IsOptimized="True"/>
+    									</Storyboard>
+    								</VisualState>
+    							</VisualStateGroup>
+    						</VisualStateManager.VisualStateGroups>
+    						<Grid x:Name="Checked1">
+    							<Border Background="Gray">
+    								<StackPanel>
+    									<Image x:Name="image1" Source="/icons/appbar.check.rest.png"/>
+    									<TextBlock Text="Mic" 
+    										HorizontalAlignment="Center"
+    										Margin="6, 0, 6, 6"
+    										Style="{StaticResource PhoneTextNormalStyle}" />
+    								</StackPanel>
+    							</Border>
+    						</Grid>
+    						<Grid x:Name="Unchecked1" Opacity="0">
+    							<Border Background="Gray" Opacity="0.8">
+    								<StackPanel>
+    									<Image x:Name="image2" Source="/icons/appbar.cancel.rest.png"/>
+    									<TextBlock Text="Mic" 
+    										HorizontalAlignment="Center"
+    										Margin="6, 0, 6, 6"
+    										Style="{StaticResource PhoneTextNormalStyle}" />
+    								</StackPanel>
+    							</Border>
+    						</Grid>
+    					</Grid>
+    				</ControlTemplate>
+    			</Setter.Value>
+    		</Setter>
+    	</Style>
+    	<Style x:Key="SpeakerToggle" TargetType="ToggleButton">
+    		<Setter Property="Template">
+    			<Setter.Value>
+    				<ControlTemplate TargetType="ToggleButton">
+    					<Grid Margin="12">
+    						<VisualStateManager.VisualStateGroups>
+    							<VisualStateGroup x:Name="CheckStates">
+    								<VisualState x:Name="Indeterminate"/>
+    								<VisualState x:Name="Checked">
+    									<Storyboard>
+    										<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Unchecked1" d:IsOptimized="True"/>
+    										<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Checked1" d:IsOptimized="True"/>
+    									</Storyboard>
+    								</VisualState>
+    								<VisualState x:Name="Unchecked">
+    									<Storyboard>
+    										<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Unchecked1" d:IsOptimized="True"/>
+    										<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Checked1" d:IsOptimized="True"/>
+    									</Storyboard>
+    								</VisualState>
+    							</VisualStateGroup>
+    						</VisualStateManager.VisualStateGroups>
+    						<Grid x:Name="Checked1">
+    							<Border Background="Gray">
+    								<StackPanel>
+    									<Image x:Name="image1" Source="/icons/appbar.check.rest.png"/>
+    									<TextBlock Text="Speaker" 
+    										HorizontalAlignment="Center"
+    										Margin="6, 0, 6, 6"
+    										Style="{StaticResource PhoneTextNormalStyle}" />
+    								</StackPanel>
+    							</Border>
+    						</Grid>
+    						<Grid x:Name="Unchecked1" Opacity="0">
+    							<Border Background="Gray" Opacity="0.8">
+    								<StackPanel>
+    									<Image x:Name="image2" Source="/icons/appbar.cancel.rest.png"/>
+    									<TextBlock Text="Speaker" 
+    										HorizontalAlignment="Center"
+    										Margin="6, 0, 6, 6"
+    										Style="{StaticResource PhoneTextNormalStyle}" />
+    								</StackPanel>
+    							</Border>
+    						</Grid>
+    					</Grid>
+    				</ControlTemplate>
+    			</Setter.Value>
+    		</Setter>
+    	</Style>
+    	<Storyboard x:Name="ScrollViewerToBottom">
+    		<DoubleAnimation Storyboard.TargetName="Mediator"
+    			Storyboard.TargetProperty="ScrollableHeightMultiplier"
+    			Duration="0:0:1"
+    			To="1" />
+    	</Storyboard>
     </phone:PhoneApplicationPage.Resources>
 
     <phone:PhoneApplicationPage.FontFamily>
@@ -164,45 +172,49 @@
     <phone:PhoneApplicationPage.Foreground>
         <StaticResource ResourceKey="PhoneForegroundBrush"/>
     </phone:PhoneApplicationPage.Foreground>
-
+    
+    
     <!--Das LayoutRoot-Objekt ist das Stammraster, das den gesamten Seiteninhalt aufnimmt.-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="Transparent" Margin="1,0,-1,1">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+        	<RowDefinition Height="auto"/>
+        	<RowDefinition Height="auto"/>
+        	<RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+        	<ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
         <!--This creates the background for the upper half of the screen-->
         <Border Grid.Row="0"
                 Grid.RowSpan="2"
-                Background="{StaticResource PhoneChromeBrush}" />
+                Background="{StaticResource PhoneChromeBrush}" Margin="0,0,0,1" />
 
         <!--Das TitlePanel-Objekt enthält den Namen der Anwendung und den Seitentitel.-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,0,0,0">
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,0,0,0" d:LayoutOverrides="GridBox">
             <TextBlock x:Name="ApplicationTitle" 
-                       Text="{Binding Path=TimeElapsed, Mode=OneWay}"
+                       Text="{Binding TimeElapsed, Mode=OneWay}"
                        Margin="0"
                        Style="{StaticResource PhoneTextNormalStyle}" 
                        Foreground="{StaticResource PhoneAccentBrush}"/>
             <TextBlock x:Name="PageTitle" 
-                       Text="{Binding Path=Callee.FirstLast, Mode=OneWay}" 
+                       Text="{Binding Callee.FirstLast, Mode=OneWay}" 
                        Margin="0, -12, 0, 0"
                        Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel-Objekt - Fügen Sie zusätzlichen Inhalt hier ein.-->
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="0,0,0,1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*"/>
+            	<RowDefinition Height="auto" />
+            	<RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+            	<ColumnDefinition Width="auto" />
+            	<ColumnDefinition Width="*"/>
+            	<ColumnDefinition Width="*"/>
+            	<ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="EndCall"
                     Content="End call"
@@ -219,7 +231,7 @@
                     Height="120"
                     Margin="12"
                     Background="Gray">
-                <Image Source="{Binding Path=Callee.UserImageSource, Mode=OneWay}" />
+                <Image Source="{Binding Callee.UserImageSource, Mode=OneWay}" />
             </Border>
             <ToggleButton x:Name="ToggleMicrophone" 
                           Content="Microphone"
@@ -233,41 +245,65 @@
                           Style="{StaticResource SpeakerToggle}" 
                           BorderThickness="0,3,3,3"/>
         </Grid>
-        <ScrollViewer Grid.Row="2"
-                      Margin="0, 12, 0, 0">
-            <StackPanel>
-                <ItemsControl ItemTemplate="{StaticResource BubbleCallList}"
-                                      ItemsSource="{Binding Path=PreviousCallLog.Entries, Mode=OneWay}"
-                                      Opacity="0.6" />
-                <ItemsControl ItemTemplate="{StaticResource BubbleCallList}" 
-                                      ItemsSource="{Binding Path=CurrentCallLog.Entries, Mode=OneWay}" >
-                </ItemsControl>
-                <Grid Margin="24"
-                              Visibility="{Binding Path=Con.Analyzing, Mode=OneWay, Converter={StaticResource boolConv}}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Row="1"
-                                Background="{StaticResource PhoneAccentBrush}">
+        
+        <helpers:ScrollViewerOffsetMediator Visibility="Collapsed" x:Name="Mediator" ScrollViewer="{Binding ElementName=CallLogScrollViewer}" Grid.Row="1" d:LayoutOverrides="GridBox" >
+            <i:Interaction.Behaviors>
+                <el:FluidMoveBehavior/>
+            </i:Interaction.Behaviors>
+        </helpers:ScrollViewerOffsetMediator>
+        <ScrollViewer x:Name="CallLogScrollViewer"
+                      Grid.Row="2" Margin="0,11,0,0" VerticalAlignment="Top">
+        	<StackPanel>
+        		<ItemsControl ItemTemplate="{StaticResource BubbleCallList}"
+        			          ItemsSource="{Binding PreviousCallLog.Entries, Mode=OneWay}"
+        			          Opacity="0.6" />
+        		<ItemsControl ItemTemplate="{StaticResource BubbleCallList}" 
+        			          ItemsSource="{Binding CurrentCallLog.Entries, Mode=OneWay}" />
+        		<!--<Border Width="300" Height="120" Background="Moccasin" />
+                <Border Width="300" Height="120" Background="Olive" />
+                <Border Width="300" Height="120" Background="Wheat" />
+                <Border Width="300" Height="120" Background="Lavender" />
+                <Border Width="300" Height="120" Background="Violet" />
+                <Border Width="300" Height="120" Background="Aqua" />-->
+                <Grid Margin="24" x:Name="IndicatorGrid">
+        			<Grid.RowDefinitions>
+        				<RowDefinition />
+        				<RowDefinition />
+        			</Grid.RowDefinitions>
+        			<Grid.ColumnDefinitions>
+        				<ColumnDefinition />
+        			</Grid.ColumnDefinitions>
+        			
+                    <Border Grid.Row="1" 
+                            Width="1" 
+                            Height="15" 
+                            Background="{StaticResource TransparentBrush}" />
+        			<Border x:Name="ProgressBar"
+                            Grid.Row="1"
+                            Visibility="{Binding Con.Analyzing, Converter={StaticResource boolConv}, Mode=OneWay}"
+        				    Background="{StaticResource PhoneAccentBrush}">
+                        <!--Visibility="{Binding TestBool, Converter={StaticResource boolConv}, Mode=OneWay}"-->
+                        <i:Interaction.Triggers>
+                            <ec:PropertyChangedTrigger Binding="{Binding Con.UpdateIndicator, Mode=OneWay}">
+                            	<ec:CallMethodAction TargetObject="{Binding ElementName=CallPage}" MethodName="ScrollToBottom"/><!--<eim:ControlStoryboardAction Storyboard="{StaticResource ScrollViewerToBottom}"/>-->
+                            </ec:PropertyChangedTrigger>
+                        </i:Interaction.Triggers>
                         <ProgressBar x:Name="progressBar1" 
-                                                 Value="0" 
-                                                 IsIndeterminate="True"
-                                                 HorizontalAlignment="Stretch"
-                                                 Margin="30"
-                                                 VerticalAlignment="Center"
-                                                 Foreground="{StaticResource PhoneForegroundBrush}"/>
-                    </Border>
+        					         Value="0" 
+        					         IsIndeterminate="True"
+        					         HorizontalAlignment="Stretch"
+        					         Margin="30"
+        					         VerticalAlignment="Center"
+        					         Foreground="{StaticResource PhoneForegroundBrush}"/>
+        			</Border>
                     <Path Data="m 0,0 L0,12 L18,12"
-                                      HorizontalAlignment="Left"
-					                  Fill="{StaticResource PhoneAccentBrush}"
-                                      Margin="12, 0, 0, -1"
-					                  Grid.Row="0"/>
+        				  HorizontalAlignment="Left"
+        				  Fill="{StaticResource PhoneAccentBrush}"
+        				  Margin="12, 0, 0, -1"
+        				  Grid.Row="0"
+                          Visibility="{Binding Con.Analyzing, Converter={StaticResource boolConv}, Mode=OneWay}" />
                 </Grid>
-            </StackPanel>
+        	</StackPanel>
         </ScrollViewer>
     </Grid>
 </phone:PhoneApplicationPage>

@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using Echo.Helpers;
+using Caliburn.Micro;
 
 namespace Echo.Views
 {
@@ -18,6 +20,13 @@ namespace Echo.Views
         public ActiveCallPage()
         {
             InitializeComponent();
+        }
+
+        public void ScrollToBottom()
+        {
+            //Mediator.ScrollableHeightMultiplier = 1;
+            CallLogScrollViewer.UpdateLayout();
+            CallLogScrollViewer.ScrollToVerticalOffset(CallLogScrollViewer.ScrollableHeight);
         }
     }
 }

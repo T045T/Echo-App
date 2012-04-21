@@ -80,6 +80,8 @@
     <Compile Include="g711audio\MuLawEncoder.cs" />
     <Compile Include="g711audio\Program.cs" />
     <Compile Include="Helpers\DateTimeConverters.cs" />
+    <Compile Include="Helpers\ScrollDownMessage.cs" />
+    <Compile Include="Helpers\ScrollViewerAnimationHelper.cs" />
     <Compile Include="Logic\ClientHeader.cs" />
     <Compile Include="Logic\Connection.cs" />
     <Compile Include="Logic\Crypt.cs" />

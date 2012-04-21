@@ -73,6 +73,21 @@ namespace Echo.Logic
             }
         }
 
+        // This Property is used to signal to the View that an update has been received (so it can scroll the list of text snippets to the bottom to get attention
+        private bool _UpdateIndicator;
+        public bool UpdateIndicator
+        {
+            get { return _UpdateIndicator; }
+            set
+            {
+                if (value != _UpdateIndicator)
+                {
+                    _UpdateIndicator = value;
+                    NotifyOfPropertyChange("UpdateIndicator");
+                }
+            }
+        }
+
         private bool _Analyzing;
         public bool Analyzing
         {
@@ -501,6 +516,7 @@ namespace Echo.Logic
         private void moreTextReceived(byte[] data)
         {
             Analyzing = false;
+            UpdateIndicator = !UpdateIndicator;
             String text = Encoding.UTF8.GetString(data, 0, data.Length);
             OnDataReceived(text);
             //do something
@@ -669,6 +685,7 @@ namespace Echo.Logic
 
         private void analyzing()
         {
+            UpdateIndicator = !UpdateIndicator;
             Analyzing = true;
         }
 
