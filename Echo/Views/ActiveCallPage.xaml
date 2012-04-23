@@ -155,12 +155,6 @@
     			</Setter.Value>
     		</Setter>
     	</Style>
-    	<Storyboard x:Name="ScrollViewerToBottom">
-    		<DoubleAnimation Storyboard.TargetName="Mediator"
-    			Storyboard.TargetProperty="ScrollableHeightMultiplier"
-    			Duration="0:0:1"
-    			To="1" />
-    	</Storyboard>
     </phone:PhoneApplicationPage.Resources>
 
     <phone:PhoneApplicationPage.FontFamily>
@@ -246,11 +240,6 @@
                           BorderThickness="0,3,3,3"/>
         </Grid>
         
-        <helpers:ScrollViewerOffsetMediator Visibility="Collapsed" x:Name="Mediator" ScrollViewer="{Binding ElementName=CallLogScrollViewer}" Grid.Row="1" d:LayoutOverrides="GridBox" >
-            <i:Interaction.Behaviors>
-                <el:FluidMoveBehavior/>
-            </i:Interaction.Behaviors>
-        </helpers:ScrollViewerOffsetMediator>
         <ScrollViewer x:Name="CallLogScrollViewer"
                       Grid.Row="2" Margin="0,11,0,0" VerticalAlignment="Top">
         	<StackPanel>
@@ -259,12 +248,6 @@
         			          Opacity="0.6" />
         		<ItemsControl ItemTemplate="{StaticResource BubbleCallList}" 
         			          ItemsSource="{Binding CurrentCallLog.Entries, Mode=OneWay}" />
-        		<!--<Border Width="300" Height="120" Background="Moccasin" />
-                <Border Width="300" Height="120" Background="Olive" />
-                <Border Width="300" Height="120" Background="Wheat" />
-                <Border Width="300" Height="120" Background="Lavender" />
-                <Border Width="300" Height="120" Background="Violet" />
-                <Border Width="300" Height="120" Background="Aqua" />-->
                 <Grid Margin="24" x:Name="IndicatorGrid">
         			<Grid.RowDefinitions>
         				<RowDefinition />

@@ -516,9 +516,9 @@ namespace Echo.Logic
         private void moreTextReceived(byte[] data)
         {
             Analyzing = false;
-            UpdateIndicator = !UpdateIndicator;
             String text = Encoding.UTF8.GetString(data, 0, data.Length);
             OnDataReceived(text);
+            UpdateIndicator = !UpdateIndicator;
             //do something
         }
 
@@ -685,8 +685,8 @@ namespace Echo.Logic
 
         private void analyzing()
         {
-            UpdateIndicator = !UpdateIndicator;
             Analyzing = true;
+            UpdateIndicator = !UpdateIndicator;
         }
 
         public void logout()

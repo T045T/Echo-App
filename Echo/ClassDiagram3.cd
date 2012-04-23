@@ -1,0 +1,578 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Echo.App" Collapsed="true">
+    <Position X="37.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.AppBootstrapper" Collapsed="true">
+    <Position X="39" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAIAAAAABAAAIABAAAAAAAAAQAACAAAAA=</HashCode>
+      <FileName>AppBootstrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.DebugLogger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQQAAAAAAAABAAAAAAEAAAAAAEAAAAA=</HashCode>
+      <FileName>AppBootstrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Echo.Crypt" Collapsed="true">
+    <Position X="35.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAMBAAAAAAABAAAQEBAABAAAAEKAAAAAAEAAAAA=</HashCode>
+      <FileName>Logic\Crypt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.MainPage" Collapsed="true">
+    <Position X="12.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MainPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.MainPageViewModel" Collapsed="true">
+    <Position X="37.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACEAYAEEAAAAGEAAgAIAQAIgAAAEAEAiAAAAAAEAQg=</HashCode>
+      <FileName>MainPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.SplashScreen" Collapsed="true">
+    <Position X="15.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SplashScreen.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.StartupSplashScreen" Collapsed="true">
+    <Position X="18" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>StartupSplashScreen.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="g711audio.ALawDecoder" Collapsed="true">
+    <Position X="33.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAgAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>g711audio\ALawDecoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="g711audio.ALawEncoder" Collapsed="true">
+    <Position X="35.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAFAAABAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>g711audio\ALawEncoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="g711audio.MuLawDecoder" Collapsed="true">
+    <Position X="40.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAgAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>g711audio\MuLawDecoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="g711audio.MuLawEncoder" Collapsed="true">
+    <Position X="33.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAFABAAAgAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>g711audio\MuLawEncoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="g711audio.Program" Collapsed="true">
+    <Position X="37.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>g711audio\Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Helpers.ShortTimeConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\DateTimeConverters.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Echo.Helpers.ShortDateConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="40.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\DateTimeConverters.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Echo.Helpers.ListBoxScrollToSelectionBehavior" Collapsed="true">
+    <Position X="12.75" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\ListBoxScrollToSelectionBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Helpers.NameConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\NameConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Echo.Helpers.ShowDialog&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAaAAAAAAAAAAAAAAAAAFIAAAAAAAAA=</HashCode>
+      <FileName>Helpers\ShowDialog.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Echo.Helpers.TextBoxUpdateBehavior" Collapsed="true">
+    <Position X="8.25" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAFAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\TextBoxUpdateBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Helpers.PasswordBoxUpdateBehavior" Collapsed="true">
+    <Position X="6" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAFAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\TextBoxUpdateBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Helpers.TitleGroup&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AKIAAAAAABAACFAQgAAABAAAgIEAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\TitleGroup.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Echo.Logic.ClientHeader" Collapsed="true">
+    <Position X="40.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAEAAAAAAAAAAEAMAQAgAAAAAAAAIIAAI=</HashCode>
+      <FileName>Logic\ClientHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Logic.Connection" Collapsed="true">
+    <Position X="10.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAsgB6BaGIAZCmBCCuJwJEjCAEKoRQAAIcgAAICMAA=</HashCode>
+      <FileName>Logic\Connection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Logic.EchoClientLogic" Collapsed="true">
+    <Position X="39" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAABAAIAAAAAAIAAAABAAEAAAAAEAAAAEAIAA=</HashCode>
+      <FileName>Logic\EchoClientLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Logic.ErrorCodes" Collapsed="true">
+    <Position X="40.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAgAAAAAAAAAAAAAAAAAAAAAIBAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\ErrorCodes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Logic.ServerHeader" Collapsed="true">
+    <Position X="39" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAADAAEAQAgAAAAAAAAACQAkAAAAAAABAIAAAAA=</HashCode>
+      <FileName>Logic\ServerHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Logic.UDPAudioSink" Collapsed="true">
+    <Position X="15.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAgAAAAAEAAAAAAAAAIAICAAAAIAACBRIAosACAA=</HashCode>
+      <FileName>Logic\UDPAudioSink.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Model.CallLogDataContext" Collapsed="true">
+    <Position X="20" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Model\CallLogDataContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Model.CallLogEntry" Collapsed="true">
+    <Position X="16.75" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAQAAgAAoEAAEAAKAAAEIIAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Model\CallLogEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Model.CallLogModel" Collapsed="true">
+    <Position X="21.25" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEABRAQAABAAICAAAAEAAAAAIAAAAIAAAAAAAgBAAIA=</HashCode>
+      <FileName>Model\CallLogModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Model.GroupMapModel" Collapsed="true">
+    <Position X="12.25" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAEAAAAgAIIABABAAAAgAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Model\GroupMapModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Model.GroupModel" Collapsed="true">
+    <Position X="14.5" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACABAAAAAAQBABAAAAAAAAAQAAAAAEAAIACgAAE=</HashCode>
+      <FileName>Model\GroupModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Model.LinqModelBase" Collapsed="true">
+    <Position X="16.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Model\LinqModelBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Echo.Model.ModelBase" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="39" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgIAAAAAAQAAAAAAAAgAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\ModelBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Echo.Model.SettingsModel" Collapsed="true">
+    <Position X="20.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QRkBBIMgBAACKWYMgAAACQJBCAjQFACA2qgAgjAIIWA=</HashCode>
+      <FileName>Model\SettingsModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Model.UDCListModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAgAAUAACAAQAAAgQAIAQICAAAAAQAANAiAcAAGJEA=</HashCode>
+      <FileName>Model\UDCListModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Model.UserDataContext" Collapsed="true">
+    <Position X="17.75" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAgAQBACAAAA=</HashCode>
+      <FileName>Model\UserDataContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Model.UserModel" Collapsed="true">
+    <Position X="19" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAAUBBABkAoAAAAAEAAQoAAAQAAAAAAAAABAAEAAg=</HashCode>
+      <FileName>Model\UserModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.ActiveCallPageViewModel" Collapsed="true">
+    <Position X="6.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFAIFIoAArAAAACQBBIIA0AAAQECAgECAAAACAAAKAA=</HashCode>
+      <FileName>ViewModels\ActiveCallPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.CallLogPageViewModel" Collapsed="true">
+    <Position X="24.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAEAAAAIAAAAAoBABAIAAAAAEAAAAAAIBAIAA=</HashCode>
+      <FileName>ViewModels\CallLogPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.ContactDetailsPageViewModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AlEBAIAACAQAAoAAAAAIAEEAAAAAAgEACAAAAAAAIgA=</HashCode>
+      <FileName>ViewModels\ContactDetailsPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.ContactEditPageViewModel" Collapsed="true">
+    <Position X="22.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACUEAMIBQSgACQCAAgAIBAgAQAQgAkEAAAAABQIQAFg=</HashCode>
+      <FileName>ViewModels\ContactEditPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.GroupMembership" Collapsed="true">
+    <Position X="13" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAARAAAAAABAABAAAACAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>ViewModels\ContactEditPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.ContactEditPageViewModelStorage" Collapsed="true">
+    <Position X="33.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\ContactEditPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.ContactsViewModel" Collapsed="true">
+    <Position X="2" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKRQAACEBAMAgIAAgCIQAACAAAIAAUCAgAAAQAAIFA=</HashCode>
+      <FileName>ViewModels\ContactsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.GroupDialogViewModel" Collapsed="true">
+    <Position X="26.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAQAAAAABAAAAQAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>ViewModels\GroupDialogViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.GroupPageViewModel" Collapsed="true">
+    <Position X="8.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACJAEAAAAAACAIAAAAIAAAAAAAIAAAAAAAAAAAAIAE=</HashCode>
+      <FileName>ViewModels\GroupPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.IncomingCallDialogViewModel" Collapsed="true">
+    <Position X="17.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAhAAAAAAAAAAAAAAAAAAAAEAAgAAAgANIAA=</HashCode>
+      <FileName>ViewModels\IncomingCallDialogViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.NetworkTestPageViewModel" Collapsed="true">
+    <Position X="4.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAgAAAAAEAAAAABAAgaAICIAEAIEACBRIApsACAA=</HashCode>
+      <FileName>ViewModels\NetworkTestPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.RecentsViewModel" Collapsed="true">
+    <Position X="20" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEACAAAAAAIAAACAAAAAAACAAAAAAAAIAA=</HashCode>
+      <FileName>ViewModels\RecentsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.SettingsPageViewModel" Collapsed="true">
+    <Position X="29" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAEACQIQEABAAgAAAQAAAAIQggAAACCIAAAAAAQ=</HashCode>
+      <FileName>ViewModels\SettingsPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.TrainerFrontViewModel" Collapsed="true">
+    <Position X="11" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\TrainerFrontViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.ViewModels.WelcomePageViewModel" Collapsed="true">
+    <Position X="31.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACACAAAAEAEIAIAIIkAsAAAIAAAACgQAAAgAAAAg=</HashCode>
+      <FileName>ViewModels\WelcomePageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.ActiveCallPage" Collapsed="true">
+    <Position X="7.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ActiveCallPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.CallLogPage" Collapsed="true">
+    <Position X="21.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\CallLogPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.ContactDetailsPage" Collapsed="true">
+    <Position X="10" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ContactDetailsPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.ContactDetailView" Collapsed="true">
+    <Position X="24.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ContactDetailView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.ContactEditPage" Collapsed="true">
+    <Position X="19" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ContactEditPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.ContactsView" Collapsed="true">
+    <Position X="9" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ContactsView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.GroupDialogView" Collapsed="true">
+    <Position X="11.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\GroupDialogView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.GroupPage">
+    <Position X="5.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\GroupPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.GroupView" Collapsed="true">
+    <Position X="13.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\GroupView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.IncomingCallDialogView" Collapsed="true">
+    <Position X="20.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\IncomingCallDialogView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.NetworkTestPage" Collapsed="true">
+    <Position X="28" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\NetworkTestPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.RecentsView" Collapsed="true">
+    <Position X="22.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\RecentsView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.SettingsPage" Collapsed="true">
+    <Position X="23.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\SettingsPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.SettingsView" Collapsed="true">
+    <Position X="27" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\SettingsView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.TrainerFrontView" Collapsed="true">
+    <Position X="6.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\TrainerFrontView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.TrainerPage" Collapsed="true">
+    <Position X="14.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\TrainerPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Echo.Views.WelcomePage" Collapsed="true">
+    <Position X="25.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\WelcomePage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPKeyboardHelper.KeyboardDependency" Collapsed="true">
+    <Position X="33.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAACAgAAIAIAAAAAACAA=</HashCode>
+      <FileName>WPKeyboardHelper\KeyboardDependency.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPKeyboardHelper.KeyboardHelper" Collapsed="true">
+    <Position X="35.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCAAAAAAAgAQAAAAEAAAAgAAAAAQBAAQAAAAIBAAAAA=</HashCode>
+      <FileName>WPKeyboardHelper\KeyboardHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPKeyboardHelper.KeyboardTabHelperBehavior" Collapsed="true">
+    <Position X="10.5" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAFAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WPKeyboardHelper\KeyboardTabHelperBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Phone.Controls.PhoneApplicationPage" Collapsed="true">
+    <Position X="16.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Caliburn.Micro.Screen" Collapsed="true">
+    <Position X="16.75" Y="5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Controls.UserControl" Collapsed="true">
+    <Position X="16.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Caliburn.Micro.PropertyChangedBase" Collapsed="true">
+    <Position X="16.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Data.Linq.DataContext" Collapsed="true">
+    <Position X="19" Y="18.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Interactivity.Behavior&lt;T&gt;" Collapsed="true">
+    <Position X="9.25" Y="18.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Delegate Name="Echo.Logic.DataReceivedEventHandler" Collapsed="true">
+    <Position X="37.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Connection.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Echo.Logic.AcquiredPortEventHandler" Collapsed="true">
+    <Position X="33.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Connection.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Echo.Logic.RemoteHangupEventHandler" Collapsed="true">
+    <Position X="39" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Connection.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Echo.Logic.CallStartedHandler" Collapsed="true">
+    <Position X="35.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Connection.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
