@@ -62,7 +62,7 @@
                                        Margin="12,-4,0,0" 
                                        Style="{StaticResource PhoneTextSubtleStyle}" 
                                        Foreground="{StaticResource PhoneForegroundBrush}" 
-                                       Opacity="0.695" />
+                                       Opacity="0.7" />
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
