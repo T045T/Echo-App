@@ -67,7 +67,7 @@
             </controls:Panorama.HeaderTemplate>
             <controls:PanoramaItem x:Name="cvm" />
             <controls:PanoramaItem x:Name="rvm" />
-            <controls:PanoramaItem x:Name="tvm" Orientation="Horizontal" />
+            <!--<controls:PanoramaItem x:Name="tvm" Orientation="Horizontal" />-->
         </controls:Panorama>
     </Grid>
 </phone:PhoneApplicationPage>

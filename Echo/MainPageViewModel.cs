@@ -60,7 +60,7 @@ namespace Echo
             IPhoneService phoneService, 
             ContactsViewModel cvm, 
             RecentsViewModel rvm, 
-            TrainerFrontViewModel tvm, 
+            //TrainerFrontViewModel tvm, 
             SettingsModel sm,
             Connection con)
         {
@@ -70,10 +70,10 @@ namespace Echo
             this.con = con;
             this.cvm = cvm;
             this.rvm = rvm;
-            this.tvm = tvm;
+            //this.tvm = tvm;
             Items.Add(cvm);
             Items.Add(rvm);
-            Items.Add(tvm);
+            //Items.Add(tvm);
 
             //if (sm.getValueOrDefault<bool>(sm.ShowWelcomeScreenSettingKeyName, sm.ShowWelcomeScreenDefault))
             //{
