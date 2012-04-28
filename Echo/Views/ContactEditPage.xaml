@@ -180,7 +180,11 @@
                                 </cal:ActionMessage>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <Image Source="/icons/appbar.add.rest.png" Width="56" />
+                        <Border Width="56" Background="{StaticResource PhoneForegroundBrush}">
+                            <Border.OpacityMask>
+                                <ImageBrush ImageSource="/icons/appbar.add.rest.png" />
+                            </Border.OpacityMask>
+                        </Border>
                         <TextBlock TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" Text="New Group" />
                     </StackPanel>
                 </ListBoxItem>
