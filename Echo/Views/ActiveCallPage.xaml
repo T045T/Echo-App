@@ -173,7 +173,8 @@
         <Grid.RowDefinitions>
         	<RowDefinition Height="auto"/>
         	<RowDefinition Height="auto"/>
-        	<RowDefinition Height="*" />
+        	<RowDefinition Height="3*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
         	<ColumnDefinition Width="*" />
@@ -202,7 +203,7 @@
         <Grid Grid.Row="1" Margin="0,0,0,1">
             <Grid.RowDefinitions>
             	<RowDefinition Height="auto" />
-            	<RowDefinition Height="*"/>
+            	<RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
             	<ColumnDefinition Width="auto" />
@@ -239,54 +240,73 @@
                           Style="{StaticResource SpeakerToggle}" 
                           BorderThickness="0,3,3,3"/>
         </Grid>
-        
-        <ScrollViewer x:Name="CallLogScrollViewer"
-                      Grid.Row="2" Margin="0,11,0,0" VerticalAlignment="Top">
-        	<StackPanel>
-        		<ItemsControl ItemTemplate="{StaticResource BubbleCallList}"
-        			          ItemsSource="{Binding PreviousCallLog.Entries, Mode=OneWay}"
-        			          Opacity="0.6" />
-        		<ItemsControl ItemTemplate="{StaticResource BubbleCallList}" 
-        			          ItemsSource="{Binding CurrentCallLog.Entries, Mode=OneWay}" />
-                <Grid Margin="24" x:Name="IndicatorGrid">
-        			<Grid.RowDefinitions>
-        				<RowDefinition />
-        				<RowDefinition />
-        			</Grid.RowDefinitions>
-        			<Grid.ColumnDefinitions>
-        				<ColumnDefinition />
-        			</Grid.ColumnDefinitions>
-        			
-                    <Border Grid.Row="1" 
-                            Width="1" 
-                            Height="15" 
-                            Background="{StaticResource TransparentBrush}" />
-        			<Border x:Name="ProgressBar"
+
+        <Grid Margin="24, 24, 24, 0"
+              Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Row="1" VerticalAlignment="Stretch"
+                    Background="{StaticResource PhoneAccentBrush}">
+                <TextBlock Grid.Row="1"
+                           x:Name="CurrentText"
+                           FontSize="48"
+                           TextWrapping="Wrap"
+                       Style="{StaticResource PhoneTextExtraLargeStyle}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            </Border>
+            <Border x:Name="ProgressBar"
                             Grid.Row="1"
+                            VerticalAlignment="Stretch"
                             Visibility="{Binding Con.Analyzing, Converter={StaticResource boolConv}, Mode=OneWay}"
         				    Background="{StaticResource PhoneAccentBrush}">
-                        <!--Visibility="{Binding TestBool, Converter={StaticResource boolConv}, Mode=OneWay}"-->
-                        <i:Interaction.Triggers>
-                            <ec:PropertyChangedTrigger Binding="{Binding Con.UpdateIndicator, Mode=OneWay}">
-                            	<ec:CallMethodAction TargetObject="{Binding ElementName=CallPage}" MethodName="ScrollToBottom"/><!--<eim:ControlStoryboardAction Storyboard="{StaticResource ScrollViewerToBottom}"/>-->
-                            </ec:PropertyChangedTrigger>
-                        </i:Interaction.Triggers>
-                        <ProgressBar x:Name="progressBar1" 
+                <!--<i:Interaction.Triggers>
+                    <ec:PropertyChangedTrigger Binding="{Binding Con.UpdateIndicator, Mode=OneWay}">
+                        <ec:CallMethodAction TargetObject="{Binding ElementName=CallPage}" MethodName="ScrollToBottom"/>
+                    </ec:PropertyChangedTrigger>
+                </i:Interaction.Triggers>-->
+                <ProgressBar x:Name="progressBar1" 
         					         Value="0" 
         					         IsIndeterminate="True"
         					         HorizontalAlignment="Stretch"
         					         Margin="30"
         					         VerticalAlignment="Center"
         					         Foreground="{StaticResource PhoneForegroundBrush}"/>
-        			</Border>
-                    <Path Data="m 0,0 L0,12 L18,12"
+            </Border>
+            <Path Data="m 0,0 L0,12 L18,12"
         				  HorizontalAlignment="Left"
         				  Fill="{StaticResource PhoneAccentBrush}"
         				  Margin="12, 0, 0, -1"
-        				  Grid.Row="0"
-                          Visibility="{Binding Con.Analyzing, Converter={StaticResource boolConv}, Mode=OneWay}" />
-                </Grid>
-        	</StackPanel>
-        </ScrollViewer>
+        				  Grid.Row="0" />
+        </Grid>
+        <Grid Margin="30"
+              Opacity="0.7"
+              Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Row="1" VerticalAlignment="Stretch"
+                    Background="{StaticResource PhoneAccentBrush}">
+                <TextBlock x:Name="LastText"
+                           Grid.Row="1"
+                       Style="{StaticResource PhoneTextLargeStyle}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+            </Border>
+            <Path Data="m 0,0 L0,12 L18,12"
+        				  HorizontalAlignment="Left"
+        				  Fill="{StaticResource PhoneAccentBrush}"
+        				  Margin="12, 0, 0, -1"
+        				  Grid.Row="0" />
+        </Grid>
     </Grid>
 </phone:PhoneApplicationPage>

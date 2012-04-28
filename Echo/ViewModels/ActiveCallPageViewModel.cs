@@ -23,6 +23,27 @@ namespace Echo.ViewModels
         public int calleeID { get; set; }
         public bool isIncoming { get; set; }
 
+        private string _CurrentText;
+        public string CurrentText
+        {
+            get { return _CurrentText; }
+            set
+            {
+                _CurrentText = value;
+                NotifyOfPropertyChange("CurrentText");
+            }
+        }
+        private string _LastText;
+        public string LastText
+        {
+            get { return _LastText; }
+            set
+            {
+                _LastText = value;
+                NotifyOfPropertyChange("LastText");
+            }
+        }
+
         private bool _CallInProgress;
         public bool CallInProgress
         {
@@ -135,12 +156,29 @@ namespace Echo.ViewModels
             if (previousLogs.Any())
             {
                 PreviousCallLog = previousLogs.First();
+                if (PreviousCallLog.Entries.Any())
+                {
+                    LastText = PreviousCallLog.Entries.First().Content;
+                }
             }
             StartCall();
         }
 
         private void StartCall()
         {
+            #region insert_test_content
+            //CurrentCallLog = new CallLogModel(Callee.ID);
+            //CallStart = CurrentCallLog.StartTime;
+            //TimeUpdater.Start();
+            //Callee.CallLogs.Add(CurrentCallLog);
+            //CurrentCallLog.addEntry("Sorry, I'm going to be late tonight.");
+            //CurrentCallLog.addEntry("Can you get some groceries before the store closes?");
+            //CurrentCallLog.addEntry("Thank you so much!");
+            //CurrentCallLog.addEntry("See you soon.");
+            #endregion insert_test_content
+
+            udc.SubmitChanges();
+            udc.LoadListsFromDatabase();
             if (isIncoming)
             {
                 if (con.VoicePort != null)
@@ -225,7 +263,11 @@ namespace Echo.ViewModels
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
                 if (e.Length > 0)
+                {
                     CurrentCallLog.addEntry(e);
+                    LastText = CurrentText;
+                    CurrentText = e;
+                }
             });
         }
 

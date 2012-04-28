@@ -9,11 +9,11 @@ namespace Echo.Views
             InitializeComponent();
         }
 
-        public void ScrollToBottom()
-        {
-            //Mediator.ScrollableHeightMultiplier = 1;
-            CallLogScrollViewer.UpdateLayout();
-            CallLogScrollViewer.ScrollToVerticalOffset(CallLogScrollViewer.ScrollableHeight);
-        }
+        //public void ScrollToBottom()
+        //{
+        //    //Mediator.ScrollableHeightMultiplier = 1;
+        //    CallLogScrollViewer.UpdateLayout();
+        //    CallLogScrollViewer.ScrollToVerticalOffset(CallLogScrollViewer.ScrollableHeight);
+        //}
     }
 }
